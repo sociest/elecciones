@@ -48,6 +48,10 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Build with Astro
+        env:
+          PUBLIC_APPWRITE_ENDPOINT: ${{ secrets.PUBLIC_APPWRITE_ENDPOINT }}
+          PUBLIC_APPWRITE_PROJECT_ID: ${{ secrets.PUBLIC_APPWRITE_PROJECT_ID }}
+          PUBLIC_APPWRITE_DATABASE_ID: ${{ secrets.PUBLIC_APPWRITE_DATABASE_ID }}
         run: pnpm run build
         working-directory: ${{ env.BUILD_PATH }}
 
