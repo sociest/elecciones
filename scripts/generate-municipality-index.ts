@@ -46,11 +46,11 @@ if (existsSync(envPath)) {
 // 1. Constants
 // ---------------------------------------------------------------------------
 const APPWRITE_ENDPOINT =
-  process.env.PUBLIC_APPWRITE_ENDPOINT ?? "https://appwrite.sociest.org/v1";
+  process.env.PUBLIC_APPWRITE_ENDPOINT || "https://appwrite.sociest.org/v1";
 const PROJECT_ID =
-  process.env.PUBLIC_APPWRITE_PROJECT_ID ?? "697ea96f003c3264105c";
+  process.env.PUBLIC_APPWRITE_PROJECT_ID || "697ea96f003c3264105c";
 const DATABASE_ID =
-  process.env.PUBLIC_APPWRITE_DATABASE_ID ?? "69814c38002f0783976d";
+  process.env.PUBLIC_APPWRITE_DATABASE_ID || "69814c38002f0783976d";
 
 const MUNICIPAL_GEOJSON_URL = `https://appwrite.sociest.org/v1/storage/buckets/6982ca130039bc0ee4e2/files/69925c22001112baddeb/view?project=${PROJECT_ID}`;
 
@@ -416,5 +416,10 @@ async function main() {
 }
 
 main().catch((err) => {
+  console.error("\n❌ Fatal error in municipality-index generation:");
+  console.error(err instanceof Error ? err.message : err);
+  if (err instanceof Error && err.stack) {
+    console.error(err.stack);
+  }
   process.exit(1);
 });
