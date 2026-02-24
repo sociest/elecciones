@@ -320,8 +320,9 @@ export default function MunicipalityPicker() {
         });
 
         setTimeout(() => {
-          const base = import.meta.env.BASE_URL ?? "/";
-          window.location.href = `${base.replace(/\/$/, "")}/onboarding/3`;
+          const base = import.meta.env.PUBLIC_BASE_URL ?? "/";
+          const baseRoute = import.meta.env.PUBLIC_BASE_ROUTE ?? "/";
+          window.location.href = `${base.replace(/\/$/, "")}${baseRoute.replace(/\/$/, "")}/onboarding/3`;
         }, 900);
       } else {
         throw new Error("out-of-range");
@@ -365,8 +366,9 @@ export default function MunicipalityPicker() {
       JSON.stringify(locationData),
     );
 
-    const base = import.meta.env.BASE_URL ?? "/";
-    window.location.href = `${base.replace(/\/$/, "")}/onboarding/3`;
+    const base = import.meta.env.PUBLIC_BASE_URL ?? "/";
+    const baseRoute = import.meta.env.PUBLIC_BASE_ROUTE ?? "/";
+    window.location.href = `${base.replace(/\/$/, "")}${baseRoute.replace(/\/$/, "")}/onboarding/3`;
   };
 
   const gpsButtonContent = () => {

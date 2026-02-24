@@ -1,16 +1,21 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
+import { loadEnv } from "vite";
+
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
+
+// Cargar todas las variables de .env (el 3er arg "" significa sin filtro de prefijo)
+const env = loadEnv("", process.cwd(), "");
 
 // https://astro.build/config
 export default defineConfig({
   output: "static",
   // Configuración para GitHub Pages
-  site: "https://hzudev.github.io",
-  base: "/front-graph",
+  site: env.PUBLIC_BASE_URL || "http://localhost:4321",
+  base: env.PUBLIC_BASE_ROUTE || "/",
   server: {
-    port: 4321,
+    port: Number(env.PORT) || 4321,
     host: true,
   },
   vite: {

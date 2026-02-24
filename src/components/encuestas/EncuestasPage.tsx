@@ -75,40 +75,38 @@ export default function EncuestasPage() {
                 }
                 const casasResult = loadedCasas;
 
-                // 2. Fetch Encuestas (Search by label keywords)
-                // Use parallel searches to load data faster instead of fetching the entire 'entities' database
-                const searchPromises = ["encuest", "sondeo", "estudio"].map(term =>
-                    databases.listDocuments<Entity>(
-                        DATABASE_ID,
-                        COLLECTIONS.ENTITIES,
-                        [
-                            Query.search("label", term),
-                            Query.limit(100)
-                        ]
-                    ).catch(() => ({ documents: [] }))
+                // 2. Fetch Encuestas
+                const encuestasClaims = await databases.listDocuments(
+                    DATABASE_ID,
+                    COLLECTIONS.CLAIMS,
+                    [
+                        Query.equal("property", PROPERTY_IDS.ES_INSTANCIA_DE),
+                        Query.equal("value_relation", ENTITY_TYPE_IDS.ENCUESTA_ELECTORAL),
+                        Query.limit(100)
+                    ]
                 );
 
-                const searchResults = await Promise.all(searchPromises);
+                const encuestasIds = encuestasClaims.documents.map(c => typeof c.subject === 'string' ? c.subject : c.subject?.$id).filter(Boolean);
 
-                let allDocs: Entity[] = [];
-                searchResults.forEach(res => {
-                    allDocs = [...allDocs, ...res.documents];
-                });
+                let loadedEncuestas: Entity[] = [];
+                if (encuestasIds.length > 0) {
+                    const uniqueEncuestaIds = [...new Set(encuestasIds)];
 
-                const encuestasMatch = allDocs.filter(d =>
-                    (d.label || '').toLowerCase().includes('encuest') ||
-                    (d.label || '').toLowerCase().includes('opinión') ||
-                    (d.label || '').toLowerCase().includes('opinion') ||
-                    (d.label || '').toLowerCase().includes('sondeo') ||
-                    (d.description || '').toLowerCase().includes('encuest')
-                );
-
-                const uniqueEncuestas = encuestasMatch.filter((e, idx, self) => self.findIndex(s => s.$id === e.$id) === idx);
-                const finalEncuestas = uniqueEncuestas.filter(e => !casaIds.includes(e.$id));
-
+                    // Fetch entities in batches if more than 100
+                    for (let i = 0; i < uniqueEncuestaIds.length; i += 100) {
+                        const batch = uniqueEncuestaIds.slice(i, i + 100);
+                        const cRes = await databases.listDocuments<Entity>(
+                            DATABASE_ID,
+                            COLLECTIONS.ENTITIES,
+                            [Query.equal("$id", batch), Query.limit(100)]
+                        );
+                        loadedEncuestas = [...loadedEncuestas, ...cRes.documents];
+                    }
+                }
+                const encuestasResult = loadedEncuestas;
                 dispatch({
                     type: "LOAD_SUCCESS",
-                    encuestas: finalEncuestas,
+                    encuestas: encuestasResult,
                     casas: casasResult,
                 });
 

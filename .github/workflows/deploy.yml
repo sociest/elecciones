@@ -52,8 +52,9 @@ jobs:
           PUBLIC_APPWRITE_ENDPOINT: ${{ secrets.PUBLIC_APPWRITE_ENDPOINT }}
           PUBLIC_APPWRITE_PROJECT_ID: ${{ secrets.PUBLIC_APPWRITE_PROJECT_ID }}
           PUBLIC_APPWRITE_DATABASE_ID: ${{ secrets.PUBLIC_APPWRITE_DATABASE_ID }}
-          # municipalities-index.json is pre-generated and committed to the repo
-          # The prebuild script will use the cached version if download fails
+          
+          PUBLIC_BASE_URL: ${{ secrets.PUBLIC_BASE_URL }}
+          PUBLIC_BASE_ROUTE: ${{ secrets.PUBLIC_BASE_ROUTE }}
         run: pnpm run build
         working-directory: ${{ env.BUILD_PATH }}
 

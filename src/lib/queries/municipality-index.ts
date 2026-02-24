@@ -60,8 +60,9 @@ export async function getMunicipalityIndex(): Promise<MunicipalityEntry[]> {
     return stored;
   }
 
-  const base = import.meta.env.BASE_URL ?? "/";
-  const url = `${base.replace(/\/$/, "")}/municipalities-index.json`;
+  const base = import.meta.env.PUBLIC_BASE_URL ?? "/";
+  const baseRoute = import.meta.env.PUBLIC_BASE_ROUTE ?? "/";
+  const url = `${base.replace(/\/$/, "")}${baseRoute.replace(/\/$/, "")}/municipalities-index.json`;
 
   const res = await fetch(url);
   if (!res.ok) {

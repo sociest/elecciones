@@ -147,7 +147,7 @@ const description = "La página que buscas no está habilitada en el sistema.";
 
 <script>
     (function () {
-        const basePath = import.meta.env.BASE_URL || "/front-graph";
+        const basePath = import.meta.env.PUBLIC_BASE_ROUTE ?? "/";
         const currentPath = window.location.pathname;
         const currentSearch = window.location.search;
         const currentHash = window.location.hash;
@@ -161,7 +161,7 @@ const description = "La página que buscas no está habilitada en el sistema.";
             "/test-params",
         ];
         const isRouteWithoutBase = routesWithoutBase.some(
-            (route) => currentPath === route || currentPath.startsWith(route),
+            (route) => currentPath === route || currentPath.startsWith(route)
         );
 
         if (isRouteWithoutBase && !currentPath.startsWith(basePath)) {

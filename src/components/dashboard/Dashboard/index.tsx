@@ -56,8 +56,8 @@ const EntityDashboard: React.FC = () => {
             if (selectedFilter === "Alcaldes") return role.includes("Alcalde");
             if (selectedFilter === "Concejales") return role.includes("Concejal");
             if (selectedFilter === "Gobernadores") return role.includes("Gobernador");
-            if (selectedFilter === "Partidos") {
-                return false;
+            if (selectedFilter === "Asambleístas") {
+                return role.includes("Asambleísta")
             }
             return true;
         });
@@ -94,11 +94,11 @@ const EntityDashboard: React.FC = () => {
 
                         <div className="flex flex-wrap gap-2 mt-6">
                             {[
-                                "Todos",
+                                "Gobernadores",
                                 "Alcaldes",
                                 "Concejales",
-                                "Gobernadores",
-                                "Partidos",
+                                "Asambleístas",
+                                "Todos",
                             ].map((filtro) => (
                                 <button
                                     key={`filter-${filtro}`}

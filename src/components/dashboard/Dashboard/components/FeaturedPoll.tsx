@@ -27,7 +27,7 @@ const reducer = (state: State, action: Action): State => {
 };
 
 export const FeaturedPoll: React.FC = () => {
-    const pollId = "698ca114ed0893ab2485";
+    const pollId = "6998957ee05da570839c";
     const [{ poll, loading }, dispatch] = useReducer(reducer, {
         poll: null,
         loading: true,

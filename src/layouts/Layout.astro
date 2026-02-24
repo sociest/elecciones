@@ -13,7 +13,7 @@ const { pathname } = Astro.url;
 const isOnboarding = pathname.includes("/onboarding");
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8" />
@@ -38,10 +38,17 @@ const isOnboarding = pathname.includes("/onboarding");
         <ClientRouter />
         <title>{title}</title>
 
-        <script is:inline define:vars={{ baseUrl: import.meta.env.BASE_URL }}>
+        <script
+            is:inline
+            define:vars={{
+                baseUrl:
+                    (import.meta.env.PUBLIC_BASE_URL ?? "/") +
+                    (import.meta.env.PUBLIC_BASE_ROUTE ?? "/"),
+            }}
+        >
             (function () {
                 const onboardingCompleted = localStorage.getItem(
-                    "onboarding_completed",
+                    "onboarding_completed"
                 );
                 const isOnboardingPage =
                     window.location.pathname.includes("/onboarding");

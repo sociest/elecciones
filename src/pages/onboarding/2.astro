@@ -69,7 +69,9 @@ import { MapPin, Globe } from "lucide-react";
 
 <script>
     if ("serviceWorker" in navigator) {
-        const base = import.meta.env.BASE_URL ?? "/";
+        const base =
+            (import.meta.env.PUBLIC_BASE_URL ?? "/") +
+            (import.meta.env.PUBLIC_BASE_ROUTE ?? "/");
         const swUrl = `${base.replace(/\/$/, "")}/sw.js`;
         navigator.serviceWorker.register(swUrl).catch(() => {});
     }

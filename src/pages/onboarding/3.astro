@@ -55,7 +55,9 @@ import { ShieldCheck, ScrollText, ArrowRight } from "lucide-react";
 
     <div slot="actions" class="space-y-4">
         <a
-            href={import.meta.env.BASE_URL + "/onboarding/4"}
+            href={(import.meta.env.PUBLIC_BASE_URL ?? "/") +
+                (import.meta.env.PUBLIC_BASE_ROUTE ?? "/") +
+                "/onboarding/4"}
             class="w-full group bg-primary-green text-hunter p-5 rounded-2xl font-bold text-lg flex items-center justify-between hover:shadow-2xl hover:shadow-primary-green/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
             <span>Siguiente paso</span>

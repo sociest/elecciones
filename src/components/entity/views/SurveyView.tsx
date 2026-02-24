@@ -9,6 +9,7 @@ import {
     Activity,
 } from "lucide-react";
 import type { Entity, Claim } from "@/lib/queries/types";
+import { PROPERTY_IDS } from "@/lib/constants/entity-types";
 
 const EMPTY_CLAIMS: Claim[] = [];
 
@@ -19,19 +20,18 @@ interface SurveyProps {
 
 export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
     const titulo = entity.label || "Estudio de Opinión Pública";
+    const findClaim = (keywords: RegExp) => claims.find(c => c.property?.["$id"]?.toLowerCase().match(keywords));
 
-    const findClaim = (keywords: RegExp) => claims.find(c => c.property?.label?.toLowerCase().match(keywords));
-
-    const autorClaim = findClaim(/autor|empresa|encuestadora|fuente real/);
+    const autorClaim = findClaim(PROPERTY_IDS.AUTOR_ENCUESTA);
     const autor = autorClaim?.value_relation?.label || autorClaim?.value_raw || "Autor Desconocido";
 
-    const coberturaClaim = findClaim(/cobertura|alcance|lugar|ubicacion|ubicación/);
+    const coberturaClaim = findClaim(PROPERTY_IDS.COBERTURA_ENCUESTA);
     const cobertura = coberturaClaim?.value_relation?.label || coberturaClaim?.value_raw || "Nivel Nacional";
 
-    const margenClaim = findClaim(/margen|error/);
+    const margenClaim = findClaim(PROPERTY_IDS.MARGEN_ERROR_ENCUESTA);
     const margenError = margenClaim?.value_raw ? margenClaim.value_raw.replace(/±|%|\s/g, "") : "N/D";
 
-    const muestraClaim = findClaim(/muestra/);
+    const muestraClaim = findClaim(PROPERTY_IDS.MUESTRA_ENCUESTA);
     const muestraTotal = muestraClaim?.value_raw || "No especificado";
 
     const masculinoQualifier = muestraClaim?.qualifiers?.find(q => q.property?.label?.toLowerCase().match(/masculino|hombres/));
@@ -40,60 +40,42 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
     const femeninoQualifier = muestraClaim?.qualifiers?.find(q => q.property?.label?.toLowerCase().match(/femenino|mujeres|femenina/));
     const muestraFemenino = femeninoQualifier?.value_raw || "N/D";
 
-    const inicioClaim = findClaim(/inicio|desde/);
+    const inicioClaim = findClaim(PROPERTY_IDS.FECHA_INICIO_ENCUESTA);
     const fechaInicio = inicioClaim?.value_raw || "N/D";
 
-    const finClaim = findClaim(/fin|hasta/);
+    const finClaim = findClaim(PROPERTY_IDS.FECHA_FIN_ENCUESTA);
     const fechaFin = finClaim?.value_raw || "N/D";
 
-    const generalFechaClaim = findClaim(/fecha|publicacion/);
+    const generalFechaClaim = findClaim(PROPERTY_IDS.FECHA_PUBLICACION);
     const fInicio = fechaInicio !== "N/D" ? fechaInicio : (generalFechaClaim?.value_raw || "Desconocida");
     const fFin = fechaFin !== "N/D" ? fechaFin : fInicio;
 
-    const urlClaim = findClaim(/archivo|url|link|enlace|publicacion|fuente original/);
+    const urlClaim = findClaim(PROPERTY_IDS.ARCHIVO);
     const url = urlClaim?.value_raw;
 
     let resultados: { nombre: string; porcentaje: number; color: string }[] = [];
 
     claims.forEach(c => {
-        const prop = c.property?.label?.toLowerCase() || "";
-        const qualifiesAsResult = prop.includes("resultado") || prop.includes("voto") || prop.includes("intencion") || prop.includes("preferencia");
-
+        const prop = c.property?.["$id"]?.toLowerCase() || "";
+        if (prop !== PROPERTY_IDS.RESULTADO_ENCUESTA) return;
         let pct = NaN;
         let nombre = "";
 
-        if (qualifiesAsResult || (!isNaN(parseFloat(c.value_raw || "")) && parseFloat(c.value_raw || "") > 0 && parseFloat(c.value_raw || "") <= 100)) {
-            pct = parseFloat(c.value_raw || c.qualifiers?.find(q => q.property?.label?.toLowerCase().includes("porcentaje"))?.value_raw || "");
+        //if ((!isNaN(parseFloat(c.value_raw || "")) && parseFloat(c.value_raw || "") > 0 && parseFloat(c.value_raw || "") <= 100)) {
+        pct = parseFloat(c.value_raw || c.qualifiers?.find(q => q.property?.label?.toLowerCase().includes("porcentaje"))?.value_raw || "");
 
-            if (!isNaN(pct)) {
-                nombre = c.value_relation?.label || c.qualifiers?.find(q => q.property?.label?.toLowerCase().includes("candidato") || q.property?.label?.toLowerCase().includes("opcion") || q.property?.label?.toLowerCase().includes("opción"))?.value_relation?.label || c.qualifiers?.[0]?.value_relation?.label || c.qualifiers?.[0]?.value_raw || prop;
-                if (nombre.toLowerCase() === "resultado" || nombre.toLowerCase() === "voto" || !nombre) {
-                    nombre = "Opción";
-                }
-                // Avoid duplicating
-                if (!resultados.find(r => r.nombre === nombre)) {
-                    resultados.push({ nombre, porcentaje: pct, color: "#1e3a2b" });
-                }
+        if (!isNaN(pct)) {
+            nombre = c.value_relation?.label || c.qualifiers?.find(q => q.property?.label?.toLowerCase().includes("candidato") || q.property?.label?.toLowerCase().includes("opcion") || q.property?.label?.toLowerCase().includes("opción"))?.value_relation?.label || c.qualifiers?.[0]?.value_relation?.label || c.qualifiers?.[0]?.value_raw || prop;
+            if (nombre.toLowerCase() === "resultado" || nombre.toLowerCase() === "voto" || !nombre) {
+                nombre = "Opción";
+            }
+            // Avoid duplicating
+            if (!resultados.find(r => r.nombre === nombre)) {
+                resultados.push({ nombre, porcentaje: pct, color: "#1e3a2b" });
             }
         }
+        //}
     });
-
-    if (resultados.length === 0) {
-        const notResultsWords = /autor|empresa|encuestadora|fuente|cobertura|alcance|lugar|ubicacion|ubicación|margen|error|muestra|total|entrevistados|masculino|hombres|femenino|mujeres|inicio|desde|fin|hasta|fecha|url|link|enlace|instancia|tipo|archivo/;
-
-        claims.filter((c) => c.property?.label && !c.property.label.toLowerCase().match(notResultsWords)).forEach(c => {
-            let pct = parseFloat(c.value_raw || "0");
-            if (isNaN(pct) || pct <= 0) return;
-            const nombre = c.value_relation?.label || c.property?.label || "Opción";
-            if (!resultados.find(r => r.nombre === nombre)) {
-                resultados.push({
-                    nombre,
-                    porcentaje: pct,
-                    color: "#1e3a2b"
-                });
-            }
-        });
-    }
 
     if (resultados.length === 0) {
         resultados = [
