@@ -1,10 +1,9 @@
 ---
-import { Globe } from "lucide-react";
+import { Globe, Menu, X } from "lucide-react";
 import { buildPath } from "../../lib/utils/paths";
 
 const { pathname } = Astro.url;
 
-// Helper to determine if a link is active
 const isActive = (path: string) => {
     const normalize = (p: string) => p.replace(/\/+$/, "") || "/";
     const current = normalize(pathname);
@@ -23,17 +22,17 @@ const navLinks = [
 ];
 ---
 
-<nav class="fixed top-0 w-full z-50 px-6 py-4">
+<nav class="fixed top-0 w-full z-50 px-4 md:px-6 py-4">
     <div
-        class="max-w-7xl mx-auto bg-neutral-white/80 backdrop-blur-xl border border-primary-green/5 rounded-2xl px-6 py-3 flex justify-between items-center shadow-sm"
+        class="max-w-7xl mx-auto bg-neutral-white/80 backdrop-blur-xl border border-primary-green/5 rounded-2xl px-4 md:px-6 py-3 flex justify-between items-center shadow-sm"
     >
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 z-50">
             <div
-                class="w-10 h-10 bg-primary-green rounded-xl flex items-center justify-center text-hunter rotate-3 shadow-lg"
+                class="w-10 h-10 bg-primary-green rounded-xl flex items-center justify-center text-hunter rotate-3 shadow-lg shrink-0"
             >
                 <Globe size={20} strokeWidth={2.5} />
             </div>
-            <div>
+            <div class="hidden sm:block">
                 <h1
                     class="font-black text-lg leading-none tracking-tighter text-primary-green"
                 >
@@ -46,7 +45,8 @@ const navLinks = [
                 </p>
             </div>
         </div>
-        <div class="hidden md:flex gap-8 items-center relative h-full">
+
+        <div class="hidden lg:flex gap-8 items-center relative h-full">
             {
                 navLinks.map((link) => {
                     const active = isActive(link.href);
@@ -69,11 +69,154 @@ const navLinks = [
                 })
             }
         </div>
-        <a
-            href={buildPath("/contributors")}
-            class="bg-primary-green text-hunter px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:scale-105 transition-all active:scale-95 shadow-xl shadow-primary-green/10 cursor-pointer"
+
+        <div class="flex items-center gap-2 md:gap-4 z-50">
+            <a
+                href={buildPath("/contributors")}
+                class="hidden md:flex bg-primary-green text-hunter px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-primary-green/20 hover:scale-[1.02] transition-all active:scale-95 shadow-xl shadow-primary-green/10 cursor-pointer"
+            >
+                Colaboradores
+            </a>
+
+            <button
+                id="mobile-menu-btn"
+                class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-primary-green/5 text-primary-green border border-primary-green/10 hover:bg-primary-green/10 transition-colors"
+                aria-label="Toggle Menu"
+            >
+                <div class="relative w-6 h-6">
+                    <span
+                        id="menu-icon-open"
+                        class="absolute inset-0 transition-all duration-300 scale-100 rotate-0"
+                    >
+                        <Menu size={24} />
+                    </span>
+                    <span
+                        id="menu-icon-close"
+                        class="absolute inset-0 transition-all duration-300 scale-0 rotate-90"
+                    >
+                        <X size={24} />
+                    </span>
+                </div>
+            </button>
+        </div>
+
+        <div
+            id="mobile-menu"
+            class="fixed inset-0 top-0 left-0 w-full h-screen bg-[#fcfcfc] z-40 flex flex-col pt-24 px-6 transition-all duration-500 transform translate-x-full opacity-0 pointer-events-none lg:hidden"
         >
-            Colaboradores
-        </a>
+            <div class="flex flex-col gap-6">
+                <span
+                    class="text-[10px] uppercase tracking-[0.5em] font-black text-primary-green/30 px-2"
+                    >Navegación</span
+                >
+                <div class="flex flex-col gap-2">
+                    {
+                        navLinks.map((link) => {
+                            const active = isActive(link.href);
+                            return (
+                                <a
+                                    href={link.href}
+                                    class={`text-3xl font-black tracking-tighter py-4 px-2 rounded-2xl transition-all ${active ? "text-primary-green bg-primary-green/5" : "text-primary-green/40 hover:text-primary-green hover:bg-primary-green/5"}`}
+                                >
+                                    {link.name}
+                                </a>
+                            );
+                        })
+                    }
+                </div>
+
+                <div class="h-px bg-primary-green/5 my-4"></div>
+
+                <a
+                    href={buildPath("/contributors")}
+                    class="w-full bg-primary-green text-hunter p-6 rounded-2xl text-lg font-black uppercase tracking-[0.2em] flex justify-between items-center shadow-2xl shadow-primary-green/20"
+                >
+                    <span>Colaboradores</span>
+                    <Globe size={24} />
+                </a>
+            </div>
+
+            <div class="mt-auto pb-12 text-center">
+                <p
+                    class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-30 text-primary-green"
+                >
+                    Monitor Electoral 2026
+                </p>
+                <div class="flex justify-center gap-4 mt-4">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary-green/20"
+                    ></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary-green/20"
+                    ></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary-green/20"
+                    ></span>
+                </div>
+            </div>
+        </div>
     </div>
 </nav>
+
+<script>
+    function setupMenu() {
+        const btn = document.getElementById("mobile-menu-btn");
+        const menu = document.getElementById("mobile-menu");
+        const iconOpen = document.getElementById("menu-icon-open");
+        const iconClose = document.getElementById("menu-icon-close");
+
+        if (!btn || !menu || !iconOpen || !iconClose) return;
+
+        let isOpen = false;
+
+        btn.addEventListener("click", () => {
+            isOpen = !isOpen;
+
+            if (isOpen) {
+                menu.classList.remove(
+                    "translate-x-full",
+                    "opacity-0",
+                    "pointer-events-none",
+                );
+                menu.classList.add("translate-x-0", "opacity-100");
+                iconOpen.classList.add("scale-0", "rotate-90");
+                iconClose.classList.add("scale-100", "rotate-0");
+                iconClose.classList.remove("scale-0", "rotate-90");
+                document.body.style.overflow = "hidden";
+            } else {
+                menu.classList.add(
+                    "translate-x-full",
+                    "opacity-0",
+                    "pointer-events-none",
+                );
+                menu.classList.remove("translate-x-0", "opacity-100");
+                iconOpen.classList.remove("scale-0", "rotate-90");
+                iconClose.classList.add("scale-0", "rotate-90");
+                iconClose.classList.remove("scale-100", "rotate-0");
+                document.body.style.overflow = "";
+            }
+        });
+
+        const links = menu.querySelectorAll("a");
+        links.forEach((link) => {
+            link.addEventListener("click", () => {
+                isOpen = false;
+                menu.classList.add(
+                    "translate-x-full",
+                    "opacity-0",
+                    "pointer-events-none",
+                );
+                iconOpen.classList.remove("scale-0", "rotate-90");
+                iconClose.classList.add("scale-0", "rotate-90");
+                document.body.style.overflow = "";
+            });
+        });
+    }
+
+    setupMenu();
+    document.addEventListener("astro:after-swap", setupMenu);
+</script>
+
+<style>
+    #mobile-menu {
+        will-change: transform, opacity;
+        backface-visibility: hidden;
+    }
+</style>

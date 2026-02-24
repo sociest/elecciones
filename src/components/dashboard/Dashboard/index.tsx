@@ -66,9 +66,9 @@ const EntityDashboard: React.FC = () => {
     // Pagination Logic
     const totalPages = Math.max(1, Math.ceil(filteredEntities.length / ITEMS_PER_PAGE));
     const currentEntities = useMemo(() => {
-        const start = 0;
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
         return filteredEntities.slice(start, start + ITEMS_PER_PAGE);
-    }, [filteredEntities]);
+    }, [filteredEntities, currentPage]);
 
     return (
         <div className="min-h-screen bg-neutral-white text-primary-green selection:bg-primary-green selection:text-hunter antialiased">
@@ -102,7 +102,10 @@ const EntityDashboard: React.FC = () => {
                             ].map((filtro) => (
                                 <button
                                     key={`filter-${filtro}`}
-                                    onClick={() => setSelectedFilter(filtro)}
+                                    onClick={() => {
+                                        setSelectedFilter(filtro);
+                                        setCurrentPage(1);
+                                    }}
                                     className={`px-5 py-2 rounded-full border text-[11px] font-black uppercase tracking-widest transition-all ${selectedFilter === filtro
                                         ? "bg-primary-green text-hunter border-primary-green"
                                         : "bg-transparent border-primary-green/10 text-primary-green hover:bg-primary-green hover:text-hunter"
@@ -160,7 +163,7 @@ const EntityDashboard: React.FC = () => {
 
                         {!showLoading && filteredEntities.length > 0 && (
                             <PaginationControls
-                                currentPage={1}
+                                currentPage={currentPage}
                                 totalPages={totalPages}
                                 onPageChange={(page) => setCurrentPage(page)}
                             />

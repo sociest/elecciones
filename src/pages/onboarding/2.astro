@@ -7,7 +7,7 @@ import { MapPin, Globe } from "lucide-react";
 <OnboardingStep step={2} totalSteps={4} title="Tu Lugar" eyebrow="Tu Lugar">
     <div slot="left-content">
         <h1
-            class="text-6xl md:text-8xl font-black text-hunter leading-[0.85] tracking-tighter mb-6"
+            class="text-5xl sm:text-7xl md:text-8xl font-black text-hunter leading-[0.85] tracking-tighter mb-6"
         >
             Tu <br />
             <span
@@ -51,7 +51,7 @@ import { MapPin, Globe } from "lucide-react";
     <div slot="right-content">
         <div class="relative">
             <h3
-                class="text-4xl font-extrabold text-primary-green tracking-tight leading-tight"
+                class="text-3xl sm:text-4xl font-extrabold text-primary-green tracking-tight leading-tight"
             >
                 ¿Dónde votas?
             </h3>
@@ -71,7 +71,6 @@ import { MapPin, Globe } from "lucide-react";
     if ("serviceWorker" in navigator) {
         const base = import.meta.env.BASE_URL ?? "/";
         const swUrl = `${base.replace(/\/$/, "")}/sw.js`;
-        navigator.serviceWorker.register(swUrl).catch(() => {
-        });
+        navigator.serviceWorker.register(swUrl).catch(() => {});
     }
 </script>
