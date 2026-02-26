@@ -55,6 +55,7 @@ jobs:
 
           PUBLIC_BASE_URL: ${{ secrets.PUBLIC_BASE_URL }}
           PUBLIC_BASE_ROUTE: ${{ secrets.PUBLIC_BASE_ROUTE }}
+          PUBLIC_GA_ID: ${{ secrets.PUBLIC_GA_ID }}
         run: pnpm run build
         working-directory: ${{ env.BUILD_PATH }}
 
