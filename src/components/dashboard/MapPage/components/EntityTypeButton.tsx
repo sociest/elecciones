@@ -1,12 +1,11 @@
 import React, { memo } from 'react';
-import { Globe, Building2, Users, Vote, MapPin } from 'lucide-react';
+import { Globe, Building2, Users, Vote } from 'lucide-react';
 
 const iconMap = {
   Globe,
   Building2,
   Users,
   Vote,
-  MapPin,
 };
 
 const EntityTypeButton = memo(

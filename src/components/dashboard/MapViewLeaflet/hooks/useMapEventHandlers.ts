@@ -4,12 +4,15 @@ import type { MunicipalityFeature } from '../types';
 
 export const useMapEventHandlers = (
   userDetectedFeatureId: string | null,
-  onMunicipalitySelect?: (municipality: {
-    name: string;
-    department: string;
-    entityId: string;
-    hasEntity?: boolean;
-  }) => void,
+  onMunicipalitySelect?: (
+    municipality: {
+      name: string;
+      department: string;
+      entityId: string;
+      hasEntity?: boolean;
+    },
+    isAutoDetect?: boolean
+  ) => void,
   setSelectedFeatureId?: (id: string) => void,
   setHoveredFeatureId?: (id: string | null) => void
 ) => {

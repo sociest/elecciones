@@ -13,11 +13,10 @@ export const DEPARTMENTS = [
 ] as const;
 
 export const ENTITY_TYPES = [
-  { value: 'Todas', label: 'Todas las entidades', icon: 'Globe' },
+  { value: 'Todas', label: 'Ver Todos', icon: 'Globe' },
   { value: 'Municipio', label: 'Municipios', icon: 'Building2' },
   { value: 'Persona', label: 'Personas', icon: 'Users' },
   { value: 'Partido', label: 'Partidos Políticos', icon: 'Vote' },
-  { value: 'Territorio', label: 'Territorios', icon: 'MapPin' },
 ] as const;
 
 export const RESULTS_PREVIEW_LIMIT = 10;

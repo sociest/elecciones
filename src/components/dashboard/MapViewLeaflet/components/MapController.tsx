@@ -5,9 +5,7 @@ import { LatLngBounds } from 'leaflet';
 import type { MunicipalityFeature } from '../types';
 
 interface MapControllerProps {
-  userLocation: { lat: number; lon: number } | null;
   selectedFeatureId: string | null;
-  userDetectedFeatureId: string | null;
   features: MunicipalityFeature[];
 }
 
@@ -27,12 +25,7 @@ const mapReducer = (state: MapState, action: MapAction): MapState => {
 };
 
 const MapController = memo(
-  ({
-    userLocation,
-    selectedFeatureId,
-    userDetectedFeatureId,
-    features,
-  }: MapControllerProps) => {
+  ({ selectedFeatureId, features }: MapControllerProps) => {
     const map = useMap();
     const [state, dispatch] = useReducer(mapReducer, { hasZoomed: false });
     const { hasZoomed } = state;
@@ -77,47 +70,6 @@ const MapController = memo(
     }, [map]);
 
     useEffect(() => {
-      if (hasZoomed) return;
-
-      const targetId = selectedFeatureId || userDetectedFeatureId;
-
-      if (targetId) {
-        const feature = features.find((f) => f.properties.id === targetId);
-        if (feature && feature.geometry.coordinates[0]) {
-          const bounds = new LatLngBounds(
-            feature.geometry.coordinates[0].map(
-              (coord) => [coord[1], coord[0]] as LatLngExpression
-            )
-          );
-          setTimeout(() => {
-            map.fitBounds(bounds, {
-              padding: [50, 50],
-              maxZoom: 13,
-              duration: 1.5,
-            });
-            dispatch({ type: 'SET_ZOOMED', payload: true });
-          }, 500);
-        }
-      } else if (userLocation) {
-        setTimeout(() => {
-          map.flyTo([userLocation.lat, userLocation.lon], 11, {
-            duration: 1.5,
-          });
-          dispatch({ type: 'SET_ZOOMED', payload: true });
-        }, 500);
-      }
-    }, [
-      selectedFeatureId,
-      userDetectedFeatureId,
-      userLocation,
-      features,
-      map,
-      hasZoomed,
-    ]);
-
-    useEffect(() => {
-      if (!hasZoomed) return;
-
       if (selectedFeatureId) {
         const feature = features.find(
           (f) => f.properties.id === selectedFeatureId
@@ -128,12 +80,24 @@ const MapController = memo(
               (coord) => [coord[1], coord[0]] as LatLngExpression
             )
           );
-          map.fitBounds(bounds, {
-            padding: [50, 50],
-            maxZoom: 13,
-            duration: 1,
-          });
+          setTimeout(
+            () => {
+              map.fitBounds(bounds, {
+                padding: [50, 50],
+                maxZoom: 13,
+                duration: hasZoomed ? 1 : 1.5,
+              });
+              if (!hasZoomed) dispatch({ type: 'SET_ZOOMED', payload: true });
+            },
+            hasZoomed ? 0 : 300
+          );
+        } else if (!hasZoomed) {
+          dispatch({ type: 'SET_ZOOMED', payload: true });
         }
+      } else if (hasZoomed && !selectedFeatureId) {
+        // Reset view to Bolivia when selectedFeatureId becomes null
+        map.flyTo([-16.5, -64.5], 5.5, { duration: 1.3 });
+        dispatch({ type: 'SET_ZOOMED', payload: false });
       }
     }, [selectedFeatureId, features, map, hasZoomed]);
 
