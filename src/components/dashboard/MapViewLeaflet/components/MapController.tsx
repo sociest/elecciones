@@ -5,10 +5,9 @@ import { LatLngBounds } from 'leaflet';
 import type { MunicipalityFeature } from '../types';
 
 interface MapControllerProps {
-  userLocation: { lat: number; lon: number } | null;
   selectedFeatureId: string | null;
-  userDetectedFeatureId: string | null;
   features: MunicipalityFeature[];
+  selectedDepartment?: string | null;
 }
 
 interface MapState {
@@ -27,12 +26,7 @@ const mapReducer = (state: MapState, action: MapAction): MapState => {
 };
 
 const MapController = memo(
-  ({
-    userLocation,
-    selectedFeatureId,
-    userDetectedFeatureId,
-    features,
-  }: MapControllerProps) => {
+  ({ selectedFeatureId, features, selectedDepartment }: MapControllerProps) => {
     const map = useMap();
     const [state, dispatch] = useReducer(mapReducer, { hasZoomed: false });
     const { hasZoomed } = state;
@@ -77,46 +71,33 @@ const MapController = memo(
     }, [map]);
 
     useEffect(() => {
-      if (hasZoomed) return;
+      if (!map) return;
 
-      const targetId = selectedFeatureId || userDetectedFeatureId;
+      if (selectedDepartment && selectedDepartment !== 'Todos') {
+        const deptFeatures = features.filter(
+          (f) => f.properties.department === selectedDepartment
+        );
+        if (deptFeatures.length === 0) return;
 
-      if (targetId) {
-        const feature = features.find((f) => f.properties.id === targetId);
-        if (feature && feature.geometry.coordinates[0]) {
-          const bounds = new LatLngBounds(
-            feature.geometry.coordinates[0].map(
-              (coord) => [coord[1], coord[0]] as LatLngExpression
-            )
-          );
-          setTimeout(() => {
-            map.fitBounds(bounds, {
-              padding: [50, 50],
-              maxZoom: 13,
-              duration: 1.5,
-            });
-            dispatch({ type: 'SET_ZOOMED', payload: true });
-          }, 500);
-        }
-      } else if (userLocation) {
-        setTimeout(() => {
-          map.flyTo([userLocation.lat, userLocation.lon], 11, {
-            duration: 1.5,
-          });
-          dispatch({ type: 'SET_ZOOMED', payload: true });
-        }, 500);
+        const allCoords: LatLngExpression[] = deptFeatures.flatMap((f) =>
+          f.geometry.coordinates[0].map(
+            (coord) => [coord[1], coord[0]] as LatLngExpression
+          )
+        );
+
+        if (allCoords.length === 0) return;
+
+        const bounds = new LatLngBounds(allCoords);
+        setTimeout(
+          () => {
+            map.fitBounds(bounds, { padding: [40, 40], duration: 1.2 });
+            if (!hasZoomed) dispatch({ type: 'SET_ZOOMED', payload: true });
+          },
+          hasZoomed ? 0 : 300
+        );
+
+        return;
       }
-    }, [
-      selectedFeatureId,
-      userDetectedFeatureId,
-      userLocation,
-      features,
-      map,
-      hasZoomed,
-    ]);
-
-    useEffect(() => {
-      if (!hasZoomed) return;
 
       if (selectedFeatureId) {
         const feature = features.find(
@@ -128,14 +109,25 @@ const MapController = memo(
               (coord) => [coord[1], coord[0]] as LatLngExpression
             )
           );
-          map.fitBounds(bounds, {
-            padding: [50, 50],
-            maxZoom: 13,
-            duration: 1,
-          });
+          setTimeout(
+            () => {
+              map.fitBounds(bounds, {
+                padding: [50, 50],
+                maxZoom: 13,
+                duration: hasZoomed ? 1 : 1.5,
+              });
+              if (!hasZoomed) dispatch({ type: 'SET_ZOOMED', payload: true });
+            },
+            hasZoomed ? 0 : 300
+          );
+        } else if (!hasZoomed) {
+          dispatch({ type: 'SET_ZOOMED', payload: true });
         }
+      } else if (hasZoomed) {
+        map.flyTo([-16.5, -64.5], 5.5, { duration: 1.3 });
+        dispatch({ type: 'SET_ZOOMED', payload: false });
       }
-    }, [selectedFeatureId, features, map, hasZoomed]);
+    }, [selectedDepartment, selectedFeatureId, features, map, hasZoomed]);
 
     return null;
   }

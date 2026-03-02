@@ -4,15 +4,18 @@ import type { MunicipalityFeature } from '../types';
 export const useMapStyling = (
   selectedFeatureId: string | null,
   userDetectedFeatureId: string | null,
-  hoveredFeatureId: string | null
+  hoveredFeatureId: string | null,
+  selectedDepartment?: string | null
 ) => {
   const getFeatureStyle = useCallback(
     (feature: MunicipalityFeature) => {
       const isUserLocation = feature.properties.id === userDetectedFeatureId;
       const isSelected = feature.properties.id === selectedFeatureId;
       const isHovered = feature.properties.id === hoveredFeatureId;
-
-      const baseColor = '#10b981';
+      const isInDepartment =
+        !!selectedDepartment &&
+        selectedDepartment !== 'Todos' &&
+        feature.properties.department === selectedDepartment;
 
       if (isUserLocation) {
         return {
@@ -25,15 +28,40 @@ export const useMapStyling = (
         };
       }
 
+      if (isSelected) {
+        return {
+          fillColor: '#34d399',
+          fillOpacity: 0.55,
+          color: '#10b981',
+          weight: 3,
+          opacity: 1,
+        };
+      }
+
+      if (isInDepartment) {
+        return {
+          fillColor: isHovered ? '#60a5fa' : '#3b82f6',
+          fillOpacity: isHovered ? 0.55 : 0.4,
+          color: '#2563eb',
+          weight: isHovered ? 2 : 1.5,
+          opacity: 1,
+        };
+      }
+
       return {
-        fillColor: isSelected ? '#34d399' : baseColor,
-        fillOpacity: isSelected ? 0.5 : isHovered ? 0.3 : 0.05,
-        color: isSelected ? '#10b981' : isHovered ? '#34d399' : '#047857',
-        weight: isSelected ? 3 : isHovered ? 2 : 1,
-        opacity: isSelected ? 1 : 0.6,
+        fillColor: '#10b981',
+        fillOpacity: isHovered ? 0.3 : 0.05,
+        color: isHovered ? '#34d399' : '#047857',
+        weight: isHovered ? 2 : 1,
+        opacity: 0.6,
       };
     },
-    [selectedFeatureId, userDetectedFeatureId, hoveredFeatureId]
+    [
+      selectedFeatureId,
+      userDetectedFeatureId,
+      hoveredFeatureId,
+      selectedDepartment,
+    ]
   );
 
   return { getFeatureStyle };

@@ -1,11 +1,16 @@
 export interface MapViewProps {
-  onMunicipalitySelect?: (municipality: {
-    name: string;
-    department: string;
-    entityId: string;
-    hasEntity?: boolean;
-  }) => void;
+  onMunicipalitySelect?: (
+    municipality: {
+      name: string;
+      department: string;
+      entityId: string;
+      hasEntity?: boolean;
+    },
+    isAutoDetect?: boolean
+  ) => void;
+  onMapReset?: () => void;
   selectedEntityId?: string | null;
+  selectedDepartment?: string | null;
 }
 
 export interface MunicipalityFeature {

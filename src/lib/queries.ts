@@ -6,7 +6,6 @@ export { DEPARTMENT_IDS } from './queries/constants';
 
 // Re-export search functions
 export {
-  fetchEntities,
   fetchQuickSearchEntities,
   fetchEntitiesFiltered,
   getEntitiesByType,
@@ -40,4 +39,5 @@ export {
   getAuthoritiesByMunicipality,
   getAuthoritiesByMunicipalityStreaming,
   fetchAuthorities,
+  getPersonAndPartyIdsForDepartment,
 } from './queries/authorities';

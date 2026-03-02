@@ -21,44 +21,60 @@ const MapPage: React.FC = () => {
     debouncedSearch,
   } = useMapFilters();
 
+  const [selectedMunicipality, setSelectedMunicipality] = useState<{
+    name: string;
+    department: string;
+    entityId: string;
+    hasEntity?: boolean;
+  } | null>(null);
+
   const { entities, loading, mapZoomTarget } = useMapData(
     selectedDepartment,
     selectedType,
-    debouncedSearch
+    debouncedSearch,
+    selectedMunicipality?.entityId || null
   );
 
   const [showFilters, setShowFilters] = useState(true);
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
-  const [selectedMunicipality, setSelectedMunicipality] = useState<{
-    name: string;
-    department: string;
-    hasEntity?: boolean;
-  } | null>(null);
 
   const handleMunicipalitySelect = useCallback(
-    (municipality: {
-      name: string;
-      department: string;
-      entityId: string;
-      hasEntity?: boolean;
-    }) => {
+    (
+      municipality: {
+        name: string;
+        department: string;
+        entityId: string;
+        hasEntity?: boolean;
+      },
+      isAutoDetect = false
+    ) => {
       setSelectedMunicipality({
         name: municipality.name,
         department: municipality.department,
+        entityId: municipality.entityId,
         hasEntity: municipality.hasEntity,
       });
-      setSelectedEntityId(municipality.entityId);
 
-      setSearchQuery(municipality.name);
-      if (
-        selectedDepartment !== 'Todos' &&
-        selectedDepartment !== municipality.department
-      ) {
-        setSelectedDepartment(municipality.department);
+      if (!isAutoDetect) {
+        setSelectedEntityId(municipality.entityId);
+        setSearchQuery(municipality.name);
+        if (
+          selectedDepartment !== 'Todos' &&
+          selectedDepartment !== municipality.department
+        ) {
+          setSelectedDepartment(municipality.department);
+        }
       }
     },
     [setSearchQuery, selectedDepartment, setSelectedDepartment]
   );
+
+  const handleMapReset = useCallback(() => {
+    setSelectedMunicipality(null);
+    setSelectedEntityId(null);
+    setSearchQuery('');
+    setSelectedDepartment('Todos');
+  }, [setSearchQuery, setSelectedDepartment]);
 
   return (
     <div className="min-h-screen bg-neutral-white text-primary-green antialiased flex flex-col pt-24 md:pt-28">
@@ -141,7 +157,7 @@ const MapPage: React.FC = () => {
               {/* Type Filter */}
               <div className="bg-white border border-primary-green/5 rounded-[2rem] p-5 shadow-sm shrink-0">
                 <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3 block">
-                  Tipo de Entidad
+                  Categorías
                 </p>
                 <div className="grid grid-cols-1 gap-1.5">
                   {ENTITY_TYPES.map((type) => (
@@ -173,7 +189,11 @@ const MapPage: React.FC = () => {
             <div className="flex-2 min-h-100 lg:h-full relative overflow-hidden bg-primary-green rounded-[3rem] border border-primary-green/10 shadow-2xl">
               <MapViewWrapper
                 selectedEntityId={mapZoomTarget || selectedEntityId}
+                selectedDepartment={
+                  selectedDepartment === 'Todos' ? null : selectedDepartment
+                }
                 onMunicipalitySelect={handleMunicipalitySelect}
+                onMapReset={handleMapReset}
               />
 
               {/* Map Overlay Info - Compact */}
