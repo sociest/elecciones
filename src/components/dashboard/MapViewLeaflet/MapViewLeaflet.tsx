@@ -41,7 +41,7 @@ import { useMapEventHandlers } from './hooks/useMapEventHandlers';
 import { pointInPolygon, saveMunicipalityToStorage } from './utils/geomHelpers';
 import { LEVEL_NAMES } from './constants';
 import MapController from './components/MapController';
-import type { MapViewProps } from './types';
+import type { MapViewProps, MunicipalityFeature } from './types';
 
 type MapViewState = {
   selectedFeatureId: string | null;
@@ -54,9 +54,9 @@ type MapViewAction =
   | { type: 'SET_SELECTED_FEATURE'; payload: string | null }
   | { type: 'SET_HOVERED_FEATURE'; payload: string | null }
   | {
-      type: 'SET_USER_DETECTED_FEATURE';
-      payload: { id: string | null; name: string | null };
-    }
+    type: 'SET_USER_DETECTED_FEATURE';
+    payload: { id: string | null; name: string | null };
+  }
   | { type: 'RESET_MAP' };
 
 const mapReducer = (
@@ -283,7 +283,7 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
           <GeoJSON
             key="municipal-polygons"
             data={geoJsonData}
-            style={(feature) => getFeatureStyle(feature as any)}
+            style={(feature) => getFeatureStyle(feature as MunicipalityFeature)}
             onEachFeature={onEachFeature}
           />
         )}
