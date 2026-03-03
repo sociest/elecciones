@@ -4,6 +4,7 @@ import Footer from '../components/common/Footer.astro';
 import Navbar from '../components/common/Navbar.astro';
 import GoogleAnalytics from '../components/common/GoogleAnalytics.astro';
 import CookieBanner from '../components/common/CookieBanner.astro';
+import TestBanner from '../components/common/TestBanner.astro';
 import '../styles/global.css';
 import 'leaflet/dist/leaflet.css';
 
@@ -90,6 +91,7 @@ const isOnboarding = pathname.includes('/onboarding');
     </main>
     {!isOnboarding && <Footer />}
     <CookieBanner />
+    <TestBanner />
   </body>
 </html>
 

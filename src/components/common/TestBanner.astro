@@ -1,15 +1,89 @@
 ---
+import { Code2, Users, X } from 'lucide-react';
 ---
-<div class="bg-amber-500 px-4 py-3 text-white sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 relative z-50">
-  <p class="text-center font-medium sm:text-left text-sm">
-    <strong>Versión de prueba:</strong> Esta plataforma aún está en desarrollo y falta mucha información por agregar.
-  </p>
-  <a
-    href="https://docs.google.com/forms/d/e/1FAIpQLSfYhGHUU0Sv9noh2a705chgcOkiZWnNGpnoeLy2j_RQAR5V5Q/viewform?usp=dialog"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="mt-2 block rounded-lg bg-white px-5 py-2 text-center text-sm font-bold text-amber-600 transition hover:bg-gray-100 focus:outline-none focus:ring active:text-amber-500 sm:mt-0 whitespace-nowrap"
+
+<div
+  id="contribution-banner"
+  class="fixed bottom-0 right-0 z-[45] p-4 md:bottom-6 md:right-6 md:left-auto md:w-[420px] transition-transform duration-700 translate-y-[150%] hidden md:block"
+>
+  <div
+    class="bg-hunter/95 backdrop-blur-xl border border-primary-green/20 shadow-2xl rounded-2xl p-5 text-white relative overflow-hidden ring-1 ring-white/5"
   >
-    ¡Contribuye con nosotros!
-  </a>
+    <div
+      class="absolute inset-0 bg-linear-to-bl from-primary-green/5 to-transparent pointer-events-none"
+    >
+    </div>
+
+    <button
+      id="close-contribution-banner"
+      class="absolute top-4 right-4 text-primary-green/50 hover:text-primary-green transition-colors z-20"
+      aria-label="Cerrar"
+    >
+      <X size={16} strokeWidth={3} />
+    </button>
+
+    <div class="flex items-start gap-4 relative z-10">
+      <div
+        class="bg-primary-green/10 text-primary-green border border-primary-green/20 p-3 rounded-xl shrink-0 shadow-inner flex flex-col items-center justify-center gap-1"
+      >
+        <Code2 size={24} strokeWidth={2} />
+      </div>
+      <div class="pr-2">
+        <h3
+          class="text-sm font-black tracking-tight mb-1.5 uppercase text-primary-green flex items-center gap-2"
+        >
+          ¡Proyecto de Código Abierto! 🚀
+        </h3>
+        <p class="text-xs text-primary-green/70 leading-relaxed mb-4">
+          Esta plataforma cívica está en fase de prueba y desarrollo. Buscamos
+          desarrolladores, analistas y voluntarios para mejorar el acceso a los
+          datos electorales.
+        </p>
+        <div class="flex gap-3">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfYhGHUU0Sv9noh2a705chgcOkiZWnNGpnoeLy2j_RQAR5V5Q/viewform?usp=dialog"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex-1 bg-primary-green text-hunter text-[10px] font-black uppercase tracking-widest py-2.5 px-3 rounded-xl hover:bg-opacity-90 hover:scale-[1.02] transition-all active:scale-95 shadow-md flex items-center justify-center gap-2"
+          >
+            <Users size={14} />
+            Unirme al equipo
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+  const initContribBanner = () => {
+    const banner = document.getElementById('contribution-banner');
+    const closeBtn = document.getElementById('close-contribution-banner');
+
+    if (!banner || !closeBtn) return;
+
+    // Optional: Only show if not previously dismissed
+    const isDismissed = sessionStorage.getItem('contrib_banner_dismissed');
+    if (isDismissed) {
+      banner.classList.add('hidden');
+    } else {
+      setTimeout(() => {
+        banner.classList.remove('translate-y-[150%]', 'hidden');
+        banner.classList.add('translate-y-0');
+      }, 1500);
+    }
+
+    closeBtn.addEventListener('click', () => {
+      banner.classList.add('translate-y-[150%]', 'opacity-0');
+      sessionStorage.setItem('contrib_banner_dismissed', 'true');
+
+      // Remove from flow after animation
+      setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 700);
+    });
+  };
+
+  initContribBanner();
+  document.addEventListener('astro:page-load', initContribBanner);
+</script>
