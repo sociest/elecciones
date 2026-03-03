@@ -9,6 +9,7 @@ import React, {
   useState,
 } from 'react';
 
+
 import type { LatLngExpression, Icon, DivIcon } from 'leaflet';
 import { MapPin, RotateCcw } from 'lucide-react';
 
@@ -261,10 +262,8 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
           userLocation={userLocation}
           leafletIcons={leafletIcons}
           selectedFeatureId={selectedFeatureId}
-          userDetectedFeatureName={userDetectedFeatureName}
           selectedEntityId={selectedEntityId}
           selectedDepartment={selectedDepartment}
-          onReset={handleResetMap}
         />
       </Suspense>
 
