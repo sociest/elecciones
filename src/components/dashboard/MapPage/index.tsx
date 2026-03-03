@@ -109,7 +109,7 @@ const MapPage: React.FC = () => {
               <div className="bg-white border border-primary-green/5 rounded-[2rem] p-5 shadow-sm">
                 <label
                   htmlFor="searchInput"
-                  className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-2 block"
+                  className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-2 block"
                 >
                   Buscar
                 </label>
@@ -130,6 +130,7 @@ const MapPage: React.FC = () => {
                     <button
                       onClick={() => setSearchQuery('')}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-green/40 hover:text-primary-green"
+                      aria-label="Limpiar búsqueda"
                     >
                       <X size={16} />
                     </button>
@@ -139,7 +140,7 @@ const MapPage: React.FC = () => {
 
               {/* Department Filter */}
               <div className="bg-white border border-primary-green/5 rounded-[2rem] p-5 shadow-sm max-h-75 flex flex-col overflow-hidden">
-                <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3 block shrink-0">
+                <p className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-3 block shrink-0">
                   Departamento
                 </p>
                 <div className="grid grid-cols-1 gap-1.5 overflow-y-auto pr-1 hidescrollbar">
@@ -156,7 +157,7 @@ const MapPage: React.FC = () => {
 
               {/* Type Filter */}
               <div className="bg-white border border-primary-green/5 rounded-[2rem] p-5 shadow-sm shrink-0">
-                <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3 block">
+                <p className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-3 block">
                   Categorías
                 </p>
                 <div className="grid grid-cols-1 gap-1.5">

@@ -19,16 +19,51 @@ export default defineConfig({
     plugins: [tailwindcss()],
     build: {
       target: 'es2020',
+      minify: 'esbuild', // Explicitly enable minification
+      cssMinify: true, // Enable CSS minification
       rollupOptions: {
         output: {
-          manualChunks: {
-            leaflet: ['leaflet', 'react-leaflet'],
+          manualChunks(id) {
+            if (
+              id.includes('node_modules/leaflet') ||
+              id.includes('node_modules/react-leaflet')
+            ) {
+              return 'leaflet-vendor';
+            }
+
+            // Separate React runtime into its own chunk
+            if (
+              id.includes('node_modules/react') ||
+              id.includes('node_modules/react-dom') ||
+              id.includes('node_modules/scheduler')
+            ) {
+              return 'react-vendor';
+            }
+
+            // Separate Appwrite SDK - only includes what's imported
+            if (id.includes('node_modules/appwrite')) {
+              return 'appwrite-vendor';
+            }
+
+            // Group other larger dependencies
+            if (
+              id.includes('node_modules/@radix-ui') ||
+              id.includes('node_modules/class-variance-authority')
+            ) {
+              return 'ui-vendor';
+            }
           },
         },
       },
+      chunkSizeWarningLimit: 600, // Increase limit for vendor chunks
+      reportCompressedSize: true, // Report gzipped sizes
     },
     esbuild: {
       target: 'es2020',
+      minify: true, // Enable esbuild minification
+      treeShaking: true, // Enable tree shaking
+      drop: ['console', 'debugger'], // Remove console and debugger statements in production
+      legalComments: 'none', // Remove comments
     },
     optimizeDeps: {
       esbuildOptions: {
@@ -37,7 +72,7 @@ export default defineConfig({
       include: ['leaflet', 'react-leaflet'],
     },
     ssr: {
-      noExternal: ['leaflet', 'react-leaflet'],
+      external: ['leaflet', 'react-leaflet'],
     },
     worker: {
       format: 'es',

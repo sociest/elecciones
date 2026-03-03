@@ -1,68 +1,126 @@
 ---
 import OnboardingStep from '../../components/onboarding/OnboardingStep.astro';
-import { Rocket, Map, ArrowRight } from 'lucide-react';
+import {
+  Rocket,
+  Map,
+  ArrowRight,
+  Search,
+  BarChart3,
+  ShieldCheck,
+} from 'lucide-react';
 import { buildPath } from '../../lib/utils/paths';
+
 const homePath = buildPath('/');
+
+const resumenSecciones = [
+  {
+    titulo: 'Explorador',
+    desc: 'Filtra candidatos por municipio y cargo.',
+    icon: Search,
+    color: 'bg-primary-green/5 text-primary-green',
+    link: buildPath('/'),
+  },
+  {
+    titulo: 'Mapa Global',
+    desc: 'Panorama político en todo el país.',
+    icon: Map,
+    color: 'bg-soft-green/10 text-soft-green',
+    link: buildPath('/mapa'),
+  },
+  {
+    titulo: 'Encuestas',
+    desc: 'Tendencia de voto y datos estadísticos.',
+    icon: BarChart3,
+    color: 'bg-primary-green/5 text-primary-green',
+    link: buildPath('/encuestas'),
+  },
+];
 ---
 
-<OnboardingStep step={4} totalSteps={4} title="Inicio" eyebrow="Inicio">
-  <div slot="left-content">
+<OnboardingStep step={4} totalSteps={4} title="Inicio" eyebrow="Finalizar">
+  <div slot="left-content" class="md:pr-8">
     <h1
-      class="text-5xl sm:text-7xl md:text-8xl font-black text-hunter leading-[0.85] tracking-tighter mb-6"
+      class="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-none tracking-tighter mb-4 italic"
     >
       Todo <br />
-      <span
-        class="text-transparent bg-clip-text bg-linear-to-r from-hunter to-hunter/20"
-        >Listo.</span
-      >
+      <span class="opacity-30 not-italic">Listo.</span>
     </h1>
     <p
-      class="text-hunter/60 text-lg md:text-xl max-w-md font-medium leading-relaxed"
+      class="text-white/60 text-base md:text-lg font-medium leading-snug text-pretty"
     >
-      El poder de decidir está en tus manos. Empieza a explorar.
+      La plataforma está configurada para tu fiscalización ciudadana.
     </p>
   </div>
 
-  <div slot="left-features">
-    <div class="flex items-center gap-3 text-hunter/80">
-      <div class="p-2 bg-white/5 rounded-lg border border-white/5">
-        <Rocket size={20} />
-      </div>
-      <span class="text-sm font-semibold">Inicio Rápido</span>
-    </div>
-    <div class="flex items-center gap-3 text-hunter/80">
-      <div class="p-2 bg-white/5 rounded-lg border border-white/5">
-        <Map size={20} />
-      </div>
-      <span class="text-sm font-semibold">Mapa Interactivo</span>
+  <div slot="left-features" class="mt-4">
+    <div class="flex items-center gap-2 text-white/80">
+      <ShieldCheck size={16} className="text-white/40" />
+      <span class="text-[9px] font-black uppercase tracking-widest"
+        >Información Verificada</span
+      >
     </div>
   </div>
 
-  <div slot="background-icon" class="animate-float">
-    <Rocket size={460} strokeWidth={0.5} color="hunter" />
+  <div slot="background-icon" class="opacity-5">
+    <Rocket size={400} strokeWidth={0.5} color="white" />
   </div>
 
-  <div slot="right-content">
-    <h3
-      class="text-3xl sm:text-4xl font-extrabold text-primary-green tracking-tight leading-tight mb-5"
-    >
-      ¡Empecemos!
-    </h3>
-    <p class="text-primary-green/70 font-medium">
-      Tu guía electoral está configurada. Navega por el mapa, descubre
-      candidatos a alcaldes o gobernadores y ver sus relaciones políticas de
-      forma sencilla.
-    </p>
+  <div slot="right-content" class="flex flex-col h-full justify-center">
+    <div class="mb-8">
+      <h2
+        class="text-2xl font-black text-primary-green tracking-tight mb-2 italic"
+      >
+        ¿Qué deseas explorar primero?
+      </h2>
+      <p
+        class="text-primary-green/40 text-xs font-bold uppercase tracking-wider"
+      >
+        Resumen de herramientas disponibles
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-2.5">
+      {
+        resumenSecciones.map((sec) => (
+          <a
+            href={sec.link}
+            class="flex items-center gap-4 p-4 bg-white border border-primary-green/5 rounded-[1.5rem] shadow-sm hover:border-primary-green/20 transition-all group cursor-pointer"
+          >
+            <div
+              class={`w-10 h-10 shrink-0 ${sec.color} rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform`}
+            >
+              <sec.icon size={18} />
+            </div>
+            <div class="space-y-0.5">
+              <h4 class="text-[10px] font-black uppercase tracking-widest text-primary-green italic">
+                {sec.titulo}
+              </h4>
+              <p class="text-xs font-medium text-primary-green/40 leading-tight">
+                {sec.desc}
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
   </div>
 
-  <div slot="actions" class="space-y-4">
+  <div slot="actions" class="mt-8">
     <button
       id="finish-onboarding-btn"
-      class="w-full group bg-primary-green text-hunter p-5 rounded-2xl font-bold text-lg flex items-center justify-between hover:shadow-2xl hover:shadow-primary-green/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+      class="w-full group bg-primary-green text-white p-5 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] flex items-center justify-between shadow-xl hover:shadow-primary-green/20 transition-all hover:scale-[1.01] cursor-pointer"
     >
-      <span>EMPEZAR A EXPLORAR</span>
+      <span>EMPEZAR EXPLORACIÓN</span>
       <ArrowRight className="group-hover:translate-x-1 transition-transform" />
     </button>
+
+    <div class="mt-4 text-center">
+      <span
+        class="text-[8px] font-black uppercase tracking-[0.3em] text-primary-green/20 italic"
+      >
+        Monitor Electoral Subnacional 2026
+      </span>
+    </div>
   </div>
 </OnboardingStep>
 
@@ -75,3 +133,32 @@ const homePath = buildPath('/');
     });
   }
 </script>
+
+<style>
+  /* Animación sutil de entrada */
+  [slot='right-content'] .grid > div {
+    animation: fadeInCompact 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  [slot='right-content'] .grid > div:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  [slot='right-content'] .grid > div:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  [slot='right-content'] .grid > div:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes fadeInCompact {
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>

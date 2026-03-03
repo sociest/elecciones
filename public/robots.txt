@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /entity
+
+Sitemap: https://elecciones.sociest.org/sitemap-perfiles.xml

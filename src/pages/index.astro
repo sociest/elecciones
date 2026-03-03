@@ -4,7 +4,63 @@ import DashboardWrapper from '../components/dashboard/DashboardWrapper';
 ---
 
 <Layout title="Monitor Elecciones Subnacionales">
-  <div class="min-h-screen bg-neutral-white">
-    <DashboardWrapper client:only="react" />
+  <div class="min-h-screen bg-neutral-white relative">
+    <!-- Static skeleton for immediate paint - positioned absolutely to prevent layout shift -->
+    <div
+      id="loading-skeleton"
+      class="absolute inset-0 min-h-screen p-4 md:p-6 animate-pulse bg-neutral-white z-10"
+      aria-label="Cargando contenido"
+    >
+      <!-- Header skeleton -->
+      <div class="flex items-center justify-center">
+        <span>Cargando...</span>
+      </div>
+    </div>
+
+    <!-- React content loads after hydration - will render in same position -->
+    <div class="min-h-screen">
+      <DashboardWrapper client:load />
+    </div>
   </div>
 </Layout>
+
+<style>
+  /* Fade out skeleton after React loads - no layout shift due to absolute positioning */
+  #loading-skeleton {
+    transition: opacity 0.3s ease-out;
+  }
+  #loading-skeleton.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  const checkReactReady = () => {
+    const skeleton = document.getElementById('loading-skeleton');
+    // Check if React content has rendered
+    const reactContent = document.querySelector(
+      '[data-dashboard-ready="true"]'
+    );
+
+    if (reactContent && skeleton) {
+      skeleton.classList.add('hidden');
+      // Remove from DOM after fade completes to save memory
+      setTimeout(() => {
+        if (skeleton.parentNode) {
+          skeleton.remove();
+        }
+      }, 300);
+    } else if (skeleton) {
+      // React not ready yet, check again
+      setTimeout(checkReactReady, 50);
+    }
+  };
+
+  document.addEventListener('astro:page-load', () => {
+    // Only check if we are on the page containing the skeleton
+    if (document.getElementById('loading-skeleton')) {
+      setTimeout(checkReactReady, 100);
+    }
+  });
+</script>

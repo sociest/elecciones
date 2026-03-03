@@ -1,4 +1,4 @@
-import { Client, Account, Databases, Storage, Query } from 'appwrite';
+import { Client, Databases, Storage, Query } from 'appwrite';
 
 const client = new Client();
 
@@ -6,7 +6,7 @@ client
   .setEndpoint(import.meta.env.PUBLIC_APPWRITE_ENDPOINT)
   .setProject(import.meta.env.PUBLIC_APPWRITE_PROJECT_ID);
 
-export const account = new Account(client);
+// Only export services that are actually used
 export const databases = new Databases(client);
 export const storage = new Storage(client);
 export { client };

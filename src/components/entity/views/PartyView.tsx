@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import type { Entity, Claim } from '@/lib/queries/types';
 import { buildPath } from '@/lib/utils/paths';
+import { getOptimizedImageUrl } from '@/lib/utils/image';
 
 const EMPTY_CLAIMS: Claim[] = [];
 
@@ -157,8 +158,10 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
 
               {logoUrl ? (
                 <img
-                  src={logoUrl}
+                  src={getOptimizedImageUrl(logoUrl, 600)}
                   alt={`Logo de ${nombre}`}
+                  width={600}
+                  height={600}
                   className="w-full h-full object-contain p-4 drop-shadow-md relative z-10"
                 />
               ) : (
@@ -187,7 +190,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
             >
               {nombre}
             </h1>
-            <p className="text-xl text-hunter/60 font-medium leading-relaxed text-pretty">
+            <p className="text-xl text-hunter/80 font-medium leading-relaxed text-pretty">
               {bgDescription}
             </p>
           </div>
@@ -200,7 +203,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
             <Calendar size={24} />
           </div>
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
               Fundación
             </p>
             <p className="text-xl font-black">{fundacion}</p>
@@ -211,7 +214,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
             <Users size={24} />
           </div>
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
               Militantes
             </p>
             <p className="text-xl font-black">{militantes}</p>
@@ -222,7 +225,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
             <BarChart3 size={24} />
           </div>
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
               Ideología
             </p>
             <p className="text-xl font-black" style={{ textWrap: 'balance' }}>
@@ -243,7 +246,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
                 <h3 className="text-3xl font-black tracking-tight">
                   Liderazgo Central
                 </h3>
-                <p className="text-[10px] font-bold opacity-30 uppercase tracking-[0.3em]">
+                <p className="text-[10px] font-bold opacity-70 uppercase tracking-[0.3em]">
                   Cargos directivos y fundadores registrados
                 </p>
               </div>
@@ -255,7 +258,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
                 className="group p-8 bg-primary-green/5 rounded-[3rem] border border-transparent hover:border-primary-green hover:bg-white transition-all flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center gap-3 mb-6 text-primary-green/40">
+                  <div className="flex items-center gap-3 mb-6 text-primary-green/70">
                     <User size={18} />
                     <span className="text-[10px] font-black uppercase tracking-widest">
                       Representante
@@ -282,7 +285,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
                   className="absolute -right-6 -bottom-6 opacity-5"
                 />
                 <h4 className="text-xl font-black mb-2 italic">Presidencial</h4>
-                <p className="text-xs font-medium opacity-50">
+                <p className="text-xs font-medium opacity-70">
                   Representante principal del {sigla} para el proceso electoral
                   2026.
                 </p>
@@ -304,7 +307,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
                 <Globe size={24} />
               </div>
               <div className="text-center md:text-left">
-                <p className="text-[9px] font-black uppercase tracking-widest opacity-30 mb-1">
+                <p className="text-[9px] font-black uppercase tracking-widest opacity-70 mb-1">
                   Dirección Registrada
                 </p>
                 <p className="text-lg font-bold text-primary-green leading-relaxed italic">
@@ -319,25 +322,25 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
           <div className="bg-hunter p-10 rounded-[3.5rem] border border-primary-green/10 shadow-sm relative overflow-hidden group">
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-8">
-                <Info size={18} className="opacity-30" />
-                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-30">
+                <Info size={18} className="opacity-70" />
+                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-70">
                   Registro de Auditoría
                 </h4>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <p className="text-[9px] font-black opacity-30 uppercase mb-1">
+                  <p className="text-[9px] font-black opacity-70 uppercase mb-1">
                     ID de Entidad
                   </p>
-                  <p className="text-xs font-mono font-bold break-all opacity-60">
+                  <p className="text-xs font-mono font-bold break-all opacity-80">
                     {idGrafo}
                   </p>
                 </div>
                 <div className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-primary-green/5">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 animate-pulse"></div>
                   <div>
-                    <p className="text-[9px] font-black opacity-30 uppercase">
+                    <p className="text-[9px] font-black opacity-70 uppercase">
                       Estatus OEP
                     </p>
                     <p className="text-xs font-bold uppercase tracking-tighter">
@@ -354,7 +357,7 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
             <h4 className="text-2xl font-black tracking-tighter mb-4 relative z-10">
               Vigilancia Electoral
             </h4>
-            <p className="text-xs font-medium opacity-50 mb-8 relative z-10 leading-relaxed text-pretty">
+            <p className="text-xs font-medium opacity-70 mb-8 relative z-10 leading-relaxed text-pretty">
               Consulta los reportes de financiamiento y declaraciones públicas
               del {sigla} en nuestro repositorio de datos abiertos.
             </p>

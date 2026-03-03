@@ -1,0 +1,124 @@
+---
+
+---
+
+<div
+  id="cookie-banner"
+  class="fixed bottom-0 left-0 right-0 z-50 p-4 transition-transform duration-700 translate-y-[150%] md:bottom-6 md:left-6 md:right-auto md:w-[400px]"
+>
+  <div
+    class="bg-hunter/95 backdrop-blur-xl border border-primary-green/20 shadow-2xl rounded-2xl p-6 text-white relative overflow-hidden ring-1 ring-white/5"
+  >
+    <div
+      class="absolute inset-0 bg-linear-to-br from-white/5 to-transparent pointer-events-none"
+    >
+    </div>
+    <div class="flex items-start gap-4 relative z-10">
+      <div
+        class="bg-primary-green/10 text-primary-green border border-primary-green/20 p-3 rounded-xl shrink-0 shadow-inner"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-cookie"
+          ><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"
+          ></path><path d="M8.5 8.5v.01"></path><path d="M16 15.5v.01"
+          ></path><path d="M12 12v.01"></path><path d="M11 17v.01"></path><path
+            d="M7 14v.01"></path></svg
+        >
+      </div>
+      <div>
+        <h3
+          class="text-sm font-black tracking-tight mb-2 uppercase text-primary-green"
+        >
+          Nos encantan las galletas 🍪
+        </h3>
+        <p class="text-xs text-primary-green/70 leading-relaxed mb-4">
+          Utilizamos cookies para analizar nuestro tráfico y mejorar tu
+          experiencia de forma anónima. <a
+            href="/data-privacy"
+            class="underline hover:text-primary-green transition-colors"
+            >Lee nuestra Política de Privacidad</a
+          >.
+        </p>
+        <div class="flex gap-3">
+          <button
+            id="accept-cookies"
+            class="flex-1 bg-primary-green text-hunter text-[10px] font-black uppercase tracking-widest py-2.5 rounded-xl hover:bg-opacity-90 hover:scale-[1.02] transition-all active:scale-95 shadow-md"
+          >
+            Aceptar
+          </button>
+          <button
+            id="reject-cookies"
+            class="flex-1 bg-primary-green/5 border border-primary-green/10 text-primary-green/80 text-[10px] font-black uppercase tracking-widest py-2.5 rounded-xl hover:bg-primary-green/10 hover:text-primary-green transition-all active:scale-95"
+          >
+            Rechazar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface CustomWindow extends Window {
+    loadGoogleAnalytics?: () => void;
+    openCookieBanner?: () => void;
+  }
+
+  const initCookieBanner = () => {
+    const banner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('accept-cookies');
+    const rejectBtn = document.getElementById('reject-cookies');
+
+    if (!banner || !acceptBtn || !rejectBtn) return;
+
+    const consent = localStorage.getItem('cookie_consent');
+    if (!consent) {
+      setTimeout(() => {
+        banner.classList.remove('translate-y-[150%]');
+      }, 1000);
+    } else {
+      banner.classList.add('translate-y-[150%]');
+    }
+
+    const updateConsent = (granted: boolean) => {
+      localStorage.setItem('cookie_consent', granted ? 'granted' : 'denied');
+
+      if (
+        granted &&
+        typeof (window as CustomWindow).loadGoogleAnalytics === 'function'
+      ) {
+        (window as CustomWindow).loadGoogleAnalytics!();
+      } else if (!granted) {
+        // Option to reload page to clear cookies if rejected after being accepted
+        // window.location.reload();
+      }
+
+      banner.classList.add('translate-y-[150%]');
+    };
+
+    (window as CustomWindow).openCookieBanner = () => {
+      banner.classList.remove('translate-y-[150%]');
+    };
+
+    // Remove any previous event listeners to avoid duplicates when transition navigates
+    const newAcceptBtn = acceptBtn.cloneNode(true);
+    const newRejectBtn = rejectBtn.cloneNode(true);
+    acceptBtn.parentNode?.replaceChild(newAcceptBtn, acceptBtn);
+    rejectBtn.parentNode?.replaceChild(newRejectBtn, rejectBtn);
+
+    newAcceptBtn.addEventListener('click', () => updateConsent(true));
+    newRejectBtn.addEventListener('click', () => updateConsent(false));
+  };
+
+  initCookieBanner();
+  document.addEventListener('astro:page-load', initCookieBanner);
+</script>

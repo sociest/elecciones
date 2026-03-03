@@ -396,6 +396,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
                     dispatch({ type: 'SET_SEARCH_QUERY', payload: '' })
                   }
                   className="absolute right-6 top-1/2 -translate-y-1/2 text-primary-green/40 hover:text-primary-green"
+                  aria-label="Limpiar búsqueda"
                 >
                   <X size={20} />
                 </button>
@@ -421,7 +422,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
               <div className="flex-1">
                 <label
                   htmlFor="filter-department"
-                  className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3 block"
+                  className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-3 block"
                 >
                   Departamento
                 </label>
@@ -446,7 +447,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
               <div className="flex-1">
                 <label
                   htmlFor="filter-type"
-                  className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3 block"
+                  className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-3 block"
                 >
                   Tipo de Entidad
                 </label>

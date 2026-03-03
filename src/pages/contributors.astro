@@ -19,6 +19,8 @@ const instituciones = [
     descripcion:
       'Sociedad Científica de Estadística de la Universidad Mayor de San Andrés, encargada del rigor metodológico del proyecto.',
     logo: buildPath('/logos/sociest.png'),
+    logoWebp: buildPath('/logos/sociest.webp'),
+    logoAvif: buildPath('/logos/sociest.avif'),
     link: 'https://www.sociest.org/',
   },
   {
@@ -27,6 +29,8 @@ const instituciones = [
     descripcion:
       'Institución dedicada a la investigación de calidad para el desarrollo de políticas basadas en evidencia.',
     logo: buildPath('/logos/aru.png'),
+    logoWebp: buildPath('/logos/aru.webp'),
+    logoAvif: buildPath('/logos/aru.avif'),
     link: 'https://aru.org.bo',
   },
   {
@@ -35,6 +39,8 @@ const instituciones = [
     descripcion:
       'Laboratorio de Tecnologías Sociales, encargado del desarrollo de la plataforma.',
     logo: buildPath('/logos/labtecnosocial_black.png'),
+    logoWebp: buildPath('/logos/labtecnosocial_black.webp'),
+    logoAvif: buildPath('/logos/labtecnosocial_black.avif'),
     link: 'https://labtecnosocial.org/',
   },
 ];
@@ -117,19 +123,63 @@ const talentos = [
               <div>
                 <div class="flex justify-between items-start mb-10">
                   <div class="w-24 h-24 bg-primary-green/5 rounded-[2rem] p-4 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-700">
-                    <img
-                      src={inst.logo}
-                      alt={inst.nombre}
-                      class="w-full h-full object-contain"
-                    />
+                    {inst.logoAvif || inst.logoWebp ? (
+                      <picture>
+                        {inst.logoAvif && (
+                          <source srcset={inst.logoAvif} type="image/avif" />
+                        )}
+                        {inst.logoWebp && (
+                          <source srcset={inst.logoWebp} type="image/webp" />
+                        )}
+                        <img
+                          src={inst.logo}
+                          alt={inst.nombre}
+                          width={
+                            inst.nombre === 'SOCIEST'
+                              ? 2048
+                              : inst.nombre === 'Fundación ARU'
+                                ? 2259
+                                : 1000
+                          }
+                          height={
+                            inst.nombre === 'SOCIEST'
+                              ? 2047
+                              : inst.nombre === 'Fundación ARU'
+                                ? 946
+                                : 496
+                          }
+                          class="w-full h-full object-contain"
+                        />
+                      </picture>
+                    ) : (
+                      <img
+                        src={inst.logo}
+                        alt={inst.nombre}
+                        width={
+                          inst.nombre === 'SOCIEST'
+                            ? 2048
+                            : inst.nombre === 'Fundación ARU'
+                              ? 2259
+                              : 1000
+                        }
+                        height={
+                          inst.nombre === 'SOCIEST'
+                            ? 2047
+                            : inst.nombre === 'Fundación ARU'
+                              ? 946
+                              : 496
+                        }
+                        class="w-full h-full object-contain"
+                      />
+                    )}
                   </div>
                   <span class="text-[9px] font-black bg-hunter text-primary-green px-3 py-1 rounded-lg uppercase tracking-widest border border-primary-green/10">
                     {inst.rol}
                   </span>
                 </div>
-                <h3 class="text-3xl font-black tracking-tight mb-4">
+                <h2 class="text-3xl font-black tracking-tight mb-4">
                   {inst.nombre}
-                </h3>
+                </h2>
                 <p class="text-lg text-primary-green/60 leading-relaxed font-medium mb-8 text-pretty">
                   {inst.descripcion}
                 </p>
@@ -173,7 +223,7 @@ const talentos = [
               <div class="w-12 h-12 bg-primary-green/5 rounded-xl flex items-center justify-center text-primary-green mb-6 group-hover:bg-primary-green group-hover:text-hunter transition-colors">
                 <User size={20} />
               </div>
-              <h4 class="text-xl font-black leading-tight mb-2">{t.nombre}</h4>
+              <h3 class="text-xl font-black leading-tight mb-2">{t.nombre}</h3>
               <p class="text-[10px] font-black uppercase tracking-widest text-emerald-600 mb-6">
                 {t.especialidad}
               </p>
@@ -193,9 +243,9 @@ const talentos = [
           >
             <Code2 size={20} className="text-primary-green" />
           </div>
-          <h4 class="text-lg font-black mb-2 tracking-tight">
+          <h3 class="text-lg font-black mb-2 tracking-tight">
             ¿Quieres sumar?
-          </h4>
+          </h3>
           <p
             class="text-[10px] font-bold opacity-40 uppercase tracking-widest mb-6"
           >

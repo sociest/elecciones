@@ -450,7 +450,7 @@ export default function MunicipalityPicker() {
         className={`w-full group p-5 rounded-2xl font-bold text-lg flex items-center justify-between hover:shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] disabled:cursor-wait ${
           gpsState === 'found'
             ? 'bg-green-600 text-white shadow-lg scale-[1.02] justify-center disabled:opacity-100'
-            : 'bg-primary-green text-hunter hover:shadow-primary-green/30 disabled:opacity-70'
+            : 'bg-primary-green text-hunter hover:shadow-primary-green/30 disabled:opacity-70 hover:opacity-80 cursor-pointer'
         }`}
       >
         {gpsButtonContent()}

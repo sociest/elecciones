@@ -14,7 +14,6 @@ import {
   useMap,
 } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import { MapPin, RotateCcw } from 'lucide-react';
 import L from 'leaflet';
 import iconUrl from 'leaflet/dist/images/marker-icon.png?url';
@@ -54,9 +53,9 @@ type MapViewAction =
   | { type: 'SET_SELECTED_FEATURE'; payload: string | null }
   | { type: 'SET_HOVERED_FEATURE'; payload: string | null }
   | {
-    type: 'SET_USER_DETECTED_FEATURE';
-    payload: { id: string | null; name: string | null };
-  }
+      type: 'SET_USER_DETECTED_FEATURE';
+      payload: { id: string | null; name: string | null };
+    }
   | { type: 'RESET_MAP' };
 
 const mapReducer = (
@@ -240,10 +239,10 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
       <div className="absolute inset-0 flex items-center justify-center bg-black rounded-[2.5rem]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto mb-4"></div>
-          <p className="text-sm text-gray-400 font-medium">
+          <p className="text-sm text-gray-200 font-medium">
             Cargando minimapa...
           </p>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-300 mt-2">
             Preparando polígonos municipales
           </p>
         </div>
@@ -255,8 +254,8 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
     return (
       <div className="absolute inset-0 flex items-center justify-center bg-black rounded-[2.5rem]">
         <div className="text-center p-8">
-          <p className="text-gray-400 font-bold mb-2">Mapa no disponible</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-gray-200 font-bold mb-2">Mapa no disponible</p>
+          <p className="text-sm text-gray-300">
             {error || 'No se pudieron cargar los datos'}
           </p>
         </div>
@@ -295,7 +294,7 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
           >
             <Popup>
               <div className="text-center">
-                <div className="flex items-center justify-center gap-2 font-bold text-sm text-emerald-500">
+                <div className="flex items-center justify-center gap-2 font-bold text-sm text-primary-green">
                   <MapPin size={16} />
                   <span>Tu ubicación</span>
                 </div>
@@ -322,7 +321,7 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
       </div>
 
       {userLocation && userDetectedFeatureName && (
-        <div className="absolute top-4 left-4 right-4 bg-emerald-700/90 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl z-1000 animate-fadeIn border border-white/10">
+        <div className="absolute top-4 left-4 right-4 bg-primary-green/90 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl z-1000 animate-fadeIn border border-white/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -340,16 +339,16 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
       )}
 
       <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm border border-white/5 rounded-xl p-3 shadow-xl z-999">
-        <p className="text-xs font-bold mb-2 text-gray-300">
+        <p className="text-xs font-bold mb-2 text-gray-200">
           Niveles Administrativos
         </p>
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <div
               className="w-4 h-4 rounded border border-emerald-500/30"
-              style={{ backgroundColor: '#10b981', opacity: 0.6 }}
+              style={{ backgroundColor: '#bf4a18', opacity: 0.6 }}
             />
-            <span className="text-xs text-gray-400">Municipio</span>
+            <span className="text-xs text-gray-200">Municipio</span>
           </div>
         </div>
       </div>

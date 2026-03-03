@@ -86,12 +86,12 @@ const EntityDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto pt-32 px-6 pb-20">
         <header className="mb-16">
           <div className="max-w-3xl">
-            <h2 className="text-5xl md:text-7xl font-black tracking-[ -0.05em] leading-[0.85] mb-8">
+            <h1 className="text-5xl md:text-7xl font-black tracking-[ -0.05em] leading-[0.85] mb-8">
               Conoce a tus <br />
               <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-green to-primary-green/40">
                 Candidatos.
               </span>
-            </h2>
+            </h1>
 
             <div className="relative group">
               <SearchCommand
@@ -125,7 +125,10 @@ const EntityDashboard: React.FC = () => {
                   {filtro}
                 </button>
               ))}
-              <button className="p-2 rounded-full bg-primary-green/5 text-primary-green hover:bg-hunter border border-transparent hover:border-primary-green/10 transition-all">
+              <button
+                className="p-2 rounded-full bg-primary-green/5 text-primary-green hover:bg-hunter border border-transparent hover:border-primary-green/10 transition-all"
+                aria-label="Filtrar resultados"
+              >
                 <ListFilter size={18} />
               </button>
             </div>
@@ -136,12 +139,12 @@ const EntityDashboard: React.FC = () => {
           <div className="lg:col-span-8 space-y-8 order-2 lg:order-1 min-h-[60rem]">
             <div className="flex items-center justify-between border-b border-primary-green/5 pb-4">
               <div className="flex items-center gap-2">
-                <Users size={18} className="opacity-30" />
-                <h3 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-30">
+                <Users size={18} className="opacity-70" />
+                <h2 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-70">
                   {selectedFilter === 'Todos'
                     ? 'Postulantes en tu región'
                     : `Resultados: ${selectedFilter}`}
-                </h3>
+                </h2>
               </div>
             </div>
 
@@ -166,7 +169,7 @@ const EntityDashboard: React.FC = () => {
                   />
                 ))
               ) : (
-                <div className="col-span-full py-12 text-center opacity-50 font-medium flex flex-col items-center gap-2 absolute top-0 w-full">
+                <div className="col-span-full py-12 text-center opacity-70 font-medium flex flex-col items-center gap-2 absolute top-0 w-full">
                   <span>
                     No se encontraron resultados para &quot;{selectedFilter}
                     &quot;.
@@ -202,7 +205,7 @@ const EntityDashboard: React.FC = () => {
                         Analizando
                       </span>
                     </div>
-                    <h5 className="text-xl font-black tracking-tighter flex items-center gap-2">
+                    <h3 className="text-xl font-black tracking-tighter flex items-center gap-2">
                       {userMunicipalityName
                         ? `Municipio de ${userMunicipalityName}`
                         : 'Bolivia'}
@@ -211,7 +214,7 @@ const EntityDashboard: React.FC = () => {
                           Actualizando…
                         </span>
                       )}
-                    </h5>
+                    </h3>
                   </div>
                 </div>
 

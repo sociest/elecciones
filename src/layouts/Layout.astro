@@ -2,7 +2,10 @@
 import { ClientRouter } from 'astro:transitions';
 import Footer from '../components/common/Footer.astro';
 import Navbar from '../components/common/Navbar.astro';
+import GoogleAnalytics from '../components/common/GoogleAnalytics.astro';
+import CookieBanner from '../components/common/CookieBanner.astro';
 import '../styles/global.css';
+import 'leaflet/dist/leaflet.css';
 
 interface Props {
   title?: string;
@@ -17,14 +20,14 @@ const isOnboarding = pathname.includes('/onboarding');
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self';
-		               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://nominatim.openstreetmap.org;
+		               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://nominatim.openstreetmap.org https://www.googletagmanager.com;
 		               style-src 'self' 'unsafe-inline';
 		               img-src 'self' data: https:;
-		               connect-src 'self' https://cloud.appwrite.io https://appwrite.sociest.org https://nominatim.openstreetmap.org https://maps.googleapis.com https://ipapi.co;
+		               connect-src 'self' https://cloud.appwrite.io https://appwrite.sociest.org https://nominatim.openstreetmap.org https://maps.googleapis.com https://ipapi.co https://www.google-analytics.com https://analytics.google.com;
 		               font-src 'self' data:;
 		               frame-ancestors 'self';
 		               base-uri 'self';
@@ -36,7 +39,22 @@ const isOnboarding = pathname.includes('/onboarding');
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <ClientRouter />
+    <GoogleAnalytics />
     <title>{title}</title>
+
+    <!-- Preload critical font (updated to correct path) -->
+    <link
+      rel="preload"
+      href="/fonts/sora-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cloud.appwrite.io" crossorigin />
+    <link rel="dns-prefetch" href="https://nominatim.openstreetmap.org" />
+    <link rel="dns-prefetch" href="https://tile.openstreetmap.org" />
 
     <script
       is:inline
@@ -71,6 +89,7 @@ const isOnboarding = pathname.includes('/onboarding');
       <slot />
     </main>
     {!isOnboarding && <Footer />}
+    <CookieBanner />
   </body>
 </html>
 

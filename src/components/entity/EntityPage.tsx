@@ -17,9 +17,9 @@ interface EntityPageState {
 type EntityPageAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | {
-      type: 'SET_DATA';
-      payload: { entity: Entity; claims: Claim[]; entityType: EntityType };
-    }
+    type: 'SET_DATA';
+    payload: { entity: Entity; claims: Claim[]; entityType: EntityType };
+  }
   | { type: 'SET_ERROR'; payload: string };
 
 const entityPageReducer = (
@@ -101,6 +101,57 @@ export default function EntityPage() {
   }, []);
 
   const { loading, error, entity, claims, entityType } = state;
+
+  useEffect(() => {
+    if (!entity) return;
+
+    const isPerson = entityType === 'PERSONA' || entityType === 'POLITICO';
+    let seoTitle = entity.label
+      ? `${entity.label} | Monitor Electoral 2026`
+      : 'Perfil | Monitor Electoral 2026';
+
+    if (isPerson) {
+      seoTitle = `${entity.label} - Candidato Elecciones Subnacionales | Monitor 2026`;
+    }
+
+    const seoDesc = `Consulta el perfil, propuestas y validez de datos de ${entity.label || 'este candidato'} para las elecciones subnacionales 2026.`;
+    const canonicalUrl = `https://elecciones.sociest.org/entity?id=${entity.$id}`;
+
+    document.title = seoTitle;
+
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', seoDesc);
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', canonicalUrl);
+
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': isPerson ? 'Person' : 'Organization',
+      name: entity.label,
+      description: entity.description || seoDesc,
+      url: canonicalUrl,
+    };
+
+    let script = document.getElementById('json-ld-entity');
+    if (!script) {
+      script = document.createElement('script');
+      script.setAttribute('id', 'json-ld-entity');
+      script.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify(jsonLd);
+  }, [entity, entityType]);
 
   if (loading) {
     return (

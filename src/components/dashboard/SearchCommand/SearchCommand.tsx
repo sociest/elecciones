@@ -111,6 +111,7 @@ const SearchCommandComponent: React.FC<SearchCommandProps> = ({
           <button
             onClick={() => clearSearch(onSearch)}
             className="p-2 hover:bg-primary-green/5 rounded-full text-primary-green/40 transition-colors"
+            aria-label="Limpiar búsqueda"
           >
             <X size={20} />
           </button>

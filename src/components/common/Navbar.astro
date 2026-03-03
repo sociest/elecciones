@@ -1,5 +1,5 @@
 ---
-import { Globe, Menu, X } from 'lucide-react';
+import { Globe, Menu, X, Search, Map, BarChart3 } from 'lucide-react';
 import { buildPath } from '../../lib/utils/paths';
 
 const { pathname } = Astro.url;
@@ -16,10 +16,37 @@ const isActive = (path: string) => {
 };
 
 const navLinks = [
-  { name: 'Explorador', href: buildPath('/') },
-  { name: 'Mapa Global', href: buildPath('/mapa') },
-  { name: 'Encuestas', href: buildPath('/encuestas') },
+  {
+    name: 'Explorador',
+    href: buildPath('/'),
+    description: 'Filtra candidatos por municipio y cargo.',
+    icon: Search,
+  },
+  {
+    name: 'Mapa Global',
+    href: buildPath('/mapa'),
+    description: 'Panorama político en todo el país.',
+    icon: Map,
+  },
+  {
+    name: 'Encuestas',
+    href: buildPath('/encuestas'),
+    description: 'Tendencia de voto y datos estadísticos.',
+    icon: BarChart3,
+  },
 ];
+
+const exactRouteMatch = [
+  buildPath('/'),
+  buildPath('/mapa'),
+  buildPath('/encuestas'),
+].some((path) => {
+  const current = pathname.replace(/\/+$/, '') || '/';
+  const target = path.replace(/\/+$/, '') || '/';
+  return current === target;
+});
+
+const currentSection = navLinks.find((link) => isActive(link.href));
 ---
 
 <nav class="fixed top-0 w-full z-50 px-4 md:px-6 py-4">
@@ -33,13 +60,13 @@ const navLinks = [
         <Globe size={20} strokeWidth={2.5} />
       </div>
       <div class="hidden sm:block">
-        <h1
+        <h2
           class="font-black text-lg leading-none tracking-tighter text-primary-green"
         >
           MONITOR
-        </h1>
+        </h2>
         <p
-          class="text-[9px] uppercase tracking-[0.3em] font-bold opacity-40 text-primary-green"
+          class="text-[9px] uppercase tracking-[0.3em] font-bold opacity-70 text-primary-green"
         >
           Elecciones 2026
         </p>
@@ -54,7 +81,7 @@ const navLinks = [
             <div class="relative py-2 group">
               <a
                 href={link.href}
-                class={`text-xs font-black uppercase tracking-widest transition-all duration-300 ${active ? 'text-primary-green opacity-100' : 'text-primary-green opacity-30 hover:opacity-100'}`}
+                class={`text-xs font-black uppercase tracking-widest transition-all duration-300 ${active ? 'text-primary-green opacity-100' : 'text-primary-green opacity-70 hover:opacity-100'}`}
               >
                 {link.name}
               </a>
@@ -100,7 +127,36 @@ const navLinks = [
       </button>
     </div>
   </div>
+
+  {
+    exactRouteMatch && currentSection && currentSection.icon && (
+      <div
+        class="absolute left-1/2 -translate-x-1/2 -bottom-[5.5rem] pointer-events-none hidden lg:flex items-center justify-center min-w-[320px] max-w-sm z-40"
+        transition:name="section-description"
+        style="animation: slideDownFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;"
+      >
+        <div class="bg-hunter/95 backdrop-blur-xl border border-primary-green/20 shadow-2xl rounded-[1.5rem] p-3 flex items-center gap-4 w-full text-white ring-1 ring-white/5 overflow-hidden relative group">
+          <div class="bg-primary-green text-hunter border border-primary-green/30 p-2.5 rounded-xl shrink-0 relative z-10 shadow-inner">
+            <currentSection.icon size={20} strokeWidth={2.5} />
+          </div>
+
+          <div class="flex flex-col relative z-10 pr-2">
+            <div class="flex items-center gap-2 mb-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary-green animate-pulse" />
+              <span class="text-[9px] font-black uppercase tracking-[0.2em] text-soft-green">
+                ESTÁS EN {currentSection.name}
+              </span>
+            </div>
+            <span class="text-[13px] font-medium text-soft-green/90 leading-snug">
+              {currentSection.description}
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
 </nav>
+
 <!-- Modo movil -->
 <div
   id="mobile-menu"
@@ -115,6 +171,7 @@ const navLinks = [
       <button
         id="mobile-menu-close-btn"
         class="w-12 h-12 flex items-center justify-center rounded-2xl bg-primary-green text-hunter shadow-xl active:scale-90 transition-transform"
+        aria-label="Cerrar menú"
       >
         <X size={28} strokeWidth={3} />
       </button>
@@ -149,7 +206,7 @@ const navLinks = [
 
   <div class="mt-auto pb-12 text-center">
     <p
-      class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-30 text-primary-green"
+      class="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70 text-primary-green"
     >
       Monitor Electoral 2026
     </p>
@@ -216,5 +273,16 @@ const navLinks = [
   #mobile-menu {
     will-change: transform, opacity;
     backface-visibility: hidden;
+  }
+
+  @keyframes slideDownFade {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
   }
 </style>

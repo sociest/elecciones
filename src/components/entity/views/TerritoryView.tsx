@@ -314,13 +314,13 @@ export function TerritoryView({
             <Users size={24} />
           </div>
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
               Población Electoral
             </p>
             <p className="text-3xl font-black text-primary-green">
               {poblacionFormat}
             </p>
-            <p className="text-[9px] font-bold opacity-40 uppercase leading-none mt-1 text-balance">
+            <p className="text-[9px] font-bold opacity-70 uppercase leading-none mt-1 text-balance">
               {poblacionNota}
             </p>
           </div>
@@ -334,11 +334,11 @@ export function TerritoryView({
             <Activity size={24} />
           </div>
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
               Código Territorial
             </p>
             <p className="text-3xl font-black">{codigoTerritorial}</p>
-            <p className="text-[9px] font-bold opacity-40 uppercase mt-1">
+            <p className="text-[9px] font-bold opacity-70 uppercase mt-1">
               Identificador OEP
             </p>
           </div>
@@ -352,7 +352,7 @@ export function TerritoryView({
             <Landmark size={24} />
           </div>
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
               División Política
             </p>
             <p className="text-3xl font-black">
@@ -363,7 +363,7 @@ export function TerritoryView({
                   : 'Sin'}{' '}
               Divisiones
             </p>
-            <p className="text-[9px] font-bold opacity-40 uppercase mt-1">
+            <p className="text-[9px] font-bold opacity-70 uppercase mt-1">
               Nivel Interno
             </p>
           </div>
@@ -400,7 +400,7 @@ export function TerritoryView({
                 ))}
                 {provinces.length > 11 && (
                   <div className="p-4 bg-primary-green/5 rounded-2xl flex items-center justify-center border border-dashed border-primary-green/20 min-h-20">
-                    <span className="text-[10px] font-black opacity-30 text-center">
+                    <span className="text-[10px] font-black opacity-70 text-center">
                       + {provinces.length - 11} MÁS
                     </span>
                   </div>
@@ -422,7 +422,7 @@ export function TerritoryView({
             </div>
 
             {loadingRelated ? (
-              <div className="p-12 text-center opacity-50 font-bold animate-pulse">
+              <div className="p-12 text-center opacity-80 font-bold animate-pulse">
                 Buscando actores relevantes...
               </div>
             ) : candidates.length === 0 ? (
@@ -480,27 +480,27 @@ export function TerritoryView({
           <div className="bg-hunter p-10 rounded-[3.5rem] border border-primary-green/10 shadow-sm relative overflow-hidden group">
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-8">
-                <Info size={18} className="opacity-30 text-primary-green" />
-                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-30 text-primary-green text-pretty">
+                <Info size={18} className="opacity-70 text-primary-green" />
+                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-70 text-primary-green text-pretty">
                   Información de Auditoría
                 </h4>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <p className="text-[9px] font-black opacity-30 uppercase mb-1 text-primary-green">
+                  <p className="text-[9px] font-black opacity-70 uppercase mb-1 text-primary-green">
                     Identificador de Entidad
                   </p>
-                  <p className="text-xs font-mono font-bold break-all text-primary-green opacity-70 leading-relaxed">
+                  <p className="text-xs font-mono font-bold break-all text-primary-green opacity-80 leading-relaxed">
                     {idRegistro}
                   </p>
                 </div>
                 <div className="flex items-start gap-4 p-4 bg-white/40 rounded-2xl border border-primary-green/5">
-                  <div className="shrink-0 mt-0.5 opacity-30 text-primary-green">
+                  <div className="shrink-0 mt-0.5 opacity-70 text-primary-green">
                     📅
                   </div>
                   <div>
-                    <p className="text-[9px] font-black opacity-30 uppercase text-primary-green">
+                    <p className="text-[9px] font-black opacity-70 uppercase text-primary-green">
                       Última Modificación
                     </p>
                     <p className="text-xs font-bold text-primary-green">
@@ -527,7 +527,7 @@ export function TerritoryView({
               <h4 className="text-2xl font-black tracking-tighter mb-4 relative z-10 text-balance">
                 Cartografía Digital
               </h4>
-              <p className="text-xs font-medium opacity-50 mb-8 relative z-10 leading-relaxed text-pretty">
+              <p className="text-xs font-medium opacity-80 mb-8 relative z-10 leading-relaxed text-pretty">
                 Accede a los archivos geoespaciales oficiales del {nombre} para
                 análisis externo.
               </p>

@@ -24,8 +24,8 @@ export async function loadMunicipalityCache(): Promise<void> {
   try {
     const base =
       typeof document !== 'undefined'
-        ? new URL('/municipalities-index.json', document.baseURI).href
-        : '/municipalities-index.json';
+        ? new URL('/municipalities-meta.json', document.baseURI).href
+        : '/municipalities-meta.json';
     const url = base;
 
     const response = await fetch(url);
@@ -43,7 +43,7 @@ export async function loadMunicipalityCache(): Promise<void> {
     municipalityCacheReady = true;
   } catch (err) {
     console.warn(
-      '[loadMunicipalityCache] Could not load municipalities-index.json:',
+      '[loadMunicipalityCache] Could not load municipalities-meta.json:',
       err
     );
   }

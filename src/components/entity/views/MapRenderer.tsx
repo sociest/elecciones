@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import type { GeoJsonObject } from 'geojson';
-import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 interface MapRendererProps {

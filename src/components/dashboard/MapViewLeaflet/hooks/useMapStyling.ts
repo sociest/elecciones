@@ -19,9 +19,9 @@ export const useMapStyling = (
 
       if (isUserLocation) {
         return {
-          fillColor: '#10b981',
+          fillColor: '#bf4a18',
           fillOpacity: 0.1,
-          color: '#34d399',
+          color: '#d88e77',
           weight: 2,
           opacity: 0.8,
           dashArray: '5, 5',
@@ -30,9 +30,9 @@ export const useMapStyling = (
 
       if (isSelected) {
         return {
-          fillColor: '#34d399',
+          fillColor: '#d88e77',
           fillOpacity: 0.55,
-          color: '#10b981',
+          color: '#bf4a18',
           weight: 3,
           opacity: 1,
         };
@@ -49,9 +49,9 @@ export const useMapStyling = (
       }
 
       return {
-        fillColor: '#10b981',
+        fillColor: '#bf4a18',
         fillOpacity: isHovered ? 0.3 : 0.05,
-        color: isHovered ? '#34d399' : '#047857',
+        color: isHovered ? '#d88e77' : '#bf4a18',
         weight: isHovered ? 2 : 1,
         opacity: 0.6,
       };

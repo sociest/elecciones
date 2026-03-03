@@ -155,7 +155,7 @@ export function InstitutionView({
             <MapPin size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[9px] font-black uppercase tracking-widest opacity-70">
               Jurisdicción
             </p>
             <p className="text-lg font-black">{jurisdiccion}</p>
@@ -166,7 +166,7 @@ export function InstitutionView({
             <DollarSign size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[9px] font-black uppercase tracking-widest opacity-70">
               Presupuesto Anual
             </p>
             <p className="text-lg font-black text-amber-600">{presupuesto}</p>
@@ -177,7 +177,7 @@ export function InstitutionView({
             <Calendar size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[9px] font-black uppercase tracking-widest opacity-70">
               Última Modificación
             </p>
             <p className="text-lg font-black">{modificado}</p>
@@ -207,7 +207,7 @@ export function InstitutionView({
                 >
                   Jerarquía Institucional
                 </h3>
-                <p className="text-[10px] font-bold opacity-30 uppercase tracking-[0.3em]">
+                <p className="text-[10px] font-bold opacity-70 uppercase tracking-[0.3em]">
                   Dependencia administrativa en el grafo estatal
                 </p>
               </div>
@@ -225,13 +225,13 @@ export function InstitutionView({
                     <Globe size={20} />
                   </div>
                   <div>
-                    <p className="text-[9px] font-black opacity-40 uppercase tracking-widest mb-1">
+                    <p className="text-[9px] font-black opacity-70 uppercase tracking-widest mb-1">
                       Entidad Superior
                     </p>
                     <h4 className="text-xl font-black">{dependencia}</h4>
                   </div>
                 </div>
-                <ArrowUpRight className="opacity-20 group-hover:opacity-100 transition-opacity" />
+                <ArrowUpRight className="opacity-60 group-hover:opacity-100 transition-opacity" />
               </div>
             </a>
           </div>
@@ -264,16 +264,16 @@ export function InstitutionView({
                         <h4 className="font-black text-sm leading-tight text-pretty">
                           {p.nombre}
                         </h4>
-                        <p className="text-[10px] font-bold opacity-40 uppercase tracking-tighter mt-1">
+                        <p className="text-[10px] font-bold opacity-70 uppercase tracking-tighter mt-1">
                           {p.cargo}
                         </p>
                       </div>
                     </div>
-                    <ChevronRight size={16} className="opacity-20" />
+                    <ChevronRight size={16} className="opacity-60" />
                   </a>
                 ))
               ) : (
-                <p className="text-sm font-medium opacity-50 text-center py-4">
+                <p className="text-sm font-medium opacity-80 text-center py-4">
                   No se encontro personal vinculado directamente.
                 </p>
               )}
@@ -285,25 +285,25 @@ export function InstitutionView({
           <div className="bg-hunter p-10 rounded-[3.5rem] border border-primary-green/10 shadow-sm relative overflow-hidden group">
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-8">
-                <Info size={18} className="opacity-30" />
-                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-30">
+                <Info size={18} className="opacity-70" />
+                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-70">
                   Auditoría de Datos
                 </h4>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <p className="text-[9px] font-black opacity-30 uppercase mb-1">
+                  <p className="text-[9px] font-black opacity-70 uppercase mb-1">
                     ID Único de Entidad
                   </p>
-                  <p className="text-xs font-mono font-bold break-all opacity-60">
+                  <p className="text-xs font-mono font-bold break-all opacity-80">
                     {entity.$id}
                   </p>
                 </div>
                 <div className="flex items-start gap-4 p-4 bg-white/50 rounded-2xl border border-primary-green/5">
-                  <Calendar size={16} className="shrink-0 mt-0.5 opacity-30" />
+                  <Calendar size={16} className="shrink-0 mt-0.5 opacity-70" />
                   <div>
-                    <p className="text-[9px] font-black opacity-30 uppercase">
+                    <p className="text-[9px] font-black opacity-70 uppercase">
                       Fecha de Registro
                     </p>
                     <p className="text-xs font-bold">{creado}</p>

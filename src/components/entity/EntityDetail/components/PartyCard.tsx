@@ -1,6 +1,7 @@
 import React from 'react';
 import { Fingerprint, ExternalLink } from 'lucide-react';
 import { buildPath } from '../../../../lib/utils/paths';
+import { getOptimizedImageUrl } from '../../../../lib/utils/image';
 
 interface PartyCardProps {
   mainParty: {
@@ -27,8 +28,10 @@ export const PartyCard: React.FC<PartyCardProps> = ({ mainParty }) => {
               <div className="w-24 h-24 bg-hunter rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-md overflow-hidden">
                 {mainParty.logo ? (
                   <img
-                    src={mainParty.logo}
+                    src={getOptimizedImageUrl(mainParty.logo, 200)}
                     alt={`Logo de ${mainParty.nombre}`}
+                    width={200}
+                    height={200}
                     className="w-full h-full object-contain p-4"
                   />
                 ) : (

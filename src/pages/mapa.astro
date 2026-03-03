@@ -5,6 +5,24 @@ import MapPage from '../components/dashboard/MapPage';
 
 <Layout title="Mapa Electoral - Monitor Elecciones 2026">
   <div class="min-h-screen">
+    <div
+      id="loading-placeholder"
+      class="min-h-screen flex items-center justify-center bg-primary-green"
+    >
+      <div class="text-hunter">Cargando mapa...</div>
+    </div>
     <MapPage client:only="react" />
   </div>
 </Layout>
+
+<style>
+  #loading-placeholder {
+    animation: fadeOut 0.3s ease-out 0.5s forwards;
+  }
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,2042 @@
+[
+  {
+    "id": "6983992e86b3c9e24ab5",
+    "name": "TOTORA",
+    "ineCode": "031201",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399ab05b3b777e1b9",
+    "name": "OCURÍ",
+    "ineCode": "050404",
+    "department": "Potosí"
+  },
+  {
+    "id": "6983992196ec43f4d4e3",
+    "name": "PASORAPA",
+    "ineCode": "030202",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a48d4fb7469d7de",
+    "name": "PUERTO ACOSTA",
+    "ineCode": "020401",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a1cc9fea1aae29b",
+    "name": "PALOS BLANCOS",
+    "ineCode": "021104",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839997b5623174625d",
+    "name": "SAIPINA",
+    "ineCode": "071302",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399dbc57a67e3c584",
+    "name": "MACHARETÍ",
+    "ineCode": "011003",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "6983996241b931fd1553",
+    "name": "VILLA RIVERO",
+    "ineCode": "031402",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398e57d9844f08603",
+    "name": "SAN JAVIER",
+    "ineCode": "080102",
+    "department": "Beni"
+  },
+  {
+    "id": "698398803f6d52566f41",
+    "name": "PUERTO GONZALO MORENO",
+    "ineCode": "090301",
+    "department": "Pando"
+  },
+  {
+    "id": "69892892aa1ecc5a8d88",
+    "name": "COCAPATA",
+    "ineCode": "030303",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398fb06f85f518c25",
+    "name": "LAJA",
+    "ineCode": "021202",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983987e164d4e8b1f5d",
+    "name": "IXIAMAS",
+    "ineCode": "021501",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399a7b7ecb0db13e2",
+    "name": "CHALLAPATA",
+    "ineCode": "040201",
+    "department": "Oruro"
+  },
+  {
+    "id": "698399dad097befaa279",
+    "name": "INCAHUASI",
+    "ineCode": "010703",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839952501babb1a837",
+    "name": "LLALLAGUA",
+    "ineCode": "050203",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839a4a8342839b618d",
+    "name": "PUERTO PÉREZ",
+    "ineCode": "021204",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399736c90d9e5b354",
+    "name": "CORQUE",
+    "ineCode": "040301",
+    "department": "Oruro"
+  },
+  {
+    "id": "6983987c0262a2a67957",
+    "name": "SANTA ROSA",
+    "ineCode": "080303",
+    "department": "Beni"
+  },
+  {
+    "id": "6983992f67c8bdc1899c",
+    "name": "SANTIAGO DE CALLAPA",
+    "ineCode": "020308",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399554c4844c60eaf",
+    "name": "ARBIETO",
+    "ineCode": "030403",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398e8f0cc36e06a6b",
+    "name": "SAN PEDRO",
+    "ineCode": "071005",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398e57d9844f08603",
+    "name": "SAN JAVIER",
+    "ineCode": "071102",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399a6e76185543375",
+    "name": "ANDAMARCA",
+    "ineCode": "041201",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398e39fdd5de06a71",
+    "name": "YAPACANÍ",
+    "ineCode": "070403",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399dcbbb79f11a9d4",
+    "name": "HUACAYA (AUTONOMÍA GUARANÍ CHAQUEÑO DE HUACAYA)",
+    "ineCode": "011002",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698398c325ae530bba4a",
+    "name": "MOROCHATA",
+    "ineCode": "030302",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398a81454c2c47437",
+    "name": "PELECHUCO",
+    "ineCode": "020702",
+    "department": "La Paz"
+  },
+  {
+    "id": "698913fc0008e09f52cd",
+    "name": "SHINAHOTA",
+    "ineCode": "031602",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398709605d1659ce5",
+    "name": "NUEVA ESPERANZA",
+    "ineCode": "090501",
+    "department": "Pando"
+  },
+  {
+    "id": "698399acbb953f3bad57",
+    "name": "VILLA SERRANO",
+    "ineCode": "010801",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698399e1946e6b89a24b",
+    "name": "ENTRE RÍOS",
+    "ineCode": "031206",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399eb2cc6d02ef70e",
+    "name": "ZUDÁÑEZ",
+    "ineCode": "010301",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698399a16ff709041044",
+    "name": "PAZÑA",
+    "ineCode": "040602",
+    "department": "Oruro"
+  },
+  {
+    "id": "698399e647f370e94ac0",
+    "name": "LAS CARRERAS",
+    "ineCode": "010903",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "6983999b9b8a4dd8f1a6",
+    "name": "POROMA",
+    "ineCode": "010103",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "6983995c8a25f55e0337",
+    "name": "ARANI",
+    "ineCode": "030501",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a43628012436627",
+    "name": "VILLA ANCORAIMES",
+    "ineCode": "020202",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398e6842c1a7ddefb",
+    "name": "CHIMORÉ",
+    "ineCode": "031204",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a110b9570995c02",
+    "name": "LAGUNILLAS",
+    "ineCode": "070701",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398b448bde6426202",
+    "name": "SAN RAMÓN",
+    "ineCode": "071105",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398de341ad6f11ff7",
+    "name": "TIRAQUE",
+    "ineCode": "031601",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399531685e23fb027",
+    "name": "PUERTO SUÁREZ",
+    "ineCode": "071401",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398886ac98c3a9ae0",
+    "name": "HUACARAJE",
+    "ineCode": "080803",
+    "department": "Beni"
+  },
+  {
+    "id": "6983995aba4b79e61f32",
+    "name": "TACACHI",
+    "ineCode": "031404",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "6983995b9fbc13966c99",
+    "name": "COLPA BÉLGICA",
+    "ineCode": "070603",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398e27a0872cc5125",
+    "name": "VILLA TUNARI",
+    "ineCode": "031003",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398b448bde6426202",
+    "name": "SAN RAMÓN",
+    "ineCode": "080702",
+    "department": "Beni"
+  },
+  {
+    "id": "698399eede32ca05f83d",
+    "name": "PAMPA AULLAGAS",
+    "ineCode": "040802",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398c06669bf2c02e7",
+    "name": "SAPAHAQUI",
+    "ineCode": "020902",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398aaa7538f5f81a0",
+    "name": "PUERTO MAYOR DE GUAQUI",
+    "ineCode": "020802",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839930eaedb8ad53b8",
+    "name": "COLCAPIRHUA",
+    "ineCode": "030905",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a5258b842b0f19c",
+    "name": "TURCO",
+    "ineCode": "040402",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398f5670464b78148",
+    "name": "EL ALTO",
+    "ineCode": "020105",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839965a0930654069f",
+    "name": "VILLA GUALBERTO VILLARROEL",
+    "ineCode": "031405",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a227d51d3e1346d",
+    "name": "TACACOMA",
+    "ineCode": "020603",
+    "department": "La Paz"
+  },
+  {
+    "id": "698914140006eeda064b",
+    "name": "HUATAJATA",
+    "ineCode": "020205",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398a2cf56a02fddc7",
+    "name": "SAN IGNACIO",
+    "ineCode": "070301",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983996c913a4c15c69f",
+    "name": "SICAYA",
+    "ineCode": "030703",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "6983991e99d3fe03b0c0",
+    "name": "CHARAÑA",
+    "ineCode": "020305",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399a54f3bf3a14133",
+    "name": "MOJOCOYA",
+    "ineCode": "010303",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839a1dd0c11cf3bffd",
+    "name": "CARANAVI",
+    "ineCode": "022001",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a0c046e809a8fbe",
+    "name": "YOCALLA",
+    "ineCode": "050103",
+    "department": "Potosí"
+  },
+  {
+    "id": "6983991f7f0f2baf794d",
+    "name": "CARACOLLO",
+    "ineCode": "040102",
+    "department": "Oruro"
+  },
+  {
+    "id": "69839a0cd7002c4bed9c",
+    "name": "ICLA",
+    "ineCode": "010304",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "6983987c0262a2a67957",
+    "name": "SANTA ROSA",
+    "ineCode": "090401",
+    "department": "Pando"
+  },
+  {
+    "id": "6989141d002203c19ebb",
+    "name": "CHUA COCANI",
+    "ineCode": "020206",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399c8908f3061f250",
+    "name": "MONTEAGUDO",
+    "ineCode": "010501",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698399d7da56f5bfce56",
+    "name": "VILLAZÓN",
+    "ineCode": "051501",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839a061f6d57d91903",
+    "name": "VILLA VACA GUZMÁN",
+    "ineCode": "011001",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698398793933e527b8da",
+    "name": "SAN LORENZO",
+    "ineCode": "060501",
+    "department": "Tarija"
+  },
+  {
+    "id": "6983999e8fff54a0fe9b",
+    "name": "POCOATA",
+    "ineCode": "050403",
+    "department": "Potosí"
+  },
+  {
+    "id": "698399ad97ee94b5c441",
+    "name": "HUACHACALLA",
+    "ineCode": "040501",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398e482992c79a7d9",
+    "name": "EL PUENTE",
+    "ineCode": "060502",
+    "department": "Tarija"
+  },
+  {
+    "id": "69839936cffa55b0abbb",
+    "name": "SAN PEDRO DE CURAHUARA",
+    "ineCode": "021801",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399754d4a828f298e",
+    "name": "MACHACAMARCA",
+    "ineCode": "040702",
+    "department": "Oruro"
+  },
+  {
+    "id": "698399a079d17cd67acc",
+    "name": "ESCARA",
+    "ineCode": "040502",
+    "department": "Oruro"
+  },
+  {
+    "id": "69839889357b77b1f1ea",
+    "name": "SANTA ANA",
+    "ineCode": "080401",
+    "department": "Beni"
+  },
+  {
+    "id": "69839882336638a69c0a",
+    "name": "PUERTO RICO",
+    "ineCode": "090201",
+    "department": "Pando"
+  },
+  {
+    "id": "69839a1ea14be0c0f130",
+    "name": "NUESTRA SEÑORA DE LA PAZ",
+    "ineCode": "020101",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a1f88d81a2dd4f8",
+    "name": "YANACACHI",
+    "ineCode": "021103",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398e8f0cc36e06a6b",
+    "name": "SAN PEDRO",
+    "ineCode": "050501",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839a49b063cdaccd5a",
+    "name": "PUERTO MAYOR DE CARABUCO",
+    "ineCode": "020403",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398b7d8269eb7c205",
+    "name": "SAN ANTONIO DE LOMERIO",
+    "ineCode": "071104",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398b8e06f352e4870",
+    "name": "QUIME",
+    "ineCode": "021002",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839991a92bef8f8b46",
+    "name": "ROBORÉ",
+    "ineCode": "070503",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399a622921e536e0d",
+    "name": "CRUZ DE MACHACAMARCA",
+    "ineCode": "040503",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398a4df6273ae9a3b",
+    "name": "SAN BORJA",
+    "ineCode": "080302",
+    "department": "Beni"
+  },
+  {
+    "id": "698399a456275cfc2256",
+    "name": "RAVELO",
+    "ineCode": "050402",
+    "department": "Potosí"
+  },
+  {
+    "id": "698914330029f204042e",
+    "name": "SAN PEDRO DE MACHA",
+    "ineCode": "050405",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839996b37ac6b18a7a",
+    "name": "LA GUARDIA",
+    "ineCode": "070104",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839a4fd7aa213265e5",
+    "name": "TARACO",
+    "ineCode": "020807",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398716afe92535791",
+    "name": "SANTOS MERCADO",
+    "ineCode": "090503",
+    "department": "Pando"
+  },
+  {
+    "id": "698398f95d50be00baea",
+    "name": "SAN MIGUEL",
+    "ineCode": "070302",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398b1796a10ab6221",
+    "name": "LORETO",
+    "ineCode": "080601",
+    "department": "Beni"
+  },
+  {
+    "id": "698399761808e6228a22",
+    "name": "COTOCA",
+    "ineCode": "070102",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399cf9e08567fcf95",
+    "name": "CAMIRI",
+    "ineCode": "070706",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839939cc6a18dbaad6",
+    "name": "TOCO",
+    "ineCode": "030802",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a0daa1e348d0ffe",
+    "name": "SOPACHUY",
+    "ineCode": "010403",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698399de8bc4cffe51ee",
+    "name": "CULPINA",
+    "ineCode": "010902",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839873a1748492c884",
+    "name": "BELLA FLOR",
+    "ineCode": "090104",
+    "department": "Pando"
+  },
+  {
+    "id": "698399ec2121f592616d",
+    "name": "GUTIÉRREZ (AUTONOMÍA INDÍGENA KEREIMBA IYAAMBAE)",
+    "ineCode": "070705",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983993410af866546ae",
+    "name": "BUENA VISTA",
+    "ineCode": "070401",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399b0587a6e5948e3",
+    "name": "CARANGAS",
+    "ineCode": "041503",
+    "department": "Oruro"
+  },
+  {
+    "id": "6983991878a12332d3cb",
+    "name": "COLQUIRI",
+    "ineCode": "021004",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a2b969864d872bd",
+    "name": "CKOCHAS",
+    "ineCode": "051103",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839a04b8f4492dd4f0",
+    "name": "YAMPARÁEZ",
+    "ineCode": "010602",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839966e6740afbed0a",
+    "name": "ANZALDO",
+    "ineCode": "030402",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a137f18c77d2ad3",
+    "name": "CUEVO",
+    "ineCode": "070704",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983992e86b3c9e24ab5",
+    "name": "TOTORA",
+    "ineCode": "041301",
+    "department": "Oruro"
+  },
+  {
+    "id": "69839954b1ae3ec5358f",
+    "name": "SANTIVÁÑEZ",
+    "ineCode": "030702",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a23538031c4a386",
+    "name": "SORATA",
+    "ineCode": "020601",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398f856226045c9d6",
+    "name": "SAN JUAN",
+    "ineCode": "070404",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839a50b08b67b2a69c",
+    "name": "TIAHUANACU",
+    "ineCode": "020803",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399239cbc250987f9",
+    "name": "MOROMORO",
+    "ineCode": "070803",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399ea849a34ee5fa2",
+    "name": "LA RIVERA",
+    "ineCode": "041501",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398f48910854f12ae",
+    "name": "INQUISIVI",
+    "ineCode": "021001",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983996ea90112052be6",
+    "name": "TORO TORO",
+    "ineCode": "050502",
+    "department": "Potosí"
+  },
+  {
+    "id": "698399d240a5243f8f13",
+    "name": "HUACARETA",
+    "ineCode": "010502",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839a1a5401aafb43af",
+    "name": "CORIPATA",
+    "ineCode": "021402",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398e482992c79a7d9",
+    "name": "EL PUENTE",
+    "ineCode": "071503",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839a4759079f7177bb",
+    "name": "LLICA",
+    "ineCode": "051401",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398b51ea7efb60458",
+    "name": "JESÚS DE MACHAKA",
+    "ineCode": "020806",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398f0d6410b5145a2",
+    "name": "SAN CARLOS",
+    "ineCode": "070402",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839964d021b735dd30",
+    "name": "CAPINOTA",
+    "ineCode": "030701",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839872299e5f6170cc",
+    "name": "INGAVI",
+    "ineCode": "090402",
+    "department": "Pando"
+  },
+  {
+    "id": "698399d559755710b4c7",
+    "name": "YUNCHARÁ",
+    "ineCode": "060402",
+    "department": "Tarija"
+  },
+  {
+    "id": "6983992940d9fb3a3e05",
+    "name": "SICASICA",
+    "ineCode": "021301",
+    "department": "La Paz"
+  },
+  {
+    "id": "69891457002961d9efd2",
+    "name": "HUMANATA",
+    "ineCode": "020404",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399a32575b010ba37",
+    "name": "PRESTO",
+    "ineCode": "010302",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839a4c59f313b0d2c1",
+    "name": "SALINAS DE GARCI MENDOZA (AUTONOMÍA INDÍGENA ORIGINARIO CAMPESINA DE SALINAS)",
+    "ineCode": "040801",
+    "department": "Oruro"
+  },
+  {
+    "id": "6983987a3f6bffcfe256",
+    "name": "FILADELFIA",
+    "ineCode": "090203",
+    "department": "Pando"
+  },
+  {
+    "id": "69839a4ec65fd3bf4f90",
+    "name": "TAHUA",
+    "ineCode": "051402",
+    "department": "Potosí"
+  },
+  {
+    "id": "6983997217bc9d710e0c",
+    "name": "SANTIAGO DE HUAYLLAMARCA",
+    "ineCode": "041601",
+    "department": "Oruro"
+  },
+  {
+    "id": "6983992dc27bf8d5e1ed",
+    "name": "SACABA",
+    "ineCode": "031001",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a2531f17ee69419",
+    "name": "CHUMA",
+    "ineCode": "020501",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398eff2142f2dea0b",
+    "name": "COLOMI",
+    "ineCode": "031002",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399ae5f0ca6a2fe43",
+    "name": "ESMERALDA",
+    "ineCode": "040505",
+    "department": "Oruro"
+  },
+  {
+    "id": "6983995d5990964e29f4",
+    "name": "PAPEL PAMPA",
+    "ineCode": "021802",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a2a7f4893d8a2e6",
+    "name": "PUNA",
+    "ineCode": "051101",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839a1bb7fe8a197224",
+    "name": "APOLO",
+    "ineCode": "020701",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398e1bc82fd8e1091",
+    "name": "COMBAYA",
+    "ineCode": "020605",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983999509621a7ca1b6",
+    "name": "BOLÍVAR",
+    "ineCode": "031501",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398b09010d94ad304",
+    "name": "SAN ANDRÉS",
+    "ineCode": "080602",
+    "department": "Beni"
+  },
+  {
+    "id": "69839a1449bf78742f86",
+    "name": "MOJINETE",
+    "ineCode": "051002",
+    "department": "Potosí"
+  },
+  {
+    "id": "6983988145702acccc1c",
+    "name": "BOLPEBRA",
+    "ineCode": "090103",
+    "department": "Pando"
+  },
+  {
+    "id": "6983999016716da493e6",
+    "name": "ARAMPAMPA",
+    "ineCode": "051301",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398dc453224c6a49d",
+    "name": "LURIBAY",
+    "ineCode": "020901",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398af2e99b1b3d13b",
+    "name": "SAN RAFAEL",
+    "ineCode": "070303",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839a45243b68c069b3",
+    "name": "COLCHA \"K\"",
+    "ineCode": "050901",
+    "department": "Potosí"
+  },
+  {
+    "id": "6983996f9a92c733788e",
+    "name": "CHOQUECOTA",
+    "ineCode": "040302",
+    "department": "Oruro"
+  },
+  {
+    "id": "698399940f6612d86b4a",
+    "name": "EL TORNO",
+    "ineCode": "070105",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399cb822ff8cdd26e",
+    "name": "TOMAVE",
+    "ineCode": "051202",
+    "department": "Potosí"
+  },
+  {
+    "id": "698399d638cba1bcc45d",
+    "name": "YACUIBA",
+    "ineCode": "060301",
+    "department": "Tarija"
+  },
+  {
+    "id": "698399b2b63566fbde05",
+    "name": "TOMINA",
+    "ineCode": "010402",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698399e1946e6b89a24b",
+    "name": "ENTRE RÍOS",
+    "ineCode": "060601",
+    "department": "Tarija"
+  },
+  {
+    "id": "69839a4b54b058eda7bf",
+    "name": "SABAYA",
+    "ineCode": "040901",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398b6ac85be30fd3b",
+    "name": "CAIROMA",
+    "ineCode": "020905",
+    "department": "La Paz"
+  },
+  {
+    "id": "69891471000ecf35baa7",
+    "name": "ALTO BENI",
+    "ineCode": "022002",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399692023a4d9aa59",
+    "name": "ARQUE",
+    "ineCode": "030601",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "6983987b7192f2457d53",
+    "name": "SENA",
+    "ineCode": "090303",
+    "department": "Pando"
+  },
+  {
+    "id": "698399582aba22946392",
+    "name": "EUCALIPTUS",
+    "ineCode": "041101",
+    "department": "Oruro"
+  },
+  {
+    "id": "698914760030100b1b33",
+    "name": "HUARINA",
+    "ineCode": "020203",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983999ad247b5cd9468",
+    "name": "SACACA",
+    "ineCode": "050701",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839a0723b916280036",
+    "name": "SANTUARIO DE QUILLACAS",
+    "ineCode": "040202",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398b9cd6665790b8d",
+    "name": "CALAMARCA",
+    "ineCode": "021304",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399a8a3c3fe144248",
+    "name": "SUCRE",
+    "ineCode": "010101",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839883cd801329537e",
+    "name": "PUERTO SILES",
+    "ineCode": "080703",
+    "department": "Beni"
+  },
+  {
+    "id": "6983995fecded0a121aa",
+    "name": "CURAHUARA DE CARANGAS",
+    "ineCode": "040401",
+    "department": "Oruro"
+  },
+  {
+    "id": "69839a155cc2bc698ea0",
+    "name": "SAN ANTONIO DE ESMORUCO",
+    "ineCode": "051003",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398ff944b9efa5925",
+    "name": "GENERAL SAAVEDRA",
+    "ineCode": "071002",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398fa42581a86e41c",
+    "name": "CAJUATA",
+    "ineCode": "021003",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399a2446c6a10a897",
+    "name": "COLQUECHACA",
+    "ineCode": "050401",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398849624a22d9631",
+    "name": "EXALTACIÓN",
+    "ineCode": "080402",
+    "department": "Beni"
+  },
+  {
+    "id": "6983998f25c9dedec3ae",
+    "name": "TOLEDO",
+    "ineCode": "041001",
+    "department": "Oruro"
+  },
+  {
+    "id": "6983992ca8946db0760a",
+    "name": "CALACOTO",
+    "ineCode": "020303",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399176bd1f50b1e5c",
+    "name": "SAN JOSÉ",
+    "ineCode": "070501",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839995df7a22fa287f",
+    "name": "OMEREQUE",
+    "ineCode": "030203",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398ae54ed930a1c0c",
+    "name": "DESAGUADERO",
+    "ineCode": "020804",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983988b60df6dca4993",
+    "name": "CONCEPCIÓN",
+    "ineCode": "071101",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839a1882689551cd24",
+    "name": "TEOPONTE",
+    "ineCode": "020608",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a196e2fd1c204a5",
+    "name": "COROICO",
+    "ineCode": "021401",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a09ed33ac667253",
+    "name": "URMIRI",
+    "ineCode": "050104",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839959f1a58412ebc4",
+    "name": "VACAS",
+    "ineCode": "030502",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399506947c074b57e",
+    "name": "PORONGO",
+    "ineCode": "070103",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839922c97b14ecd6a0",
+    "name": "CHAYANTA",
+    "ineCode": "050202",
+    "department": "Potosí"
+  },
+  {
+    "id": "698399e73161ae5e0f71",
+    "name": "TUPIZA",
+    "ineCode": "050801",
+    "department": "Potosí"
+  },
+  {
+    "id": "698399eced64dcbd5c1b",
+    "name": "TACOBAMBA",
+    "ineCode": "050303",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398eb38062b56a5e8",
+    "name": "SANTIAGO DE MACHACA",
+    "ineCode": "021901",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398ab93bd1fc1b8c7",
+    "name": "ACHOCALLA",
+    "ineCode": "020104",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983991a349c2bbdb755",
+    "name": "UMALA",
+    "ineCode": "021302",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399591d6cd80fe96b",
+    "name": "POCONA",
+    "ineCode": "031203",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "6983992bab70bb1c5ff3",
+    "name": "OKINAWA UNO",
+    "ineCode": "070202",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399575e1ba4f49056",
+    "name": "TOLATA",
+    "ineCode": "030803",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398bdc6418954467f",
+    "name": "PUERTO VILLARROEL",
+    "ineCode": "031205",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a0ea5d2100219ad",
+    "name": "ALCALÁ",
+    "ineCode": "010404",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839a4dcf11b8c0106f",
+    "name": "SAN PEDRO DE TIQUINA",
+    "ineCode": "021702",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398ed2744b1372f81",
+    "name": "MINEROS",
+    "ineCode": "071003",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983991b0539cbad1852",
+    "name": "VINTO",
+    "ineCode": "030904",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a08004373d1ccbc",
+    "name": "YOTALA",
+    "ineCode": "010102",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698399d14b0a0785c92e",
+    "name": "COTAGAITA",
+    "ineCode": "050601",
+    "department": "Potosí"
+  },
+  {
+    "id": "698399ce9a31269b48d6",
+    "name": "AZURDUY",
+    "ineCode": "010201",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698398c5f15947515435",
+    "name": "COLQUENCHA",
+    "ineCode": "021306",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983987cebe686f19f06",
+    "name": "REYES",
+    "ineCode": "080301",
+    "department": "Beni"
+  },
+  {
+    "id": "698399e4df3b1f1c8f9e",
+    "name": "VILLA MONTES",
+    "ineCode": "060303",
+    "department": "Tarija"
+  },
+  {
+    "id": "69839a278a1c17c5a898",
+    "name": "BATALLAS",
+    "ineCode": "021203",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398b5e369bf9cccb2",
+    "name": "LA (MARKA) SAN ANDRÉS DE MACHACA",
+    "ineCode": "020805",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399285c633218310e",
+    "name": "CATACORA",
+    "ineCode": "021902",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398c209cbeda057f9",
+    "name": "QUIABAYA",
+    "ineCode": "020604",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983996ad16a15c0159d",
+    "name": "ALALAY",
+    "ineCode": "031303",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398e9d2bc83d653b9",
+    "name": "NAZACARA DE PACAJES",
+    "ineCode": "020307",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399c9dea1e392576f",
+    "name": "EL VILLAR",
+    "ineCode": "010405",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "6983999f96cb294ac4ee",
+    "name": "POSTRERVALLE",
+    "ineCode": "070804",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983988c8341f1276248",
+    "name": "SAN BUENAVENTURA",
+    "ineCode": "021502",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398bbc3f744a87896",
+    "name": "FERNÁNDEZ ALONSO",
+    "ineCode": "071004",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698914a20002bf21db79",
+    "name": "ESCOMA",
+    "ineCode": "020405",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398a90346fe65ed30",
+    "name": "CURVA",
+    "ineCode": "021602",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983991d0f5226b8f547",
+    "name": "COCHABAMBA",
+    "ineCode": "030101",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399379f172dba4a14",
+    "name": "COMARAPA",
+    "ineCode": "071301",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399abd501cee893fc",
+    "name": "PUCARÁ",
+    "ineCode": "070805",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399d909cfafc7175d",
+    "name": "TODOS SANTOS",
+    "ineCode": "041502",
+    "department": "Oruro"
+  },
+  {
+    "id": "698399195c97647b50e5",
+    "name": "POJO",
+    "ineCode": "031202",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a0fa177c80a00a6",
+    "name": "UYUNI",
+    "ineCode": "051201",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839963102ac457f488",
+    "name": "TARATA",
+    "ineCode": "030401",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a518702dedd5f87",
+    "name": "URU CHIPAYA (NACIÓN ORIGINARIA URU CHIPAYA)",
+    "ineCode": "040903",
+    "department": "Oruro"
+  },
+  {
+    "id": "698399d450683e2cb7de",
+    "name": "CARAPARÍ",
+    "ineCode": "060302",
+    "department": "Tarija"
+  },
+  {
+    "id": "698914ac00025feae2ee",
+    "name": "CHUQUIHUTA AYLLU JUCUMANI",
+    "ineCode": "050204",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398f2d73fc2c6aacc",
+    "name": "TITO YUPANQUI",
+    "ineCode": "021703",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983991dcb0f4ce65185",
+    "name": "SIPESIPE",
+    "ineCode": "030902",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a11ced9e68cbdfc",
+    "name": "CHAQUÍ",
+    "ineCode": "050302",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839992e8227ce2c00c",
+    "name": "ORURO",
+    "ineCode": "040101",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398a9cd6b45d66fce",
+    "name": "SAN MATÍAS",
+    "ineCode": "071201",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398bfa1ae89130d6b",
+    "name": "CAQUIAVIRI",
+    "ineCode": "020302",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839932de73a316afd7",
+    "name": "PAILÓN",
+    "ineCode": "070502",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839876005704672862",
+    "name": "VILLA NUEVA",
+    "ineCode": "090502",
+    "department": "Pando"
+  },
+  {
+    "id": "69839924776483e0f39b",
+    "name": "POOPÓ",
+    "ineCode": "040601",
+    "department": "Oruro"
+  },
+  {
+    "id": "6983998d89cde374b1f6",
+    "name": "MIZQUE",
+    "ineCode": "031301",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398ad645c0e7e5e6e",
+    "name": "MECAPACA",
+    "ineCode": "020103",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983990071ab12faf30f",
+    "name": "TIQUIPAYA",
+    "ineCode": "030903",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399d317d1eb99bb4b",
+    "name": "SAN PABLO",
+    "ineCode": "051001",
+    "department": "Potosí"
+  },
+  {
+    "id": "6983996db4f273c00068",
+    "name": "ACASIO",
+    "ineCode": "051302",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398793933e527b8da",
+    "name": "SAN LORENZO",
+    "ineCode": "090302",
+    "department": "Pando"
+  },
+  {
+    "id": "698399d0752580dc23d6",
+    "name": "VITICHI",
+    "ineCode": "050602",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839a12a007b358e701",
+    "name": "BOYUIBE",
+    "ineCode": "070707",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698914bc0001a5dbc683",
+    "name": "VILLA CHARCAS",
+    "ineCode": "010704",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698398e8f0cc36e06a6b",
+    "name": "SAN PEDRO",
+    "ineCode": "090202",
+    "department": "Pando"
+  },
+  {
+    "id": "698399caa99fcec9fa32",
+    "name": "TARVITA",
+    "ineCode": "010202",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698398bedc6e2421eaca",
+    "name": "TIPUANI",
+    "ineCode": "020606",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839990d270d6756db5",
+    "name": "VILA VILA",
+    "ineCode": "031302",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399b0f019a1d15f02",
+    "name": "SANTIAGO DE HUARI",
+    "ineCode": "041401",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398ac59f8734928bc",
+    "name": "VIACHA",
+    "ineCode": "020801",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983987c0262a2a67957",
+    "name": "SANTA ROSA",
+    "ineCode": "070602",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398a6b6649360d3d4",
+    "name": "ASCENCIÓN DE GUARAYOS",
+    "ineCode": "071501",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983992a0a2a2f2cf771",
+    "name": "WARNES",
+    "ineCode": "070201",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983988794455b2d255c",
+    "name": "BAURES",
+    "ineCode": "080802",
+    "department": "Beni"
+  },
+  {
+    "id": "698398c43a27209752b1",
+    "name": "LA ASUNTA",
+    "ineCode": "021105",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398a2cf56a02fddc7",
+    "name": "SAN IGNACIO",
+    "ineCode": "080501",
+    "department": "Beni"
+  },
+  {
+    "id": "698398fde67e4bfd017f",
+    "name": "WALDO BALLIVIÁN",
+    "ineCode": "020306",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399cc8338149ee580",
+    "name": "PORCO",
+    "ineCode": "051203",
+    "department": "Potosí"
+  },
+  {
+    "id": "6983993ac5964d313a47",
+    "name": "PARIA",
+    "ineCode": "040104",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398ee1fdad4c83576",
+    "name": "ICHOCA",
+    "ineCode": "021005",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398785b7278d38424",
+    "name": "PORVENIR",
+    "ineCode": "090102",
+    "department": "Pando"
+  },
+  {
+    "id": "6983999d511987f6e2d1",
+    "name": "UNCÍA",
+    "ineCode": "050201",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398bada0c1f49992c",
+    "name": "VILLA LIBERTAD LICOMA",
+    "ineCode": "021006",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a08cdebf4fae3dc",
+    "name": "PADILLA",
+    "ineCode": "010401",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839a2151bea8a41cfe",
+    "name": "MAPIRI",
+    "ineCode": "020607",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398a5bb60ed4f8d91",
+    "name": "PUERTO MENOR DE RURRENABAQUE",
+    "ineCode": "080304",
+    "department": "Beni"
+  },
+  {
+    "id": "698398c1412f26de99b0",
+    "name": "COLLANA",
+    "ineCode": "021307",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839969d8697fa298a5",
+    "name": "TACOPAYA",
+    "ineCode": "030602",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398fbcb967b03ff45",
+    "name": "PALCA",
+    "ineCode": "020102",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399d9d5eae05366f3",
+    "name": "CAMARGO",
+    "ineCode": "010701",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839925451ad1240d0e",
+    "name": "TRIGAL",
+    "ineCode": "070802",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398fe8822297cbd10",
+    "name": "QUILLACOLLO",
+    "ineCode": "030901",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a463f96014e01d5",
+    "name": "COPACABANA",
+    "ineCode": "021701",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398f71273fa1ad48f",
+    "name": "IRUPANA",
+    "ineCode": "021102",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983995f20a92031e7e1",
+    "name": "PAMPAGRANDE",
+    "ineCode": "070902",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399edd528a7eca644",
+    "name": "TINGUIPAYA",
+    "ineCode": "050102",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839927125dcfdbc1a8",
+    "name": "VALLEGRANDE",
+    "ineCode": "070801",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398df11de3a5926c0",
+    "name": "CARIPUYO",
+    "ineCode": "050702",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839a5398e06f8710cf",
+    "name": "SANTIAGO DE HUATA",
+    "ineCode": "020204",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399af5f8d9fc97956",
+    "name": "YUNGUYO DEL LITORAL",
+    "ineCode": "040504",
+    "department": "Oruro"
+  },
+  {
+    "id": "698398f1b1aa3ad5538f",
+    "name": "YACO",
+    "ineCode": "020903",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839956611b9435e01f",
+    "name": "PUNATA",
+    "ineCode": "031401",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398f6371e199a4a49",
+    "name": "CHULUMANI",
+    "ineCode": "021101",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398e0bade0c62ee16",
+    "name": "CABEZAS",
+    "ineCode": "070703",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398b2a453a6bbb58a",
+    "name": "AYATA",
+    "ineCode": "020502",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399302df7ed3d8a57",
+    "name": "PORTACHUELO",
+    "ineCode": "070601",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839a2893bc10b8c3f0",
+    "name": "SAN LUCAS",
+    "ineCode": "010702",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698399e84673fd11f595",
+    "name": "SAN AGUSTÍN",
+    "ineCode": "051601",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839876be748b5a3a2c",
+    "name": "RIBERALTA",
+    "ineCode": "080201",
+    "department": "Beni"
+  },
+  {
+    "id": "69839a29a1b949bad72e",
+    "name": "BETANZOS",
+    "ineCode": "050301",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398afe8eb95ee9732",
+    "name": "TRINIDAD",
+    "ineCode": "080101",
+    "department": "Beni"
+  },
+  {
+    "id": "698399dd95dd51e222eb",
+    "name": "SAN PEDRO DE QUEMES",
+    "ineCode": "050902",
+    "department": "Potosí"
+  },
+  {
+    "id": "6983997097adc7e22dae",
+    "name": "SACABAMBA",
+    "ineCode": "030404",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839a421a1a6e7c4a34",
+    "name": "ACHACACHI",
+    "ineCode": "020201",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839a205a775df76aae",
+    "name": "MOCOMOCO",
+    "ineCode": "020402",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398f3c5ecc63777e2",
+    "name": "PUCARANI",
+    "ineCode": "021201",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398b398a2545293f7",
+    "name": "AUCAPATA",
+    "ineCode": "020503",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839999ee2f6e5a11fd",
+    "name": "AIQUILE",
+    "ineCode": "030201",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399e96916e0cb08d3",
+    "name": "TARIJA",
+    "ineCode": "060101",
+    "department": "Tarija"
+  },
+  {
+    "id": "6983992acfd2f635a8fc",
+    "name": "CUATRO CAÑADAS",
+    "ineCode": "071106",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399260fba0939893e",
+    "name": "QUIRUSILLAS",
+    "ineCode": "070904",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839953df7ac2ffcb1d",
+    "name": "PUERTO QUIJARRO",
+    "ineCode": "071402",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "69839a1699dc4b357f8d",
+    "name": "PADCAYA",
+    "ineCode": "060201",
+    "department": "Tarija"
+  },
+  {
+    "id": "698398bc9728f34ac2e4",
+    "name": "COMANCHE",
+    "ineCode": "020304",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399df9fef497664a2",
+    "name": "VILLA ABECIA",
+    "ineCode": "010901",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "698398ec04fce94c3e9e",
+    "name": "COROCORO",
+    "ineCode": "020301",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839998e5744fdaec6d",
+    "name": "EL CHORO",
+    "ineCode": "040103",
+    "department": "Oruro"
+  },
+  {
+    "id": "69839a2646b999dc0f8e",
+    "name": "CHARAZANI",
+    "ineCode": "021601",
+    "department": "La Paz"
+  },
+  {
+    "id": "698398c5110ca82609ba",
+    "name": "AYOPAYA",
+    "ineCode": "030301",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698399e0ac6b57fa4111",
+    "name": "ATOCHA",
+    "ineCode": "050802",
+    "department": "Potosí"
+  },
+  {
+    "id": "698398fccd80ed967d75",
+    "name": "SAN JULIÁN",
+    "ineCode": "071103",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983999c74b7c3906e90",
+    "name": "ANTEQUERA",
+    "ineCode": "040603",
+    "department": "Oruro"
+  },
+  {
+    "id": "69839a0b3109ff07b9ec",
+    "name": "POTOSÍ",
+    "ineCode": "050101",
+    "department": "Potosí"
+  },
+  {
+    "id": "698399745c101a804eb8",
+    "name": "HUANUNI",
+    "ineCode": "040701",
+    "department": "Oruro"
+  },
+  {
+    "id": "698399319c5b107aaf0e",
+    "name": "TAPACARÍ",
+    "ineCode": "031101",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "6983993511873d9b3856",
+    "name": "CHACARILLA",
+    "ineCode": "021803",
+    "department": "La Paz"
+  },
+  {
+    "id": "6983987f0db1f92ee99c",
+    "name": "SAN JOAQUÍN",
+    "ineCode": "080701",
+    "department": "Beni"
+  },
+  {
+    "id": "698398dd70a8e49a5f15",
+    "name": "MALLA",
+    "ineCode": "020904",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399163495f844d48f",
+    "name": "PATACAMAYA",
+    "ineCode": "021305",
+    "department": "La Paz"
+  },
+  {
+    "id": "69839885b7b303c6e781",
+    "name": "MAGDALENA",
+    "ineCode": "080801",
+    "department": "Beni"
+  },
+  {
+    "id": "6983995e5c5f4c21b767",
+    "name": "CLIZA",
+    "ineCode": "030801",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "69839874d1616eeac5ca",
+    "name": "GUAYARAMERÍN",
+    "ineCode": "080202",
+    "department": "Beni"
+  },
+  {
+    "id": "69839a4433cc21e92def",
+    "name": "COIPASA",
+    "ineCode": "040902",
+    "department": "Oruro"
+  },
+  {
+    "id": "69839963dd5371555f0f",
+    "name": "MAIRANA",
+    "ineCode": "070903",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398ea6e2ba224caa5",
+    "name": "AYO AYO",
+    "ineCode": "021303",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399681f2445d58769",
+    "name": "SAMAIPATA",
+    "ineCode": "070901",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399206b993d77b9db",
+    "name": "CHARAGUA (AUTONOMÍA GUARANÍ CHARAGUA IYAMBAE)",
+    "ineCode": "070702",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399613415da3b0042",
+    "name": "SANTA CRUZ DE LA SIERRA",
+    "ineCode": "070101",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "6983991beb27f4a22b35",
+    "name": "MONTERO",
+    "ineCode": "071001",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399cd57f8b96d5a98",
+    "name": "CAIZA \"D\"",
+    "ineCode": "051102",
+    "department": "Potosí"
+  },
+  {
+    "id": "69839951b4f7152082ee",
+    "name": "EL CARMEN RIVERO TÓRREZ",
+    "ineCode": "071403",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698398830087d877f5f0",
+    "name": "COBIJA",
+    "ineCode": "090101",
+    "department": "Pando"
+  },
+  {
+    "id": "69839a1788f8de2ef70f",
+    "name": "BERMEJO",
+    "ineCode": "060202",
+    "department": "Tarija"
+  },
+  {
+    "id": "698399a9d7836a8bf13c",
+    "name": "BELÉN DE ANDAMARCA",
+    "ineCode": "041202",
+    "department": "Oruro"
+  },
+  {
+    "id": "69839a243f1468e0c8c5",
+    "name": "GUANAY",
+    "ineCode": "020602",
+    "department": "La Paz"
+  },
+  {
+    "id": "698399b1df7c7afd3be8",
+    "name": "TARABUCO",
+    "ineCode": "010601",
+    "department": "Chuquisaca"
+  },
+  {
+    "id": "69839935e2d9d51022d0",
+    "name": "SAN BENITO",
+    "ineCode": "031403",
+    "department": "Cochabamba"
+  },
+  {
+    "id": "698398a3ed0eca98d83e",
+    "name": "URUBICHÁ",
+    "ineCode": "071502",
+    "department": "Santa Cruz"
+  },
+  {
+    "id": "698399d715585b7a0103",
+    "name": "URIONDO",
+    "ineCode": "060401",
+    "department": "Tarija"
+  }
+]

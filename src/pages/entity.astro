@@ -4,5 +4,23 @@ import EntityPage from '../components/entity/EntityPage';
 ---
 
 <Layout title="Entidad">
-  <EntityPage client:load />
+  <div
+    id="loading-placeholder"
+    class="min-h-screen flex items-center justify-center"
+  >
+    <div class="text-muted-foreground">Cargando...</div>
+  </div>
+  <EntityPage client:only="react" />
 </Layout>
+
+<style>
+  #loading-placeholder {
+    animation: fadeOut 0.3s ease-out 0.5s forwards;
+  }
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      display: none;
+    }
+  }
+</style>

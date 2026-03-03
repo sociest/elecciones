@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import type { Entity, Claim } from '@/lib/queries/types';
 import { buildPath } from '@/lib/utils/paths';
+import { getOptimizedImageUrl } from '@/lib/utils/image';
 
 const EMPTY_CLAIMS: Claim[] = [];
 
@@ -130,8 +131,10 @@ export function EducationView({
             <div className="w-44 h-44 bg-white rounded-full flex items-center justify-center shadow-2xl p-4 border-4 border-hunter/20 overflow-hidden relative">
               {logoUrl ? (
                 <img
-                  src={logoUrl}
+                  src={getOptimizedImageUrl(logoUrl, 600)}
                   alt={`Escudo oficial ${nombre}`}
+                  width={600}
+                  height={600}
                   className="w-full h-full object-contain drop-shadow-sm relative z-10"
                 />
               ) : (
@@ -160,7 +163,7 @@ export function EducationView({
               {nombre}
             </h1>
             {alias && (
-              <div className="flex justify-center items-center gap-4 text-2xl font-bold text-hunter/40 italic">
+              <div className="flex justify-center items-center gap-4 text-2xl font-bold text-hunter/70 italic">
                 <span>{alias}</span>
               </div>
             )}
@@ -179,7 +182,7 @@ export function EducationView({
                 <h3 className="text-3xl font-black tracking-tight">
                   Vínculos Institucionales
                 </h3>
-                <p className="text-[10px] font-bold opacity-30 uppercase tracking-[0.3em]">
+                <p className="text-[10px] font-bold opacity-70 uppercase tracking-[0.3em]">
                   Conexiones detectadas en el sistema
                 </p>
               </div>
@@ -206,7 +209,7 @@ export function EducationView({
                         <h4 className="text-xl font-black group-hover:text-primary-green">
                           {v.entidad}
                         </h4>
-                        <p className="text-[11px] font-bold opacity-40 uppercase tracking-widest mt-1">
+                        <p className="text-[11px] font-bold opacity-70 uppercase tracking-widest mt-1">
                           {v.relacion}{' '}
                           {v.detalle
                             ? `• ${typeof v.detalle === 'string' && v.detalle.length > 30 ? v.detalle.substring(0, 30) + '...' : v.detalle}`
@@ -217,7 +220,7 @@ export function EducationView({
                     {v.fechaFin && (
                       <div className="mt-4 md:mt-0 flex items-center gap-4">
                         <div className="text-right">
-                          <p className="text-[9px] font-black uppercase opacity-20 text-pretty">
+                          <p className="text-[9px] font-black uppercase opacity-60 text-pretty">
                             Finalización
                           </p>
                           <p className="text-xs font-black">{v.fechaFin}</p>
@@ -230,7 +233,7 @@ export function EducationView({
               </div>
             ) : (
               <div className="text-center p-8 bg-primary-green/5 rounded-[3rem]">
-                <p className="text-sm font-bold opacity-40 uppercase tracking-widest">
+                <p className="text-sm font-bold opacity-70 uppercase tracking-widest">
                   No hay vínculos registrados
                 </p>
               </div>
@@ -242,36 +245,36 @@ export function EducationView({
           <div className="bg-hunter p-10 rounded-[3.5rem] border border-primary-green/10 shadow-sm relative overflow-hidden group">
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-8">
-                <Info size={18} className="opacity-30" />
-                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-30">
+                <Info size={18} className="opacity-70" />
+                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-70">
                   Información del Registro
                 </h4>
               </div>
 
               <div className="space-y-8">
                 <div>
-                  <p className="text-[9px] font-black opacity-30 uppercase mb-2">
+                  <p className="text-[9px] font-black opacity-70 uppercase mb-2">
                     Código de Identificación
                   </p>
-                  <p className="text-xs font-mono font-bold break-all opacity-70 leading-relaxed">
+                  <p className="text-xs font-mono font-bold break-all opacity-80 leading-relaxed">
                     {idRegistro}
                   </p>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 p-4 bg-white/40 rounded-2xl border border-primary-green/5">
-                    <Calendar size={16} className="opacity-30" />
+                    <Calendar size={16} className="opacity-70" />
                     <div>
-                      <p className="text-[9px] font-black opacity-30 uppercase">
+                      <p className="text-[9px] font-black opacity-70 uppercase">
                         Fecha de Registro
                       </p>
                       <p className="text-xs font-bold">{fechaCreacion}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4 p-4 bg-white/40 rounded-2xl border border-primary-green/5">
-                    <History size={16} className="opacity-30" />
+                    <History size={16} className="opacity-70" />
                     <div>
-                      <p className="text-[9px] font-black opacity-30 uppercase">
+                      <p className="text-[9px] font-black opacity-70 uppercase">
                         Última Actualización
                       </p>
                       <p className="text-xs font-bold">{fechaModificacion}</p>
@@ -287,7 +290,7 @@ export function EducationView({
             <h4 className="text-2xl font-black tracking-tighter mb-4 relative z-10">
               Explorador Ciudadano
             </h4>
-            <p className="text-xs font-medium opacity-50 mb-8 relative z-10 leading-relaxed text-pretty">
+            <p className="text-xs font-medium opacity-80 mb-8 relative z-10 leading-relaxed text-pretty">
               Navega a través de los vínculos académicos registrados para
               descubrir la trayectoria de los actores públicos.
             </p>

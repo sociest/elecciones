@@ -4,6 +4,7 @@ import { buildPath } from '../../../../lib/utils/paths';
 import type { Claim } from '../../../../lib/queries';
 import { normalizeText } from '../utils/formatters';
 import { extractLabel } from '../utils/claimHelpers';
+import { getOptimizedImageUrl } from '../../../../lib/utils/image';
 
 interface HeroSectionProps {
   entityLabel: string;
@@ -54,8 +55,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 if (portraitClaim?.value_raw) {
                   return (
                     <img
-                      src={portraitClaim.value_raw}
+                      src={getOptimizedImageUrl(portraitClaim.value_raw, 400)}
                       alt={`Retrato oficial de ${entityLabel}`}
+                      width={400}
+                      height={400}
                       className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                     />
                   );
