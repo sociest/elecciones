@@ -1,6 +1,7 @@
 ---
 import { Globe, Menu, X, Search, Map, BarChart3 } from 'lucide-react';
 import { buildPath } from '../../lib/utils/paths';
+import TestBanner from './TestBanner.astro';
 
 const { pathname } = Astro.url;
 
@@ -49,114 +50,120 @@ const exactRouteMatch = [
 const currentSection = navLinks.find((link) => isActive(link.href));
 ---
 
-<nav class="fixed top-0 w-full z-50 px-4 md:px-6 py-4">
-  <div
-    class="max-w-7xl mx-auto bg-neutral-white/80 backdrop-blur-xl border border-primary-green/5 rounded-2xl px-4 md:px-6 py-3 flex justify-between items-center shadow-sm"
-  >
-    <div class="flex items-center gap-3 z-50">
-      <div
-        class="w-10 h-10 bg-primary-green rounded-xl flex items-center justify-center text-hunter rotate-3 shadow-lg shrink-0"
-      >
-        <Globe size={20} strokeWidth={2.5} />
-      </div>
-      <div class="hidden sm:block">
-        <h2
-          class="font-black text-lg leading-none tracking-tighter text-primary-green"
-        >
-          MONITOR
-        </h2>
-        <p
-          class="text-[9px] uppercase tracking-[0.3em] font-bold opacity-70 text-primary-green"
-        >
-          Elecciones 2026
-        </p>
-      </div>
-    </div>
-
-    <div class="hidden lg:flex gap-8 items-center relative h-full">
-      {
-        navLinks.map((link) => {
-          const active = isActive(link.href);
-          return (
-            <div class="relative py-2 group">
-              <a
-                href={link.href}
-                class={`text-xs font-black uppercase tracking-widest transition-all duration-300 ${active ? 'text-primary-green opacity-100' : 'text-primary-green opacity-70 hover:opacity-100'}`}
-              >
-                {link.name}
-              </a>
-              {active && (
-                <div
-                  transition:name="navbar-underline"
-                  class="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary-green rounded-full"
-                />
-              )}
-            </div>
-          );
-        })
-      }
-    </div>
-
-    <div class="flex items-center gap-2 md:gap-4 z-50">
-      <a
-        href={buildPath('/contributors')}
-        class="hidden md:flex bg-primary-green text-hunter px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-primary-green/20 hover:scale-[1.02] transition-all active:scale-95 shadow-xl shadow-primary-green/10 cursor-pointer"
-      >
-        Colaboradores
-      </a>
-
-      <button
-        id="mobile-menu-btn"
-        class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-primary-green/5 text-primary-green border border-primary-green/10 hover:bg-primary-green/10 transition-colors"
-        aria-label="Toggle Menu"
-      >
-        <div class="relative w-6 h-6">
-          <span
-            id="menu-icon-open"
-            class="absolute inset-0 transition-all duration-300 scale-100 rotate-0"
-          >
-            <Menu size={24} />
-          </span>
-          <span
-            id="menu-icon-close"
-            class="absolute inset-0 transition-all duration-300 scale-0 rotate-90"
-          >
-            <X size={24} />
-          </span>
-        </div>
-      </button>
-    </div>
+<!-- Banner fixed at the top -->
+<header class="fixed top-0 w-full z-50 flex flex-col">
+  <div class="w-full">
+    <TestBanner />
   </div>
 
-  {
-    exactRouteMatch && currentSection && currentSection.icon && (
-      <div
-        class="absolute left-1/2 -translate-x-1/2 -bottom-[5.5rem] pointer-events-none hidden lg:flex items-center justify-center min-w-[320px] max-w-sm z-40"
-        transition:name="section-description"
-        style="animation: slideDownFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;"
-      >
-        <div class="bg-hunter/95 backdrop-blur-xl border border-primary-green/20 shadow-2xl rounded-[1.5rem] p-3 flex items-center gap-4 w-full text-white ring-1 ring-white/5 overflow-hidden relative group">
-          <div class="bg-primary-green text-hunter border border-primary-green/30 p-2.5 rounded-xl shrink-0 relative z-10 shadow-inner">
-            <currentSection.icon size={20} strokeWidth={2.5} />
-          </div>
-
-          <div class="flex flex-col relative z-10 pr-2">
-            <div class="flex items-center gap-2 mb-0.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-primary-green animate-pulse" />
-              <span class="text-[9px] font-black uppercase tracking-[0.2em] text-soft-green">
-                ESTÁS EN {currentSection.name}
-              </span>
-            </div>
-            <span class="text-[13px] font-medium text-soft-green/90 leading-snug">
-              {currentSection.description}
-            </span>
-          </div>
+  <nav class="w-full px-4 md:px-6 py-4 transition-all" id="main-nav">
+    <div
+      class="max-w-7xl mx-auto bg-neutral-white/80 backdrop-blur-xl border border-primary-green/5 rounded-2xl px-4 md:px-6 py-3 flex justify-between items-center shadow-sm"
+    >
+      <div class="flex items-center gap-3 z-50">
+        <div
+          class="w-10 h-10 bg-primary-green rounded-xl flex items-center justify-center text-hunter rotate-3 shadow-lg shrink-0"
+        >
+          <Globe size={20} strokeWidth={2.5} />
+        </div>
+        <div class="hidden sm:block">
+          <h2
+            class="font-black text-lg leading-none tracking-tighter text-primary-green"
+          >
+            MONITOR
+          </h2>
+          <p
+            class="text-[9px] uppercase tracking-[0.3em] font-bold opacity-70 text-primary-green"
+          >
+            Elecciones 2026
+          </p>
         </div>
       </div>
-    )
-  }
-</nav>
 
+      <div class="hidden lg:flex gap-8 items-center relative h-full">
+        {
+          navLinks.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <div class="relative py-2 group">
+                <a
+                  href={link.href}
+                  class={`text-xs font-black uppercase tracking-widest transition-all duration-300 ${active ? 'text-primary-green opacity-100' : 'text-primary-green opacity-70 hover:opacity-100'}`}
+                >
+                  {link.name}
+                </a>
+                {active && (
+                  <div
+                    transition:name="navbar-underline"
+                    class="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary-green rounded-full"
+                  />
+                )}
+              </div>
+            );
+          })
+        }
+      </div>
+
+      <div class="flex items-center gap-2 md:gap-4 z-50">
+        <a
+          href={buildPath('/contributors')}
+          class="hidden md:flex bg-primary-green text-hunter px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:shadow-lg hover:shadow-primary-green/20 hover:scale-[1.02] transition-all active:scale-95 shadow-xl shadow-primary-green/10 cursor-pointer"
+        >
+          Colaboradores
+        </a>
+
+        <button
+          id="mobile-menu-btn"
+          class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-primary-green/5 text-primary-green border border-primary-green/10 hover:bg-primary-green/10 transition-colors"
+          aria-label="Toggle Menu"
+        >
+          <div class="relative w-6 h-6">
+            <span
+              id="menu-icon-open"
+              class="absolute inset-0 transition-all duration-300 scale-100 rotate-0"
+            >
+              <Menu size={24} />
+            </span>
+            <span
+              id="menu-icon-close"
+              class="absolute inset-0 transition-all duration-300 scale-0 rotate-90"
+            >
+              <X size={24} />
+            </span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    {
+      exactRouteMatch && currentSection && currentSection.icon && (
+        <div
+          class="absolute left-1/2 -translate-x-1/2 -bottom-[5.5rem] pointer-events-none hidden lg:flex items-center justify-center min-w-[320px] max-w-sm z-40"
+          transition:name="section-description"
+          style="animation: slideDownFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;"
+        >
+          <div class="bg-hunter/95 backdrop-blur-xl border border-primary-green/20 shadow-2xl rounded-[1.5rem] p-3 flex items-center gap-4 w-full text-white ring-1 ring-white/5 overflow-hidden relative group">
+            <div class="bg-primary-green text-hunter border border-primary-green/30 p-2.5 rounded-xl shrink-0 relative z-10 shadow-inner">
+              <currentSection.icon size={20} strokeWidth={2.5} />
+            </div>
+
+            <div class="flex flex-col relative z-10 pr-2">
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary-green animate-pulse" />
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-soft-green">
+                  ESTÁS EN {currentSection.name}
+                </span>
+              </div>
+              <span class="text-[13px] font-medium text-soft-green/90 leading-snug">
+                {currentSection.description}
+              </span>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  </nav>
+</header>
 <!-- Modo movil -->
 <div
   id="mobile-menu"
