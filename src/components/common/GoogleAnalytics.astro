@@ -15,8 +15,8 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
         document.head.appendChild(script);
 
         window.dataLayer = window.dataLayer || [];
-        // eslint-disable-next-line prefer-rest-params
         function gtag() {
+          // eslint-disable-next-line prefer-rest-params
           window.dataLayer.push(arguments);
         }
         window.gtag = gtag;

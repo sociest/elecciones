@@ -85,28 +85,13 @@ const isOnboarding = pathname.includes('/onboarding');
   </head>
   <body class="flex flex-col min-h-screen">
     {!isOnboarding && <Navbar />}
-    <main id="main-content" class="grow flex flex-col">
+    <main class="grow">
       <slot />
     </main>
     {!isOnboarding && <Footer />}
     <CookieBanner />
   </body>
 </html>
-
-<script>
-  function adjustPadding() {
-    const header = document.querySelector('header');
-    const main = document.getElementById('main-content');
-    if (header && main) {
-      main.style.paddingTop = `${header.offsetHeight}px`;
-    }
-  }
-
-  // Adjust on load and resize
-  window.addEventListener('load', adjustPadding);
-  window.addEventListener('resize', adjustPadding);
-  document.addEventListener('astro:page-load', adjustPadding);
-</script>
 
 <style>
   html,
