@@ -16,61 +16,55 @@ const {
   title,
   eyebrow = `Onboarding 0${step}`,
 } = Astro.props;
-
 const dots = Array.from({ length: totalSteps }, (_, i) => i + 1);
 ---
 
 <Layout title={`${title} | Monitor Electoral`}>
   <main
-    class="min-h-screen bg-[#912709] flex items-center justify-center p-4 md:p-8 font-sans antialiased"
+    class="min-h-screen bg-[#f3f0ee] flex items-center justify-center p-4 md:p-8 font-sans antialiased"
   >
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div
-        class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary-green rounded-full blur-[120px] opacity-50"
-      >
-      </div>
-      <div
-        class="absolute bottom-[10%] right-[10%] w-[30%] h-[30%] bg-hunter/5 rounded-full blur-[100px]"
+        class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary-green/5 rounded-full blur-[120px]"
       >
       </div>
     </div>
 
     <div
-      class="relative w-full max-w-6xl min-h-[85vh] grid grid-cols-1 lg:grid-cols-12 bg-[#2d160d]/40 backdrop-blur-2xl rounded-[2.5rem] border border-white/10 shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-500"
+      class="relative w-full max-w-6xl min-h-[80vh] grid grid-cols-1 lg:grid-cols-12 bg-[#1f110b] rounded-[3rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-700"
     >
       <div
-        class="lg:col-span-7 relative p-8 md:p-12 lg:p-16 flex flex-col justify-between overflow-hidden border-b lg:border-b-0 lg:border-r border-white/5"
+        class="lg:col-span-7 relative p-10 md:p-14 lg:p-20 flex flex-col justify-between overflow-hidden lg:border-r border-white/5"
       >
-        <!-- Header -->
         <div class="flex items-center gap-4 z-10">
           <div
-            class="w-12 h-12 bg-hunter rounded-2xl flex items-center justify-center text-primary-green -rotate-3 shadow-lg"
+            class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-primary-green shadow-lg rotate-3 transition-transform hover:rotate-0"
           >
-            <Globe size={28} strokeWidth={2.5} />
+            <Globe size={22} strokeWidth={2.5} />
           </div>
-          <div>
+          <div class="text-left">
             <h2
-              class="text-hunter font-black text-2xl tracking-tighter leading-none"
+              class="text-white font-black text-xl tracking-tighter leading-none uppercase"
             >
               MONITOR
             </h2>
             <p
-              class="text-hunter/40 text-[10px] uppercase tracking-[0.3em] font-bold"
+              class="text-white/20 text-[8px] uppercase tracking-[0.4em] font-black"
             >
-              Elecciones Subnacionales
+              Bolivia 2026
             </p>
           </div>
         </div>
 
         <div class="relative z-10 my-12">
           <span
-            class="text-hunter/30 uppercase tracking-[0.5em] text-xs font-bold mb-4 block"
+            class="text-white/20 uppercase tracking-[0.5em] text-[9px] font-black mb-4 block italic"
             >{eyebrow}</span
           >
           <slot name="left-content" />
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 z-10 transition-all">
+        <div class="z-10">
           <slot name="left-features" />
         </div>
 
@@ -79,23 +73,26 @@ const dots = Array.from({ length: totalSteps }, (_, i) => i + 1);
         >
           <slot name="background-icon" />
         </div>
-        <div class="mt-2">
+
+        <div
+          class="mt-12 pt-8 border-t border-white/5 opacity-90 grayscale brightness-200 hover:grayscale-0 hover:brightness-100 transition-all"
+        >
           <Sponsors />
         </div>
       </div>
 
       <div
-        class="lg:col-span-5 bg-hunter p-8 md:p-12 lg:p-16 flex flex-col relative transition-colors duration-500"
+        class="lg:col-span-5 bg-white p-10 md:p-14 lg:p-20 flex flex-col relative"
       >
-        <div class="flex justify-between items-center mb-8 lg:mb-12 z-10">
-          <div class="flex gap-1.5">
+        <div class="flex justify-between items-center mb-20 z-10">
+          <div class="flex gap-2">
             {
               dots.map((dot) => (
                 <div
                   class:list={[
-                    'h-1.5 rounded-full transition-all duration-300',
+                    'h-1.5 rounded-full transition-all duration-500',
                     step === dot
-                      ? 'w-8 bg-primary-green'
+                      ? 'w-10 bg-primary-green'
                       : 'w-2 bg-primary-green/10',
                   ]}
                 />
@@ -103,31 +100,31 @@ const dots = Array.from({ length: totalSteps }, (_, i) => i + 1);
             }
           </div>
           <span
-            class="text-[10px] font-black text-primary-green bg-primary-green/20 px-3 py-1 rounded-full uppercase tracking-widest"
+            class="text-[9px] font-black text-primary-green bg-primary-green/5 px-3 py-1 rounded-lg uppercase tracking-widest border border-primary-green/10"
             >Paso {step} de {totalSteps}</span
           >
         </div>
 
-        <div class="flex-grow flex flex-col justify-center space-y-8 py-6 z-10">
-          <div class="space-y-4">
+        <div class="flex-grow flex flex-col justify-center space-y-16 z-10">
+          <div class="space-y-8">
             <slot name="right-content" />
           </div>
 
-          <div class="space-y-4">
+          <div class="pt-4">
             <slot name="actions" />
           </div>
 
           <p
-            class="text-center text-[11px] text-primary-green/40 font-bold uppercase tracking-tighter"
+            class="text-center text-[10px] text-[#2d160d]/50 font-black uppercase tracking-tighter leading-relaxed italic"
           >
-            Contribuyendo a una democracia más informada y transparente
+            Contribuyendo a una democracia <br /> más informada y transparente
           </p>
         </div>
 
-        <div class="mt-4 text-center z-10">
+        <div class="mt-16 text-center z-10">
           <span
-            class="text-[9px] font-black text-primary-green/20 uppercase tracking-[0.6em]"
-            >Plataforma Cívica 2026</span
+            class="text-[8px] font-black text-primary-green/90 uppercase tracking-[0.8em]"
+            >Iniciativa Cívica 2026</span
           >
         </div>
       </div>
@@ -137,10 +134,9 @@ const dots = Array.from({ length: totalSteps }, (_, i) => i + 1);
 
 <style>
   :global(body) {
-    background-color: #0d1611;
+    background-color: #f3f0ee;
     margin: 0;
   }
-
   :global(h1),
   :global(h2),
   :global(h3) {

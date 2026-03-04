@@ -45,7 +45,7 @@ export const EntityDetail: React.FC<EntityDetailProps> = ({
     : null;
   const partyQualifierRole = candidateClaim
     ? getQualifierValueByLabels(candidateClaim, ['rol', 'titular', 'cargo']) ||
-      null
+    null
     : null;
 
   const partyLogo =
@@ -61,24 +61,24 @@ export const EntityDetail: React.FC<EntityDetailProps> = ({
 
   const mainParty = partyQualifierEntity
     ? {
-        id: getEntityId(partyQualifierEntity),
-        nombre: extractLabel(partyQualifierEntity),
-        sigla: getSigla(extractLabel(partyQualifierEntity)),
-        rol: partyQualifierRole || 'Miembro',
-        logo: partyLogo || null,
-      }
+      id: getEntityId(partyQualifierEntity),
+      nombre: extractLabel(partyQualifierEntity),
+      sigla: getSigla(extractLabel(partyQualifierEntity)),
+      rol: partyQualifierRole || 'Miembro',
+      logo: partyLogo || null,
+    }
     : partido.length > 0
       ? {
-          id: getEntityId(partido[0].value_relation),
-          nombre: extractLabel(
-            partido[0].value_relation || partido[0].value_raw
-          ),
-          sigla: getSigla(
-            extractLabel(partido[0].value_relation || partido[0].value_raw)
-          ),
-          rol: extractLabel(partido[0].property) || 'Miembro',
-          logo: partyLogo || null,
-        }
+        id: getEntityId(partido[0].value_relation),
+        nombre: extractLabel(
+          partido[0].value_relation || partido[0].value_raw
+        ),
+        sigla: getSigla(
+          extractLabel(partido[0].value_relation || partido[0].value_raw)
+        ),
+        rol: extractLabel(partido[0].property) || 'Miembro',
+        logo: partyLogo || null,
+      }
       : null;
 
   const fetchedLogo = usePartyLogo(mainParty?.id || undefined, partyLogo);
@@ -87,7 +87,7 @@ export const EntityDetail: React.FC<EntityDetailProps> = ({
     : null;
 
   return (
-    <div className="min-h-screen bg-neutral-white text-primary-green font-sans antialiased pb-24">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased pb-24">
       <style>{`main{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}h1,h2,h3,h4,h5{text-wrap:balance}.animate-slide-up{animation:slideUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards;opacity:0}@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}`}</style>
 
       <HeroSection

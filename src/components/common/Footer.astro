@@ -9,14 +9,14 @@ const isEncuestas = pathname.includes('/encuestas');
 ---
 
 <footer
-  class={`${isEncuestas ? 'bg-hunter text-primary-green' : 'bg-primary-green text-hunter'} pt-24 pb-10 px-6 relative overflow-hidden w-full`}
+  class={`${isEncuestas ? 'bg-primary-green text-hunter' : 'bg-neutral-white text-primary-green border-t border-primary-green/10'} pt-24 pb-10 px-6 relative overflow-hidden w-full`}
 >
   <div
     class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"
   >
   </div>
   <div
-    class={`absolute top-0 right-0 w-125 h-125 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4 ${isEncuestas ? 'bg-primary-green/5' : 'bg-hunter/5'}`}
+    class={`absolute top-0 right-0 w-125 h-125 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4 ${isEncuestas ? 'bg-hunter/10' : 'bg-primary-green/5'}`}
   >
   </div>
 
@@ -25,7 +25,7 @@ const isEncuestas = pathname.includes('/encuestas');
       <div class="lg:col-span-12 xl:col-span-5 space-y-8">
         <div class="flex items-center gap-4">
           <div
-            class={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-2xl rotate-3 ${isEncuestas ? 'bg-primary-green text-hunter' : 'bg-hunter text-primary-green'}`}
+            class={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-2xl rotate-3 ${isEncuestas ? 'bg-hunter text-primary-green' : 'bg-primary-green text-hunter'}`}
           >
             <Globe size={28} strokeWidth={2.5} />
           </div>
@@ -41,24 +41,24 @@ const isEncuestas = pathname.includes('/encuestas');
           </div>
         </div>
         <p
-          class={`text-xl font-medium leading-relaxed text-pretty max-w-sm ${isEncuestas ? 'text-primary-green/60' : 'text-hunter/50'}`}
+          class={`text-xl font-medium leading-relaxed text-pretty max-w-sm ${isEncuestas ? 'text-hunter/70' : 'text-primary-green/70'}`}
         >
           Fiscalización ciudadana impulsada por datos para el fortalecimiento de
           la democracia en <span
             class={isEncuestas
-              ? 'text-primary-green font-black'
-              : 'text-hunter'}>Bolivia</span
+              ? 'text-hunter font-black'
+              : 'text-primary-green font-black'}>Bolivia</span
           >.
         </p>
       </div>
 
       <div class="lg:col-span-12 xl:col-span-7">
-        <Sponsors isLight={isEncuestas} />
+        <Sponsors isLight={!isEncuestas} />
       </div>
     </div>
 
     <div
-      class={`grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-12 py-16 border-t ${isEncuestas ? 'border-primary-green/10' : 'border-white/5'}`}
+      class={`grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-12 py-16 border-t ${isEncuestas ? 'border-hunter/10' : 'border-primary-green/10'}`}
     >
       <div class="lg:col-span-3 space-y-8">
         <h4
@@ -131,26 +131,26 @@ const isEncuestas = pathname.includes('/encuestas');
 
       <div class="col-span-2 lg:col-span-4 lg:col-start-9 space-y-8">
         <div
-          class={`p-8 rounded-[2.5rem] border relative overflow-hidden group ${isEncuestas ? 'bg-primary-green/5 border-primary-green/10' : 'bg-soft-green border-white/5'}`}
+          class={`p-8 rounded-[2.5rem] border relative overflow-hidden group ${isEncuestas ? 'bg-hunter/5 border-hunter/10' : 'bg-primary-green/5 border-primary-green/10'}`}
         >
           <Users
-            className={`absolute -right-6 -bottom-6 w-32 h-32 opacity-5 group-hover:scale-110 transition-transform duration-700 ${isEncuestas ? 'text-primary-green' : ''}`}
+            className={`absolute -right-6 -bottom-6 w-32 h-32 opacity-5 group-hover:scale-110 transition-transform duration-700 ${!isEncuestas ? 'text-primary-green' : 'text-hunter'}`}
           />
           <div class="relative z-10">
             <h4
-              class={`text-xl font-black tracking-tight mb-2 ${isEncuestas ? 'text-primary-green' : 'text-hunter'}`}
+              class={`text-xl font-black tracking-tight mb-2 ${isEncuestas ? 'text-hunter' : 'text-primary-green'}`}
             >
               Nuestro Equipo
             </h4>
             <p
-              class={`text-xs font-medium mb-8 leading-relaxed ${isEncuestas ? 'text-primary-green/60' : 'text-hunter/40'}`}
+              class={`text-xs font-medium mb-8 leading-relaxed ${isEncuestas ? 'text-hunter/60' : 'text-primary-green/60'}`}
             >
               Conoce a los estudiantes, profesionales y fundaciones que hacen
               posible este proyecto.
             </p>
             <a
               href={buildPath('/contributors')}
-              class={`flex items-center justify-between px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl ${isEncuestas ? 'bg-primary-green text-hunter' : 'bg-hunter text-primary-green'}`}
+              class={`flex items-center justify-between px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl ${isEncuestas ? 'bg-hunter text-primary-green' : 'bg-primary-green text-hunter'}`}
             >
               Ver Colaboradores
               <ExternalLink size={14} />
@@ -161,14 +161,14 @@ const isEncuestas = pathname.includes('/encuestas');
     </div>
 
     <div
-      class={`pt-12 border-t flex flex-col md:flex-row justify-between items-center gap-8 ${isEncuestas ? 'border-primary-green/10' : 'border-white/5'}`}
+      class={`pt-12 border-t flex flex-col md:flex-row justify-between items-center gap-8 ${isEncuestas ? 'border-hunter/10' : 'border-primary-green/10'}`}
     >
       <div class="flex flex-col md:flex-row items-center gap-6">
         <p class="text-[10px] font-black opacity-60 uppercase tracking-[0.5em]">
           © {year} Monitor Electoral | La Paz, Bolivia
         </p>
         <div
-          class={`hidden md:block w-px h-4 ${isEncuestas ? 'bg-primary-green/10' : 'bg-white/10'}`}
+          class={`hidden md:block w-px h-4 ${isEncuestas ? 'bg-hunter/20' : 'bg-primary-green/20'}`}
         >
         </div>
         <div class="flex items-center gap-2">

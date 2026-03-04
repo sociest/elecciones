@@ -81,14 +81,14 @@ const EntityDashboard: React.FC = () => {
   }, [filteredEntities, currentPage]);
 
   return (
-    <div className="min-h-screen bg-neutral-white text-primary-green selection:bg-primary-green selection:text-hunter antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-primary-green selection:text-white antialiased">
       {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto pt-32 px-6 pb-20">
         <header className="mb-16">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-7xl font-black tracking-[ -0.05em] leading-[0.85] mb-8">
+            <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-[ -0.05em] leading-[0.85] mb-8">
               Conoce a tus <br />
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-green to-primary-green/40">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-green to-orange-400">
                 Candidatos.
               </span>
             </h1>
@@ -116,17 +116,16 @@ const EntityDashboard: React.FC = () => {
                     setSelectedFilter(filtro);
                     setCurrentPage(1);
                   }}
-                  className={`px-5 py-2 rounded-full border text-[11px] font-black uppercase tracking-widest transition-all ${
-                    selectedFilter === filtro
-                      ? 'bg-primary-green text-hunter border-primary-green'
-                      : 'bg-transparent border-primary-green/10 text-primary-green hover:bg-primary-green hover:text-hunter'
-                  }`}
+                  className={`px-5 py-2 rounded-full border text-[11px] font-black uppercase tracking-widest transition-all ${selectedFilter === filtro
+                      ? 'bg-primary-green text-white border-primary-green shadow-md'
+                      : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-primary-green hover:border-slate-300 shadow-sm'
+                    }`}
                 >
                   {filtro}
                 </button>
               ))}
               <button
-                className="p-2 rounded-full bg-primary-green/5 text-primary-green hover:bg-hunter border border-transparent hover:border-primary-green/10 transition-all"
+                className="p-2 rounded-full bg-white text-slate-500 hover:bg-slate-50 hover:text-primary-green border border-slate-200 hover:border-slate-300 shadow-sm transition-all"
                 aria-label="Filtrar resultados"
               >
                 <ListFilter size={18} />
@@ -137,10 +136,10 @@ const EntityDashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-8 space-y-8 order-2 lg:order-1 min-h-[60rem]">
-            <div className="flex items-center justify-between border-b border-primary-green/5 pb-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div className="flex items-center gap-2">
-                <Users size={18} className="opacity-70" />
-                <h2 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-70">
+                <Users size={18} className="text-slate-400" />
+                <h2 className="font-black text-[10px] uppercase tracking-[0.3em] text-slate-500">
                   {selectedFilter === 'Todos'
                     ? 'Postulantes en tu región'
                     : `Resultados: ${selectedFilter}`}
@@ -153,11 +152,11 @@ const EntityDashboard: React.FC = () => {
                 [1, 2, 3, 4].map((_, index) => (
                   <div
                     key={`loading-skeleton-${index}`}
-                    className="bg-white border border-primary-green/5 p-6 rounded-[2.5rem] h-60 animate-pulse"
+                    className="bg-white border border-slate-200/80 p-6 rounded-[2.5rem] h-60 animate-pulse shadow-sm"
                   >
-                    <div className="h-4 w-24 rounded bg-primary-green/5 mb-4"></div>
-                    <div className="h-8 w-3/4 rounded bg-primary-green/5 mb-3"></div>
-                    <div className="h-4 w-1/2 rounded bg-primary-green/5"></div>
+                    <div className="h-4 w-24 rounded bg-slate-100 mb-4"></div>
+                    <div className="h-8 w-3/4 rounded bg-slate-100 mb-3"></div>
+                    <div className="h-4 w-1/2 rounded bg-slate-100"></div>
                   </div>
                 ))
               ) : currentEntities.length > 0 ? (
@@ -169,7 +168,7 @@ const EntityDashboard: React.FC = () => {
                   />
                 ))
               ) : (
-                <div className="col-span-full py-12 text-center opacity-70 font-medium flex flex-col items-center gap-2 absolute top-0 w-full">
+                <div className="col-span-full py-12 text-center text-slate-400 font-medium flex flex-col items-center gap-2 absolute top-0 w-full">
                   <span>
                     No se encontraron resultados para &quot;{selectedFilter}
                     &quot;.
@@ -188,8 +187,8 @@ const EntityDashboard: React.FC = () => {
           </div>
 
           <div className="lg:col-span-4 space-y-8 order-1 lg:order-2">
-            <div className="bg-primary-green p-1 rounded-[2.5rem] shadow-2xl overflow-hidden group sticky top-28">
-              <div className="bg-hunter rounded-[2.3rem] aspect-4/5 relative overflow-hidden">
+            <div className="bg-white border border-slate-200/80 p-1.5 rounded-[2.5rem] shadow-md overflow-hidden group sticky top-28">
+              <div className="bg-slate-100 rounded-[2.3rem] aspect-4/5 relative overflow-hidden">
                 <div className="absolute inset-0">
                   <MapViewWrapper
                     selectedEntityId={municipalityEntityId || undefined}
@@ -198,10 +197,10 @@ const EntityDashboard: React.FC = () => {
                 </div>
 
                 <div className="absolute top-6 left-6 right-6 pointer-events-none">
-                  <div className="bg-primary-green/90 backdrop-blur-md text-hunter p-5 rounded-3xl border border-white/10 shadow-2xl">
+                  <div className="bg-white/95 backdrop-blur-md text-slate-900 p-5 rounded-3xl border border-slate-200/80 shadow-xl">
                     <div className="flex items-center gap-3 mb-2">
                       <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                      <span className="text-[10px] font-black uppercase tracking-widest">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
                         Analizando
                       </span>
                     </div>
@@ -210,7 +209,7 @@ const EntityDashboard: React.FC = () => {
                         ? `Municipio de ${userMunicipalityName}`
                         : 'Bolivia'}
                       {refreshing && !loading && (
-                        <span className="text-[10px] uppercase tracking-widest opacity-70">
+                        <span className="text-[10px] uppercase tracking-widest text-slate-400">
                           Actualizando…
                         </span>
                       )}
@@ -223,7 +222,7 @@ const EntityDashboard: React.FC = () => {
                     href={buildPath('/mapa')}
                     className="pointer-events-auto block"
                   >
-                    <button className="w-full py-3 bg-primary-green text-hunter rounded-xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl hover:scale-105 transition-transform active:scale-95 cursor-pointer">
+                    <button className="w-full py-3.5 bg-primary-green text-white rounded-xl font-black text-[10px] uppercase tracking-[0.2em] shadow-lg hover:scale-105 transition-transform active:scale-95 cursor-pointer">
                       Ver mapa completo
                     </button>
                   </a>

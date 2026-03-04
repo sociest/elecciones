@@ -7,6 +7,57 @@ import react from '@astrojs/react';
 
 const env = loadEnv('', process.cwd(), '');
 
+/**
+ * Vite plugin: stubs out leaflet & react-leaflet during SSR so Node.js
+ * never tries to evaluate code that calls `window`.
+ * Client-side bundles are unaffected — only the SSR transform is stubbed.
+ * @returns {import('vite').Plugin}
+ */
+function leafletSsrStubPlugin() {
+  const STUB_MODULES = new Set([
+    'leaflet',
+    'react-leaflet',
+    'react-leaflet/core',
+  ]);
+  /** @type {import('vite').Plugin} */
+  return {
+    name: 'leaflet-ssr-stub',
+    enforce: /** @type {'pre'} */ ('pre'),
+    /**
+     * @param {string} id
+     * @param {string | undefined} _importer
+     * @param {{ ssr?: boolean }} opts
+     */
+    resolveId(id, _importer, opts) {
+      if (opts?.ssr && STUB_MODULES.has(id)) {
+        return `\0leaflet-stub:${id}`;
+      }
+    },
+    /**
+     * @param {string} id
+     */
+    load(id) {
+      if (id.startsWith('\0leaflet-stub:')) {
+        // Return a minimal ESM stub — all named exports are no-ops / null
+        return `
+export default {};
+export const MapContainer = () => null;
+export const TileLayer = () => null;
+export const GeoJSON = () => null;
+export const Marker = () => null;
+export const Popup = () => null;
+export const useMap = () => ({});
+export const useMapEvents = () => ({});
+export const LatLngBounds = function() {};
+export const latLngBounds = () => ({});
+export const icon = () => ({});
+export const divIcon = () => ({});
+`;
+      }
+    },
+  };
+}
+
 export default defineConfig({
   output: 'static',
   site: env.PUBLIC_BASE_URL || 'http://localhost:4321',
@@ -16,7 +67,7 @@ export default defineConfig({
     host: true,
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), leafletSsrStubPlugin()],
     build: {
       target: 'es2020',
       minify: 'esbuild', // Explicitly enable minification
@@ -69,11 +120,6 @@ export default defineConfig({
       esbuildOptions: {
         target: 'es2020',
       },
-      include: ['leaflet', 'react-leaflet'],
-    },
-    ssr: {
-
-      noExternal: ['leaflet', 'react-leaflet'],
     },
     worker: {
       format: 'es',

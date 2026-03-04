@@ -7,9 +7,11 @@ import MapPage from '../components/dashboard/MapPage';
   <div class="min-h-screen">
     <div
       id="loading-placeholder"
-      class="min-h-screen flex items-center justify-center bg-primary-green"
+      class="min-h-screen flex items-center justify-center bg-slate-50"
     >
-      <div class="text-hunter">Cargando mapa...</div>
+      <div class="text-slate-500 animate-pulse text-xl font-bold">
+        Cargando mapa interactivo...
+      </div>
     </div>
     <MapPage client:only="react" />
   </div>

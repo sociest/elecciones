@@ -59,7 +59,7 @@ export const FeaturedPoll: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-primary-green p-8 rounded-[2.5rem] relative overflow-hidden animate-pulse h-[240px]">
+      <div className="bg-slate-900 p-8 rounded-[2.5rem] relative overflow-hidden animate-pulse h-[240px]">
         <div className="bg-white/10 h-4 w-32 rounded mb-4"></div>
         <div className="bg-white/10 h-8 w-48 rounded mb-6"></div>
         <div className="bg-white/10 rounded-3xl h-24"></div>
@@ -99,11 +99,11 @@ export const FeaturedPoll: React.FC = () => {
   return (
     <a
       href={buildPath(`/entity?id=${pollId}`)}
-      className="block bg-primary-green text-hunter p-8 rounded-[2.5rem] relative overflow-hidden group hover:shadow-2xl hover:shadow-primary-green/20 transition-all cursor-pointer"
+      className="block bg-slate-900 text-white p-8 rounded-[2.5rem] relative overflow-hidden group hover:shadow-2xl hover:shadow-slate-900/20 transition-all cursor-pointer"
     >
-      <BarChart3 className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-700 pointer-events-none" />
+      <BarChart3 className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-700 pointer-events-none text-slate-400 group-hover:text-primary-green" />
       <div className="flex items-center justify-between mb-6">
-        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-hunter/40 block">
+        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 block">
           Encuesta Destacada
         </span>
         <ChevronRight
@@ -116,22 +116,22 @@ export const FeaturedPoll: React.FC = () => {
         {poll.entity.label}
       </h4>
       <div className="flex items-center gap-2 mb-8">
-        <p className="text-xs font-medium opacity-80 tracking-widest uppercase">
+        <p className="text-xs font-medium text-slate-300 tracking-widest uppercase">
           {encuestadora}
         </p>
-        <span className="w-1 h-1 rounded-full bg-hunter/30"></span>
-        <p className="text-[10px] font-black opacity-50 uppercase tracking-widest">
+        <span className="w-1 h-1 rounded-full bg-slate-600"></span>
+        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
           {fecha}
         </p>
       </div>
 
       <div className="bg-white/5 backdrop-blur-md rounded-3xl p-6 border border-white/10 group-hover:bg-white/10 transition-colors">
-        <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-2">
+        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
           Visualizar Resultados
         </p>
         <div className="flex justify-between items-end">
-          <span className="text-sm font-bold opacity-80">{descripcion}</span>
-          <span className="text-xs font-black text-hunter bg-hunter/10 px-3 py-1.5 rounded-full">
+          <span className="text-sm font-bold text-slate-200">{descripcion}</span>
+          <span className="text-xs font-black text-white bg-white/10 px-3 py-1.5 rounded-full inline-block group-hover:bg-primary-green group-hover:text-white transition-colors">
             Abrir Datos
           </span>
         </div>

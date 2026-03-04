@@ -24,7 +24,7 @@ const resumenSecciones = [
     titulo: 'Mapa Global',
     desc: 'Panorama político en todo el país.',
     icon: Map,
-    color: 'bg-soft-green/10 text-soft-green',
+    color: 'bg-[#cc6e4b]/10 text-[#cc6e4b]',
     link: buildPath('/mapa'),
   },
   {
@@ -38,53 +38,55 @@ const resumenSecciones = [
 ---
 
 <OnboardingStep step={4} totalSteps={4} title="Inicio" eyebrow="Finalizar">
-  <div slot="left-content" class="md:pr-8">
+  <div slot="left-content" class="md:pr-4">
     <h1
-      class="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-none tracking-tighter mb-4 italic"
+      class="text-5xl sm:text-6xl font-black text-white leading-none tracking-tighter mb-3 italic"
     >
       Todo <br />
-      <span class="opacity-30 not-italic">Listo.</span>
+      <span class="text-white/20 not-italic">Listo.</span>
     </h1>
     <p
-      class="text-white/60 text-base md:text-lg font-medium leading-snug text-pretty"
+      class="text-white/40 text-sm md:text-base font-medium leading-snug text-pretty"
     >
       La plataforma está configurada para tu fiscalización ciudadana.
     </p>
   </div>
 
   <div slot="left-features" class="mt-4">
-    <div class="flex items-center gap-2 text-white/80">
-      <ShieldCheck size={16} className="text-white/40" />
-      <span class="text-[9px] font-black uppercase tracking-widest"
+    <div class="flex items-center gap-2 text-white/60">
+      <div class="p-1.5 bg-white/5 rounded-lg border border-white/10">
+        <ShieldCheck size={14} />
+      </div>
+      <span class="text-[8px] font-black uppercase tracking-widest"
         >Información Verificada</span
       >
     </div>
   </div>
 
   <div slot="background-icon" class="opacity-5">
-    <Rocket size={400} strokeWidth={0.5} color="white" />
+    <Rocket size={320} strokeWidth={0.5} className="text-white" />
   </div>
 
-  <div slot="right-content" class="flex flex-col h-full justify-center">
-    <div class="mb-8">
+  <div slot="right-content" class="flex flex-col gap-6">
+    <div>
       <h2
-        class="text-2xl font-black text-primary-green tracking-tight mb-2 italic"
+        class="text-xl font-black text-primary-green tracking-tight mb-1 italic"
       >
-        ¿Qué deseas explorar primero?
+        ¿Qué explorar primero?
       </h2>
       <p
-        class="text-primary-green/40 text-xs font-bold uppercase tracking-wider"
+        class="text-[#2d160d]/40 text-[9px] font-black uppercase tracking-[0.2em]"
       >
-        Resumen de herramientas disponibles
+        Herramientas disponibles
       </p>
     </div>
 
-    <div class="grid grid-cols-1 gap-2.5">
+    <div class="grid grid-cols-1 gap-2">
       {
         resumenSecciones.map((sec) => (
           <a
             href={sec.link}
-            class="flex items-center gap-4 p-4 bg-white border border-primary-green/5 rounded-[1.5rem] shadow-sm hover:border-primary-green/20 transition-all group cursor-pointer"
+            class="flex items-center gap-4 p-3.5 bg-white border border-primary-green/5 rounded-[1.5rem] shadow-sm hover:border-primary-green/20 transition-all group cursor-pointer"
           >
             <div
               class={`w-10 h-10 shrink-0 ${sec.color} rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform`}
@@ -92,10 +94,10 @@ const resumenSecciones = [
               <sec.icon size={18} />
             </div>
             <div class="space-y-0.5">
-              <h4 class="text-[10px] font-black uppercase tracking-widest text-primary-green italic">
+              <h4 class="text-[9px] font-black uppercase tracking-widest text-primary-green italic">
                 {sec.titulo}
               </h4>
-              <p class="text-xs font-medium text-primary-green/40 leading-tight">
+              <p class="text-[11px] font-medium text-[#2d160d]/50 leading-tight">
                 {sec.desc}
               </p>
             </div>
@@ -105,20 +107,23 @@ const resumenSecciones = [
     </div>
   </div>
 
-  <div slot="actions" class="mt-8">
+  <div slot="actions" class="mt-6">
     <button
       id="finish-onboarding-btn"
-      class="w-full group bg-primary-green text-white p-5 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] flex items-center justify-between shadow-xl hover:shadow-primary-green/20 transition-all hover:scale-[1.01] cursor-pointer"
+      class="w-full group bg-primary-green text-white p-4.5 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] flex items-center justify-between shadow-lg shadow-primary-green/10 hover:scale-[1.01] transition-all cursor-pointer hover:bg-primary-green/90"
     >
       <span>EMPEZAR EXPLORACIÓN</span>
-      <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+      <ArrowRight
+        size={18}
+        className="group-hover:translate-x-1 transition-transform"
+      />
     </button>
 
     <div class="mt-4 text-center">
       <span
-        class="text-[8px] font-black uppercase tracking-[0.3em] text-primary-green/20 italic"
+        class="text-[7px] font-black uppercase tracking-[0.4em] text-[#2d160d]/20 italic"
       >
-        Monitor Electoral Subnacional 2026
+        Monitor Electoral 2026
       </span>
     </div>
   </div>
@@ -135,25 +140,24 @@ const resumenSecciones = [
 </script>
 
 <style>
-  /* Animación sutil de entrada */
-  [slot='right-content'] .grid > div {
-    animation: fadeInCompact 0.5s ease-out forwards;
+  [slot='right-content'] .grid > a {
+    animation: fadeInSlide 0.5s ease-out forwards;
     opacity: 0;
   }
 
-  [slot='right-content'] .grid > div:nth-child(1) {
+  [slot='right-content'] .grid > a:nth-child(1) {
     animation-delay: 0.1s;
   }
-  [slot='right-content'] .grid > div:nth-child(2) {
+  [slot='right-content'] .grid > a:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  [slot='right-content'] .grid > a:nth-child(3) {
     animation-delay: 0.2s;
   }
-  [slot='right-content'] .grid > div:nth-child(3) {
-    animation-delay: 0.3s;
-  }
 
-  @keyframes fadeInCompact {
+  @keyframes fadeInSlide {
     from {
-      transform: translateY(10px);
+      transform: translateY(8px);
       opacity: 0;
     }
     to {

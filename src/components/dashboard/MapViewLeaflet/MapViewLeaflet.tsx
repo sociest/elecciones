@@ -4,15 +4,11 @@ import React, {
   useCallback,
   useMemo,
   memo,
+  lazy,
+  Suspense,
+  useState,
 } from 'react';
-import {
-  MapContainer,
-  TileLayer,
-  GeoJSON,
-  Marker,
-  Popup,
-  useMap,
-} from 'react-leaflet';
+
 import type { LatLngExpression, Icon, DivIcon } from 'leaflet';
 import { MapPin, RotateCcw } from 'lucide-react';
 
@@ -24,6 +20,9 @@ import { pointInPolygon, saveMunicipalityToStorage } from './utils/geomHelpers';
 import { LEVEL_NAMES } from './constants';
 import MapController from './components/MapController';
 import type { MapViewProps, MunicipalityFeature } from './types';
+
+// --- Lazy-load the entire Leaflet map UI so it never evaluates during SSR ---
+const LeafletMapUI = lazy(() => import('./LeafletMapUI'));
 
 type MapViewState = {
   selectedFeatureId: string | null;
@@ -63,39 +62,6 @@ const mapReducer = (
       return state;
   }
 };
-
-function MapResizer() {
-  const map = useMap();
-
-  useEffect(() => {
-    const timeouts = [50, 200, 500].map((ms) =>
-      setTimeout(() => map.invalidateSize(), ms)
-    );
-
-    const container = map.getContainer();
-    let raf = 0;
-    const ro = new ResizeObserver(() => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => map.invalidateSize());
-    });
-    ro.observe(container);
-
-    const onAfterSwap = () => {
-      setTimeout(() => map.invalidateSize(), 0);
-      setTimeout(() => map.invalidateSize(), 150);
-    };
-    document.addEventListener('astro:after-swap', onAfterSwap);
-
-    return () => {
-      timeouts.forEach(clearTimeout);
-      cancelAnimationFrame(raf);
-      ro.disconnect();
-      document.removeEventListener('astro:after-swap', onAfterSwap);
-    };
-  }, [map]);
-
-  return null;
-}
 
 const MapViewLeaflet: React.FC<MapViewProps> = ({
   onMunicipalitySelect,
@@ -278,63 +244,32 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
 
   return (
     <div className="absolute inset-0 rounded-[2.5rem] overflow-hidden">
-      <MapContainer
-        center={center}
-        zoom={zoom}
-        style={{ height: '100%', width: '100%' }}
-        scrollWheelZoom={true}
-        className="rounded-[2.5rem]"
+      {/* LeafletMapUI is lazy-loaded — react-leaflet never runs during SSR */}
+      <Suspense
+        fallback={
+          <div className="absolute inset-0 flex items-center justify-center bg-black rounded-[2.5rem]">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500" />
+          </div>
+        }
       >
-        <TileLayer
-          attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-        />
-        <MapResizer />
-
-        {geoJsonData && ready && (
-          <GeoJSON
-            key="municipal-polygons"
-            data={geoJsonData}
-            style={(feature) => getFeatureStyle(feature as MunicipalityFeature)}
-            onEachFeature={onEachFeature}
-          />
-        )}
-
-        {userLocation && leafletIcons && (
-          <Marker
-            position={[userLocation.lat, userLocation.lon]}
-            icon={leafletIcons.userLocation}
-          >
-            <Popup>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 font-bold text-sm text-primary-green">
-                  <MapPin size={16} />
-                  <span>Tu ubicación</span>
-                </div>
-              </div>
-            </Popup>
-          </Marker>
-        )}
-
-        <MapController
+        <LeafletMapUI
+          center={center}
+          zoom={zoom}
+          geoJsonData={geoJsonData}
+          getFeatureStyle={getFeatureStyle}
+          onEachFeature={onEachFeature}
+          userLocation={userLocation}
+          leafletIcons={leafletIcons}
           selectedFeatureId={selectedFeatureId}
-          features={geoJsonData.features}
+          userDetectedFeatureName={userDetectedFeatureName}
+          selectedEntityId={selectedEntityId}
           selectedDepartment={selectedDepartment}
+          onReset={handleResetMap}
         />
-      </MapContainer>
-
-      <div className="absolute top-4 right-4 z-1000">
-        <button
-          onClick={handleResetMap}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-700/90 text-white rounded-xl shadow-lg hover:bg-emerald-600 transition-colors backdrop-blur-md border border-white/10 text-xs font-bold"
-        >
-          <RotateCcw size={16} />
-          <span>Bolivia</span>
-        </button>
-      </div>
+      </Suspense>
 
       {userLocation && userDetectedFeatureName && (
-        <div className="absolute top-4 left-4 right-4 bg-primary-green/90 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl z-1000 animate-fadeIn border border-white/10">
+        <div className="absolute top-4 left-4 right-4 bg-primary-green/90 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl z-[1000] animate-fadeIn border border-white/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -351,7 +286,17 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
         </div>
       )}
 
-      <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm border border-white/5 rounded-xl p-3 shadow-xl z-999">
+      <div className="absolute top-4 right-4 z-[1000]">
+        <button
+          onClick={handleResetMap}
+          className="flex items-center gap-2 px-4 py-2 bg-emerald-700/90 text-white rounded-xl shadow-lg hover:bg-emerald-600 transition-colors backdrop-blur-md border border-white/10 text-xs font-bold"
+        >
+          <RotateCcw size={16} />
+          <span>Bolivia</span>
+        </button>
+      </div>
+
+      <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm border border-white/5 rounded-xl p-3 shadow-xl z-[999]">
         <p className="text-xs font-bold mb-2 text-gray-200">
           Niveles Administrativos
         </p>

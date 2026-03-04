@@ -80,37 +80,37 @@ export function RoleView({ entity, claims = EMPTY_CLAIMS }: RoleProps) {
 
   const modificado = entity.$updatedAt
     ? new Date(entity.$updatedAt).toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-      })
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    })
     : 'N/D';
 
   return (
-    <main className="min-h-screen bg-neutral-white text-primary-green font-sans antialiased pb-24">
-      <section className="bg-primary-green pt-32 pb-20 px-6 relative overflow-hidden">
+    <main className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased pb-24">
+      <section className="bg-white border-b border-slate-200 pt-32 pb-20 px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row gap-10 items-center md:items-end">
-            <div className="w-24 h-24 bg-hunter rounded-[2rem] flex items-center justify-center text-primary-green shadow-2xl rotate-3 border-4 border-white/10 shrink-0">
+            <div className="w-24 h-24 bg-slate-100 rounded-[2rem] flex items-center justify-center text-slate-500 shadow-sm rotate-3 border border-slate-200 shrink-0">
               <Landmark size={40} strokeWidth={2.5} />
             </div>
 
-            <div className="flex-1 text-center md:text-left text-hunter">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/10 mb-4 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-hunter animate-pulse"></span>
-                <span className="text-[10px] font-black uppercase tracking-widest">
+            <div className="flex-1 text-center md:text-left text-slate-900">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full border border-slate-200 mb-4">
+                <span className="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
                   {instanciaDe}
                 </span>
               </div>
               <h1
-                className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-6"
+                className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.85] mb-6"
                 style={{ textWrap: 'balance' }}
               >
                 {titulo}
               </h1>
-              <p className="text-lg md:text-xl text-hunter/50 font-medium max-w-2xl text-pretty leading-relaxed mx-auto md:mx-0">
+              <p className="text-lg md:text-xl text-slate-500 font-medium max-w-2xl text-pretty leading-relaxed mx-auto md:mx-0">
                 {descripcion}
               </p>
             </div>
@@ -119,40 +119,40 @@ export function RoleView({ entity, claims = EMPTY_CLAIMS }: RoleProps) {
       </section>
 
       <div className="max-w-6xl mx-auto px-6 -mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 relative z-20">
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-primary-green/5 flex items-center gap-5">
-          <div className="p-3 bg-primary-green/5 rounded-xl text-primary-green">
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200 flex items-center gap-5">
+          <div className="p-3 bg-slate-100 rounded-xl text-slate-500">
             <Users size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
               Candidatos Identificados
             </p>
-            <p className="text-2xl font-black">
+            <p className="text-2xl font-black text-slate-800">
               {totalRegistrados}
               {typeof totalRegistrados === 'number' ? '+' : ''}
             </p>
           </div>
         </div>
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-primary-green/5 flex items-center gap-5">
-          <div className="p-3 bg-primary-green/5 rounded-xl text-primary-green">
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200 flex items-center gap-5">
+          <div className="p-3 bg-slate-100 rounded-xl text-slate-500">
             <Globe size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest opacity-30">
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
               Alcance
             </p>
             <p className="text-2xl font-black text-primary-green">{alcance}</p>
           </div>
         </div>
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-primary-green/5 flex items-center gap-5">
-          <div className="p-3 bg-primary-green/5 rounded-xl text-primary-green">
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200 flex items-center gap-5">
+          <div className="p-3 bg-slate-100 rounded-xl text-slate-500">
             <ListFilter size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest">
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
               Próximo Evento
             </p>
-            <p className="text-2xl font-black">{proximoEvento}</p>
+            <p className="text-2xl font-black text-slate-800">{proximoEvento}</p>
           </div>
         </div>
       </div>
@@ -163,44 +163,44 @@ export function RoleView({ entity, claims = EMPTY_CLAIMS }: RoleProps) {
         </div>
 
         <aside className="lg:col-span-4 space-y-8">
-          <div className="bg-hunter p-10 rounded-[3.5rem] border border-primary-green/10 shadow-sm relative overflow-hidden group">
+          <div className="bg-slate-900 p-10 rounded-[3.5rem] border border-slate-800 shadow-xl relative overflow-hidden group">
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-8">
-                <Info size={18} className="opacity-30" />
-                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-30">
+                <Info size={18} className="text-slate-400" />
+                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] text-slate-400">
                   Marco Jurídico
                 </h4>
               </div>
-              <p className="text-sm font-bold text-primary-green/70 leading-relaxed text-pretty">
+              <p className="text-sm font-bold text-slate-300 leading-relaxed text-pretty">
                 En el sistema electoral boliviano, el{' '}
-                <span className="text-primary-green">{titulo}</span> ejerce
+                <span className="text-white">{titulo}</span> ejerce
                 funciones ejecutivas de acuerdo con la Constitución Política del
                 Estado.
               </p>
             </div>
           </div>
 
-          <div className="bg-primary-green text-hunter p-10 rounded-[3.5rem] shadow-2xl relative overflow-hidden group">
+          <div className="bg-white p-10 rounded-[3.5rem] border border-slate-200 shadow-sm relative overflow-hidden group">
             <h4
-              className="text-2xl font-black tracking-tighter mb-6 relative z-10"
+              className="text-2xl font-black tracking-tighter text-slate-800 mb-6 relative z-10"
               style={{ textWrap: 'balance' }}
             >
               Auditoría de Entidades
             </h4>
             <div className="space-y-4 relative z-10">
-              <div className="p-5 bg-white/5 rounded-2xl border border-white/5">
-                <p className="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1">
+              <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200">
+                <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">
                   ID Único de Cargo
                 </p>
-                <p className="text-xs font-mono font-bold break-all opacity-80">
+                <p className="text-xs font-mono font-bold break-all text-slate-800">
                   {entity.$id}
                 </p>
               </div>
-              <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest opacity-40">
+              <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
                 <span>Modificado: {modificado}</span>
               </div>
             </div>
-            <Landmark className="absolute -right-12 -bottom-12 w-48 h-48 opacity-[0.03] group-hover:scale-110 transition-transform duration-1000" />
+            <Landmark className="absolute -right-12 -bottom-12 w-48 h-48 opacity-5 text-slate-400 group-hover:scale-110 transition-transform duration-1000" />
           </div>
         </aside>
       </div>

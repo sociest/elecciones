@@ -84,18 +84,18 @@ export function InstitutionView({
 
   const creado = entity.$createdAt
     ? new Date(entity.$createdAt).toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
     : 'N/D';
 
   const modificado = entity.$updatedAt
     ? new Date(entity.$updatedAt).toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
     : 'N/D';
 
   const personalRelacionado = [];
@@ -108,35 +108,35 @@ export function InstitutionView({
   }
 
   return (
-    <main className="min-h-screen bg-neutral-white text-primary-green font-sans antialiased pb-24">
-      <section className="bg-primary-green pt-32 pb-24 px-6 relative overflow-hidden">
+    <main className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased pb-24">
+      <section className="bg-white border-b border-slate-200 pt-32 pb-24 px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center">
             <div className="mb-8 relative group">
-              <div className="w-24 h-24 bg-hunter rounded-[2rem] flex items-center justify-center text-primary-green shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500 border-4 border-white/10">
+              <div className="w-24 h-24 bg-slate-100 rounded-[2rem] flex items-center justify-center text-slate-700 shadow-xl rotate-3 group-hover:rotate-0 transition-transform duration-500 border-4 border-white">
                 <Building size={40} strokeWidth={2} />
               </div>
-              <div className="absolute -bottom-2 -right-2 bg-emerald-500 text-white p-2 rounded-xl shadow-lg ring-4 ring-primary-green">
+              <div className="absolute -bottom-2 -right-2 bg-primary-green text-white p-2 rounded-xl shadow-lg ring-4 ring-white">
                 <ShieldCheck size={16} strokeWidth={3} />
               </div>
             </div>
 
             <div className="max-w-3xl space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 rounded-full border border-white/10 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-hunter animate-pulse"></span>
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-hunter">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 rounded-full border border-slate-200">
+                <span className="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
                   {categoria}
                 </span>
               </div>
               <h1
-                className="text-6xl md:text-7xl font-black text-hunter tracking-tighter leading-[0.9]"
+                className="text-6xl md:text-7xl font-black text-slate-900 tracking-tighter leading-[0.9]"
                 style={{ textWrap: 'balance' }}
               >
                 {nombre}
               </h1>
-              <p className="text-lg md:text-xl text-hunter/60 font-medium leading-relaxed text-pretty">
+              <p className="text-lg md:text-xl text-slate-500 font-medium leading-relaxed text-pretty">
                 {descripcion}
               </p>
             </div>
@@ -150,37 +150,37 @@ export function InstitutionView({
           animation: 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         }}
       >
-        <div className="bg-white p-6 rounded-[2rem] shadow-xl border border-primary-green/5 flex items-center gap-5">
-          <div className="p-3 bg-primary-green/5 rounded-xl text-primary-green">
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200/80 flex items-center gap-5">
+          <div className="p-3 bg-slate-50 rounded-xl text-slate-500">
             <MapPin size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest opacity-70">
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
               Jurisdicción
             </p>
-            <p className="text-lg font-black">{jurisdiccion}</p>
+            <p className="text-lg font-black text-slate-700">{jurisdiccion}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] shadow-xl border border-primary-green/5 flex items-center gap-5">
-          <div className="p-3 bg-primary-green/5 rounded-xl text-primary-green">
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200/80 flex items-center gap-5">
+          <div className="p-3 bg-slate-50 rounded-xl text-slate-500">
             <DollarSign size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest opacity-70">
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
               Presupuesto Anual
             </p>
-            <p className="text-lg font-black text-amber-600">{presupuesto}</p>
+            <p className="text-lg font-black text-slate-700">{presupuesto}</p>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] shadow-xl border border-primary-green/5 flex items-center gap-5">
-          <div className="p-3 bg-primary-green/5 rounded-xl text-primary-green">
+        <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200/80 flex items-center gap-5">
+          <div className="p-3 bg-slate-50 rounded-xl text-slate-500">
             <Calendar size={20} />
           </div>
           <div>
-            <p className="text-[9px] font-black uppercase tracking-widest opacity-70">
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
               Última Modificación
             </p>
-            <p className="text-lg font-black">{modificado}</p>
+            <p className="text-lg font-black text-slate-700">{modificado}</p>
           </div>
         </div>
       </div>
@@ -195,19 +195,19 @@ export function InstitutionView({
         }}
       >
         <div className="lg:col-span-8 space-y-8">
-          <div className="bg-white p-10 rounded-[4rem] shadow-2xl shadow-primary-green/5 border border-primary-green/5">
+          <div className="bg-white p-10 rounded-[4rem] shadow-sm border border-slate-200/80">
             <div className="flex items-center gap-4 mb-10">
-              <div className="p-4 bg-primary-green text-hunter rounded-2xl">
+              <div className="p-4 bg-slate-100 text-slate-600 rounded-2xl">
                 <Building size={24} />
               </div>
               <div>
                 <h3
-                  className="text-2xl font-black tracking-tight"
+                  className="text-2xl font-black tracking-tight text-slate-800"
                   style={{ textWrap: 'balance' }}
                 >
                   Jerarquía Institucional
                 </h3>
-                <p className="text-[10px] font-bold opacity-70 uppercase tracking-[0.3em]">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em]">
                   Dependencia administrativa en el grafo estatal
                 </p>
               </div>
@@ -217,32 +217,32 @@ export function InstitutionView({
               href={
                 dependenciaId ? buildPath(`/entity?id=${dependenciaId}`) : '#'
               }
-              className="group block p-8 rounded-[3rem] bg-primary-green/5 border border-transparent hover:border-primary-green hover:bg-white transition-all duration-500"
+              className="group block p-8 rounded-[3rem] bg-slate-50 border border-slate-200 hover:bg-white hover:border-slate-300 hover:shadow-md transition-all duration-500"
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-6">
-                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary-green group-hover:bg-hunter transition-colors shadow-sm">
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-slate-400 group-hover:text-primary-green transition-colors shadow-sm border border-slate-100">
                     <Globe size={20} />
                   </div>
                   <div>
-                    <p className="text-[9px] font-black opacity-70 uppercase tracking-widest mb-1">
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">
                       Entidad Superior
                     </p>
-                    <h4 className="text-xl font-black">{dependencia}</h4>
+                    <h4 className="text-xl font-black text-slate-700">{dependencia}</h4>
                   </div>
                 </div>
-                <ArrowUpRight className="opacity-60 group-hover:opacity-100 transition-opacity" />
+                <ArrowUpRight className="text-slate-300 group-hover:text-primary-green transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </div>
             </a>
           </div>
 
-          <div className="bg-white p-10 rounded-[4rem] shadow-xl border border-primary-green/5">
+          <div className="bg-white p-10 rounded-[4rem] shadow-sm border border-slate-200/80">
             <div className="flex items-center gap-4 mb-10">
-              <div className="p-4 bg-primary-green/5 rounded-2xl text-primary-green">
+              <div className="p-4 bg-slate-50 rounded-2xl text-slate-600">
                 <Users size={24} />
               </div>
               <h3
-                className="text-2xl font-black tracking-tight"
+                className="text-2xl font-black tracking-tight text-slate-800"
                 style={{ textWrap: 'balance' }}
               >
                 Personal Vinculado
@@ -254,26 +254,26 @@ export function InstitutionView({
                   <a
                     key={`person-${p.nombre}-${p.cargo}`}
                     href={p.link}
-                    className="flex items-center justify-between p-6 rounded-[2.5rem] bg-neutral-white border border-primary-green/5 hover:border-primary-green/20 hover:shadow-lg transition-all"
+                    className="group flex items-center justify-between p-6 rounded-[2.5rem] bg-white border border-slate-200/80 hover:border-slate-300 hover:shadow-md transition-all"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-primary-green/5 rounded-full flex items-center justify-center font-black text-primary-green text-[10px]">
+                      <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center font-black text-slate-500 text-[10px] group-hover:bg-primary-green group-hover:text-white transition-colors">
                         {p.nombre.substring(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <h4 className="font-black text-sm leading-tight text-pretty">
+                        <h4 className="font-black text-sm leading-tight text-slate-700 text-pretty group-hover:text-slate-900">
                           {p.nombre}
                         </h4>
-                        <p className="text-[10px] font-bold opacity-70 uppercase tracking-tighter mt-1">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
                           {p.cargo}
                         </p>
                       </div>
                     </div>
-                    <ChevronRight size={16} className="opacity-60" />
+                    <ChevronRight size={16} className="text-slate-300 group-hover:text-primary-green transition-transform group-hover:translate-x-1" />
                   </a>
                 ))
               ) : (
-                <p className="text-sm font-medium opacity-80 text-center py-4">
+                <p className="text-sm font-medium text-slate-400 text-center py-4">
                   No se encontro personal vinculado directamente.
                 </p>
               )}
@@ -282,36 +282,36 @@ export function InstitutionView({
         </div>
 
         <aside className="lg:col-span-4 space-y-8">
-          <div className="bg-hunter p-10 rounded-[3.5rem] border border-primary-green/10 shadow-sm relative overflow-hidden group">
+          <div className="bg-slate-900 p-10 rounded-[3.5rem] border border-slate-800 shadow-xl relative overflow-hidden group">
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-8">
-                <Info size={18} className="opacity-70" />
-                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] opacity-70">
+                <Info size={18} className="text-slate-400" />
+                <h4 className="font-black text-[10px] uppercase tracking-[0.3em] text-slate-400">
                   Auditoría de Datos
                 </h4>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <p className="text-[9px] font-black opacity-70 uppercase mb-1">
+                  <p className="text-[9px] font-black text-slate-500 uppercase mb-1">
                     ID Único de Entidad
                   </p>
-                  <p className="text-xs font-mono font-bold break-all opacity-80">
+                  <p className="text-xs font-mono font-bold break-all text-slate-300">
                     {entity.$id}
                   </p>
                 </div>
-                <div className="flex items-start gap-4 p-4 bg-white/50 rounded-2xl border border-primary-green/5">
-                  <Calendar size={16} className="shrink-0 mt-0.5 opacity-70" />
+                <div className="flex items-start gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                  <Calendar size={16} className="shrink-0 mt-0.5 text-slate-400" />
                   <div>
-                    <p className="text-[9px] font-black opacity-70 uppercase">
+                    <p className="text-[9px] font-black text-slate-400 uppercase">
                       Fecha de Registro
                     </p>
-                    <p className="text-xs font-bold">{creado}</p>
+                    <p className="text-xs font-bold text-slate-200">{creado}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <BarChart3 className="absolute -right-8 -bottom-8 w-40 h-40 opacity-[0.03] group-hover:rotate-12 transition-transform duration-700" />
+            <BarChart3 className="absolute -right-8 -bottom-8 w-40 h-40 opacity-10 group-hover:rotate-12 transition-transform duration-700 text-slate-400 group-hover:text-primary-green" />
           </div>
         </aside>
       </div>

@@ -38,7 +38,7 @@ export function EntityRenderer({ entity, claims, type }: EntityRendererProps) {
     <Suspense
       fallback={
         <div className="min-h-[50vh] flex items-center justify-center">
-          <p className="text-primary-green/60 animate-pulse">
+          <p className="text-slate-400 animate-pulse font-medium">
             Cargando vista...
           </p>
         </div>

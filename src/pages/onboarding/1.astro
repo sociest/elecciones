@@ -4,62 +4,72 @@ import { ShieldCheck, Zap, Fingerprint, ArrowRight } from 'lucide-react';
 import { buildPath } from '../../lib/utils/paths';
 ---
 
-<OnboardingStep step={1} totalSteps={4} title="Bienvenido" eyebrow="Bienvenido">
+<OnboardingStep
+  step={1}
+  totalSteps={4}
+  title="Bienvenido"
+  eyebrow="Introducción"
+>
   <div slot="left-content">
     <h1
-      class="text-5xl sm:text-7xl md:text-8xl font-black text-hunter leading-[0.85] tracking-tighter mb-6"
+      class="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-6 italic"
     >
       Tu Voto <br />
-      <span
-        class="text-transparent bg-clip-text bg-linear-to-r from-hunter to-hunter/20"
-        >Local.</span
-      >
+      <span class="opacity-20 not-italic">Local.</span>
     </h1>
     <p
-      class="text-hunter/60 text-lg md:text-xl max-w-md font-medium leading-relaxed"
+      class="text-white/40 text-base md:text-lg max-w-sm font-medium leading-relaxed"
     >
-      Información clara para elegir a tus representantes en las subnacionales.
+      Información clara para elegir a tus representantes en las elecciones
+      subnacionales 2026.
     </p>
   </div>
 
-  <div slot="left-features">
-    <div class="flex items-center gap-3 text-hunter/80">
-      <div class="p-2 bg-white/5 rounded-lg border border-white/5">
-        <ShieldCheck size={20} />
+  <div slot="left-features" class="space-y-4">
+    <div class="flex items-center gap-3 text-white/50">
+      <div class="p-2 bg-white/5 rounded-xl border border-white/10">
+        <ShieldCheck size={18} />
       </div>
-      <span class="text-sm font-semibold">Datos Verificados</span>
+      <span class="text-xs font-bold uppercase tracking-widest"
+        >Datos Verificados</span
+      >
     </div>
-    <div class="flex items-center gap-3 text-hunter/80">
-      <div class="p-2 bg-white/5 rounded-lg border border-white/5">
-        <Zap size={20} />
+    <div class="flex items-center gap-3 text-white/50">
+      <div class="p-2 bg-white/5 rounded-xl border border-white/10">
+        <Zap size={18} />
       </div>
-      <span class="text-sm font-semibold">Actualización Real-time</span>
+      <span class="text-xs font-bold uppercase tracking-widest"
+        >Actualización Real-time</span
+      >
     </div>
   </div>
 
-  <div slot="background-icon" class="animate-float">
-    <Fingerprint size={460} strokeWidth={0.5} color="hunter" />
+  <div slot="background-icon" class="opacity-5 scale-110">
+    <Fingerprint size={460} strokeWidth={0.5} color="white" />
   </div>
 
   <div slot="right-content">
     <h2
-      class="text-3xl sm:text-4xl font-extrabold text-primary-green tracking-tight leading-tight mb-5"
+      class="text-2xl sm:text-3xl font-black text-primary-green tracking-tight leading-tight mb-4 italic"
     >
       Conoce a tus futuros gobernantes
     </h2>
-    <p class="text-primary-green/70 font-medium">
+    <p
+      class="text-[#2d160d]/60 font-medium text-sm leading-relaxed text-pretty"
+    >
       En estas elecciones elegiremos a nuestros próximos Alcaldes, Gobernadores
-      y Concejales. Hemos creado esta herramienta para simplificar tu decisión.
+      y Concejales. Hemos diseñado esta herramienta para simplificar tu
+      decisión.
     </p>
   </div>
 
-  <div slot="actions" class="space-y-4">
+  <div slot="actions" class="mt-8">
     <a
       href={buildPath('/onboarding/2')}
-      class="w-full group bg-primary-green text-hunter p-5 rounded-2xl font-bold text-lg flex items-center justify-between hover:shadow-2xl hover:shadow-primary-green/30 transition-all hover:scale-[1.02] active:scale-[0.98] hover:opacity-80"
+      class="w-full group bg-primary-green text-white p-6 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] flex items-center justify-between shadow-xl shadow-primary-green/20 hover:scale-[1.02] transition-all hover:bg-primary-green/90"
     >
       <span>Siguiente paso</span>
-      <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+      <ArrowRight className="group-hover:translate-x-2 transition-transform" />
     </a>
   </div>
 </OnboardingStep>

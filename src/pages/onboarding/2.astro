@@ -1,71 +1,77 @@
 ---
 import OnboardingStep from '../../components/onboarding/OnboardingStep.astro';
 import MunicipalityPicker from '../../components/onboarding/MunicipalityPicker';
-import { MapPin, Globe } from 'lucide-react';
+import { MapPin, Globe, ShieldCheck } from 'lucide-react';
 import { buildPath } from '../../lib/utils/paths';
 const swPath = buildPath('/sw.js');
 ---
 
-<OnboardingStep step={2} totalSteps={4} title="Tu Lugar" eyebrow="Tu Lugar">
+<OnboardingStep
+  step={2}
+  totalSteps={4}
+  title="Tu Lugar"
+  eyebrow="Geolocalización"
+>
   <div slot="left-content">
     <h1
-      class="text-5xl sm:text-7xl md:text-8xl font-black text-hunter leading-[0.85] tracking-tighter mb-6"
+      class="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-6 italic"
     >
       Tu <br />
-      <span
-        class="text-transparent bg-clip-text bg-linear-to-r from-hunter to-hunter/20"
-      >
-        Municipio.
-      </span>
+      <span class="text-white/20 not-italic">Municipio.</span>
     </h1>
     <p
-      class="text-hunter/60 text-lg md:text-xl max-w-md font-medium leading-relaxed"
+      class="text-white/40 text-base md:text-lg max-w-sm font-medium leading-relaxed"
     >
       Bolivia tiene cientos de municipios. Encuentra a los candidatos de tu zona
       para votar informado.
     </p>
   </div>
 
-  <div slot="left-features">
-    <div class="flex items-center gap-3 text-hunter/80">
-      <div class="p-2 bg-white/5 rounded-lg border border-white/5">
-        <MapPin size={20} />
+  <div slot="left-features" class="space-y-4">
+    <div class="flex items-center gap-3 text-white/50">
+      <div class="p-2 bg-white/5 rounded-xl border border-white/10">
+        <MapPin size={18} />
       </div>
-      <span class="text-sm font-semibold">Geolocalización</span>
+      <span class="text-xs font-bold uppercase tracking-widest"
+        >Detección Precisa</span
+      >
     </div>
-    <div class="flex items-center gap-3 text-hunter/80">
-      <div class="p-2 bg-white/5 rounded-lg border border-white/5">
-        <Globe size={20} />
+    <div class="flex items-center gap-3 text-white/50">
+      <div class="p-2 bg-white/5 rounded-xl border border-white/10">
+        <Globe size={18} />
       </div>
-      <span class="text-sm font-semibold">Filtro Automático</span>
+      <span class="text-xs font-bold uppercase tracking-widest"
+        >Filtro Automático</span
+      >
     </div>
   </div>
 
-  <div slot="background-icon" class="animate-float">
-    <MapPin
-      size={460}
-      strokeWidth={0.5}
-      color="currentColor"
-      className="text-hunter opacity-5"
-    />
+  <div slot="background-icon" class="opacity-5 scale-110">
+    <MapPin size={460} strokeWidth={0.5} className="text-white" />
   </div>
 
   <div slot="right-content">
-    <div class="relative">
+    <div class="relative space-y-6">
       <h2
-        class="text-3xl sm:text-4xl font-extrabold text-primary-green tracking-tight leading-tight"
+        class="text-2xl sm:text-3xl font-black text-primary-green tracking-tight leading-tight italic"
       >
         ¿Dónde votas?
       </h2>
-      <p class="text-primary-green/70 font-medium mt-4">
+      <p
+        class="text-[#2d160d]/60 font-medium text-sm leading-relaxed text-pretty"
+      >
         Si compartes tu ubicación, te mostraremos automáticamente a los
-        candidatos de tu circunscripción.
+        candidatos de tu circunscripción y centro de votación.
       </p>
     </div>
   </div>
 
-  <div slot="actions">
-    <MunicipalityPicker client:load />
+  <div slot="actions" class="mt-10">
+    <div
+      class="p-1 bg-primary-green/5 rounded-[2rem] border border-primary-green/10 p-5"
+    >
+      <MunicipalityPicker client:load />
+    </div>
   </div>
 </OnboardingStep>
 

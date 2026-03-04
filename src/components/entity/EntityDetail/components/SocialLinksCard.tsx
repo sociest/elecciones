@@ -19,8 +19,8 @@ export const SocialLinksCard: React.FC<SocialLinksCardProps> = ({
   if (socialLinks.length === 0) return null;
 
   return (
-    <div className="bg-hunter p-8 rounded-[3rem] border border-primary-green/10 shadow-lg">
-      <h4 className="font-black text-xs uppercase tracking-[0.2em] opacity-30 mb-6 text-center">
+    <div className="bg-white p-8 rounded-[3rem] border border-slate-200 shadow-sm">
+      <h4 className="font-black text-xs text-slate-400 uppercase tracking-[0.2em] mb-6 text-center">
         Identidad Digital
       </h4>
       <div className="space-y-3">
@@ -32,7 +32,7 @@ export const SocialLinksCard: React.FC<SocialLinksCardProps> = ({
             }
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between p-5 bg-white rounded-2xl hover:scale-[1.02] transition-all group shadow-sm"
+            className="flex items-center justify-between p-5 bg-slate-50 border border-slate-100 rounded-2xl hover:scale-[1.02] transition-all group shadow-sm"
           >
             <div className="flex items-center gap-4">
               {link.type === 'facebook' && (
@@ -61,13 +61,13 @@ export const SocialLinksCard: React.FC<SocialLinksCardProps> = ({
                 </div>
               )}
 
-              <span className="text-sm font-black capitalize">
+              <span className="text-sm font-black text-slate-700 capitalize">
                 {link.type === 'web' ? 'Sitio Web' : link.type}
               </span>
             </div>
             <ExternalLink
               size={16}
-              className="opacity-20 group-hover:opacity-100"
+              className="text-slate-300 group-hover:opacity-100"
             />
           </a>
         ))}

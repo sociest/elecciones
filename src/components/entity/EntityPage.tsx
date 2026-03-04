@@ -155,10 +155,10 @@ export default function EntityPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa]">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-12 h-12 animate-spin text-primary-green" />
-          <p className="text-primary-green/60 font-medium">
+          <Loader2 className="w-12 h-12 animate-spin text-slate-400" />
+          <p className="text-slate-500 font-medium">
             Cargando detalles...
           </p>
         </div>
@@ -168,15 +168,15 @@ export default function EntityPage() {
 
   if (error || !entity) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa] p-4">
-        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center border border-red-100">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+        <div className="bg-white p-8 rounded-[2rem] shadow-sm max-w-md w-full text-center border border-red-100">
           <h2 className="text-xl font-bold text-red-600 mb-2">Error</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-slate-600 mb-6">
             {error || 'Entidad no encontrada'}
           </p>
           <a
             href={buildPath('/')}
-            className="inline-flex items-center justify-center px-6 py-3 bg-primary-green text-white rounded-xl font-bold hover:opacity-90 transition-opacity w-full"
+            className="inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold hover:bg-slate-50 hover:text-primary-green hover:border-slate-300 transition-all w-full shadow-sm"
           >
             Volver al inicio
           </a>

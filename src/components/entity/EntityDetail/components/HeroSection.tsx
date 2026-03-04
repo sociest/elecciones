@@ -27,13 +27,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   mainParty,
 }) => {
   return (
-    <section className="bg-primary-green pt-32 pb-24 px-6 relative overflow-hidden">
+    <section className="bg-white border-b border-slate-200 pt-32 pb-24 px-6 relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row gap-12 items-center md:items-end">
           <div className="relative group">
-            <div className="w-56 h-64 bg-hunter rounded-[3.5rem] overflow-hidden shadow-2xl border-4 border-white/10 flex items-center justify-center">
+            <div className="w-56 h-64 bg-slate-100 rounded-[3.5rem] overflow-hidden shadow-sm border border-slate-200 flex items-center justify-center">
               {(() => {
                 const portraitClaim =
                   claims.find((c) => {
@@ -65,20 +65,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 }
 
                 return (
-                  <div className="w-full h-full bg-linear-to-br from-hunter to-hunter flex flex-col items-center justify-center p-4 text-center group-hover:from-hunter group-hover:to-hunter transition-all duration-500">
-                    <div className="w-20 h-20 bg-primary-green/10 rounded-full flex items-center justify-center mb-4 border-2 border-primary-green/20 border-dashed">
-                      <User size={36} className="text-primary-green/50" />
+                  <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-100 flex flex-col items-center justify-center p-4 text-center transition-all duration-500">
+                    <div className="w-20 h-20 bg-slate-200 rounded-full flex items-center justify-center mb-4 border-2 border-slate-300 border-dashed">
+                      <User size={36} className="text-slate-400" />
                     </div>
-                    <span className="text-primary-green font-black text-sm uppercase tracking-widest mb-1">
+                    <span className="text-slate-500 font-black text-sm uppercase tracking-widest mb-1">
                       Sin Foto
                     </span>
-                    <p className="text-primary-green/40 text-[9px] font-bold uppercase tracking-widest leading-tight">
+                    <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest leading-tight">
                       Pendiente de <br />
                       actualización
                     </p>
                     {mainParty && (
                       <div className="absolute top-4 left-4 right-4 flex justify-between px-2">
-                        <span className="text-primary-green/20 font-black text-4xl opacity-50 absolute right-2 blur-[1px] -z-10">
+                        <span className="text-slate-200 font-black text-4xl opacity-50 absolute right-2 blur-[1px] -z-10">
                           {mainParty.sigla}
                         </span>
                       </div>
@@ -88,7 +88,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               })()}
             </div>
             <div
-              className="absolute -bottom-4 -right-4 bg-emerald-500 text-white p-4 rounded-3xl shadow-xl ring-8 ring-primary-green"
+              className="absolute -bottom-4 -right-4 bg-green-600 text-white p-4 rounded-3xl shadow-xl ring-8 ring-white"
               title="Candidato Verificado"
             >
               <UserCheck size={24} strokeWidth={3} />
@@ -96,28 +96,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           <div className="flex-1 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 rounded-full border border-white/10 mb-6 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-hunter animate-pulse"></span>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-hunter">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-100 rounded-full border border-slate-200 mb-6">
+              <span className="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
                 {perfil}
               </span>
             </div>
-            <h1 className="text-6xl md:text-8xl font-black text-hunter tracking-tighter leading-[0.8] mb-8">
+            <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.8] mb-8">
               {entityLabel || 'Sin Nombre'}
             </h1>
             <div className="flex flex-wrap justify-center md:justify-start gap-8">
-              <div className="flex items-center gap-3 text-hunter/60 font-bold group cursor-pointer hover:text-hunter transition-colors">
+              <div className="flex items-center gap-3 text-slate-500 font-bold group cursor-pointer hover:text-slate-800 transition-colors">
                 <MapPin size={20} />
                 {lugarNacimientoId ? (
                   <a
                     href={buildPath(`/entity?id=${lugarNacimientoId}`)}
-                    className="border-b border-transparent group-hover:border-hunter inline-flex items-center gap-1"
+                    className="border-b border-transparent group-hover:border-slate-800 inline-flex items-center gap-1"
                   >
                     {lugarNacimiento}{' '}
                     <ExternalLink size={12} className="opacity-50" />
                   </a>
                 ) : (
-                  <span className="border-b border-transparent group-hover:border-hunter">
+                  <span className="border-b border-transparent group-hover:border-slate-800">
                     {lugarNacimiento}
                   </span>
                 )}
