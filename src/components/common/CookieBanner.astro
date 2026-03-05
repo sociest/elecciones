@@ -40,7 +40,7 @@
         >
           Nos encantan las galletas 🍪
         </h3>
-        <p class="text-xs text-primary-green/70 leading-relaxed mb-4">
+        <p class="text-xs text-slate-700 leading-relaxed mb-4">
           Utilizamos cookies para analizar nuestro tráfico y mejorar tu
           experiencia de forma anónima. <a
             href="/data-privacy"
@@ -79,6 +79,8 @@
     const rejectBtn = document.getElementById('reject-cookies');
 
     if (!banner || !acceptBtn || !rejectBtn) return;
+    if (banner.dataset.initialized) return;
+    banner.dataset.initialized = 'true';
 
     const consent = localStorage.getItem('cookie_consent');
     if (!consent) {
@@ -97,9 +99,6 @@
         typeof (window as CustomWindow).loadGoogleAnalytics === 'function'
       ) {
         (window as CustomWindow).loadGoogleAnalytics!();
-      } else if (!granted) {
-        // Option to reload page to clear cookies if rejected after being accepted
-        // window.location.reload();
       }
 
       banner.classList.add('translate-y-[150%]');
@@ -109,16 +108,9 @@
       banner.classList.remove('translate-y-[150%]');
     };
 
-    // Remove any previous event listeners to avoid duplicates when transition navigates
-    const newAcceptBtn = acceptBtn.cloneNode(true);
-    const newRejectBtn = rejectBtn.cloneNode(true);
-    acceptBtn.parentNode?.replaceChild(newAcceptBtn, acceptBtn);
-    rejectBtn.parentNode?.replaceChild(newRejectBtn, rejectBtn);
-
-    newAcceptBtn.addEventListener('click', () => updateConsent(true));
-    newRejectBtn.addEventListener('click', () => updateConsent(false));
+    acceptBtn.addEventListener('click', () => updateConsent(true));
+    rejectBtn.addEventListener('click', () => updateConsent(false));
   };
 
-  initCookieBanner();
   document.addEventListener('astro:page-load', initCookieBanner);
 </script>

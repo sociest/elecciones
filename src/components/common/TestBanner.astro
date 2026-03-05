@@ -34,7 +34,7 @@ import { Code2, Users, X } from 'lucide-react';
         >
           ¡Proyecto de Código Abierto! 🚀
         </h3>
-        <p class="text-xs text-primary-green/70 leading-relaxed mb-4">
+        <p class="text-xs text-slate-700 leading-relaxed mb-4">
           Esta plataforma cívica está en fase de prueba y desarrollo. Buscamos
           desarrolladores, analistas y voluntarios para mejorar el acceso a los
           datos electorales.
@@ -61,6 +61,8 @@ import { Code2, Users, X } from 'lucide-react';
     const closeBtn = document.getElementById('close-contribution-banner');
 
     if (!banner || !closeBtn) return;
+    if (banner.dataset.initialized) return;
+    banner.dataset.initialized = 'true';
 
     // Optional: Only show if not previously dismissed
     const isDismissed = sessionStorage.getItem('contrib_banner_dismissed');
@@ -74,6 +76,7 @@ import { Code2, Users, X } from 'lucide-react';
     }
 
     closeBtn.addEventListener('click', () => {
+      banner.classList.remove('translate-y-0');
       banner.classList.add('translate-y-[150%]', 'opacity-0');
       sessionStorage.setItem('contrib_banner_dismissed', 'true');
 
@@ -84,6 +87,5 @@ import { Code2, Users, X } from 'lucide-react';
     });
   };
 
-  initContribBanner();
   document.addEventListener('astro:page-load', initContribBanner);
 </script>

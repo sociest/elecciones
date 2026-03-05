@@ -18,7 +18,6 @@ import { useMapStyling } from './hooks/useMapStyling';
 import { useMapEventHandlers } from './hooks/useMapEventHandlers';
 import { pointInPolygon, saveMunicipalityToStorage } from './utils/geomHelpers';
 import { LEVEL_NAMES } from './constants';
-import MapController from './components/MapController';
 import type { MapViewProps, MunicipalityFeature } from './types';
 
 // --- Lazy-load the entire Leaflet map UI so it never evaluates during SSR ---
@@ -261,10 +260,8 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
           userLocation={userLocation}
           leafletIcons={leafletIcons}
           selectedFeatureId={selectedFeatureId}
-          userDetectedFeatureName={userDetectedFeatureName}
           selectedEntityId={selectedEntityId}
           selectedDepartment={selectedDepartment}
-          onReset={handleResetMap}
         />
       </Suspense>
 

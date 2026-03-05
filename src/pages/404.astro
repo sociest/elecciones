@@ -9,7 +9,7 @@ const description = 'La página que buscas no está habilitada en el sistema.';
 
 <Layout title={title} description={description}>
   <main
-    class="min-h-screen bg-[#0d1611] flex items-center justify-center p-6 font-sans antialiased overflow-hidden relative"
+    class="min-h-[100dvh] bg-[#0d1611] flex flex-col items-center justify-center p-6 font-sans antialiased overflow-hidden relative"
   >
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div
@@ -26,8 +26,12 @@ const description = 'La página que buscas no está habilitada en el sistema.';
       </div>
     </div>
 
-    <div class="relative z-10 w-full max-w-3xl text-center">
-      <div class="flex justify-center items-center gap-3 mb-16 opacity-40">
+    <div
+      class="relative z-10 w-full max-w-3xl text-center py-12 md:py-0 flex flex-col justify-center flex-1"
+    >
+      <div
+        class="flex justify-center items-center gap-3 mb-8 md:mb-16 opacity-40 mt-auto md:mt-0"
+      >
         <Globe size={20} className="text-hunter" />
         <span
           class="text-hunter font-black tracking-widest text-[10px] uppercase"
@@ -35,9 +39,9 @@ const description = 'La página que buscas no está habilitada en el sistema.';
         >
       </div>
 
-      <div class="relative inline-block mb-12">
+      <div class="relative inline-block mb-6 md:mb-12">
         <h1
-          class="text-[12rem] md:text-[16rem] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-hunter to-hunter/5 opacity-20"
+          class="text-[9.5rem] sm:text-[12rem] md:text-[16rem] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-hunter to-hunter/5 opacity-20 select-none"
         >
           404
         </h1>
@@ -50,19 +54,23 @@ const description = 'La página que buscas no está habilitada en el sistema.';
         </div>
       </div>
 
-      <div class="space-y-4 mb-16">
-        <h2 class="text-4xl md:text-5xl font-black text-hunter tracking-tight">
+      <div class="space-y-4 mb-10 md:mb-16">
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-black text-hunter tracking-tight"
+        >
           Ruta no habilitada
         </h2>
         <p
-          class="text-lg md:text-xl text-hunter/50 font-medium max-w-md mx-auto text-pretty"
+          class="text-base sm:text-lg md:text-xl text-hunter/50 font-medium max-w-md mx-auto text-pretty px-4"
         >
           Lo sentimos, esta sección no existe en nuestro padrón electoral o ha
           sido movida a una nueva circunscripción.
         </p>
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <div
+        class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full max-w-[280px] sm:max-w-none mx-auto mb-auto md:mb-0"
+      >
         <a
           href={buildPath('/')}
           class="group w-full sm:w-auto px-10 py-5 bg-hunter text-primary-green rounded-2xl font-bold flex items-center justify-center gap-3 hover:scale-[1.05] transition-all shadow-2xl shadow-black/40"
@@ -92,8 +100,11 @@ const description = 'La página que buscas no está habilitada en el sistema.';
       </div>
     </div>
 
-    <div class="absolute bottom-12 left-0 right-0 text-center opacity-20">
-      <span class="text-[9px] font-black text-hunter uppercase tracking-[0.6em]"
+    <div
+      class="relative md:absolute bottom-6 md:bottom-12 left-0 right-0 text-center opacity-20 mt-8 md:mt-0 pb-6 md:pb-0"
+    >
+      <span
+        class="text-[9px] font-black text-hunter uppercase tracking-[0.4em] sm:tracking-[0.6em]"
         >Plataforma Cívica Independiente</span
       >
     </div>

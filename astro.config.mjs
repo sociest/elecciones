@@ -120,6 +120,10 @@ export default defineConfig({
       esbuildOptions: {
         target: 'es2020',
       },
+      include: ['leaflet', 'react-leaflet'],
+    },
+    ssr: {
+      noExternal: ['leaflet', 'react-leaflet'],
     },
     worker: {
       format: 'es',

@@ -19,7 +19,7 @@ import DashboardWrapper from '../components/dashboard/DashboardWrapper';
 
     <!-- React content loads after hydration - will render in same position -->
     <div class="min-h-screen">
-      <DashboardWrapper client:only="react" />
+      <DashboardWrapper client:load />
     </div>
   </div>
 </Layout>
