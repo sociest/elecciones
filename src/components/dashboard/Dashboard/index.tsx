@@ -116,10 +116,11 @@ const EntityDashboard: React.FC = () => {
                     setSelectedFilter(filtro);
                     setCurrentPage(1);
                   }}
-                  className={`px-5 py-2 rounded-full border text-[11px] font-black uppercase tracking-widest transition-all ${selectedFilter === filtro
+                  className={`px-5 py-2 rounded-full border text-[11px] font-black uppercase tracking-widest transition-all ${
+                    selectedFilter === filtro
                       ? 'bg-primary-green text-white border-primary-green shadow-md'
                       : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-primary-green hover:border-slate-300 shadow-sm'
-                    }`}
+                  }`}
                 >
                   {filtro}
                 </button>

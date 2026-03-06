@@ -331,7 +331,9 @@ export function PollingFirmView({
                       <p className="text-[8px] font-black text-slate-500 uppercase">
                         Última Actualización
                       </p>
-                      <p className="text-xs font-bold text-slate-200">{actualizacion}</p>
+                      <p className="text-xs font-bold text-slate-200">
+                        {actualizacion}
+                      </p>
                     </div>
                   </div>
                   {alianzas.length > 0 && (

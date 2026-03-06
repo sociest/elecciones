@@ -130,7 +130,9 @@ export const FeaturedPoll: React.FC = () => {
           Visualizar Resultados
         </p>
         <div className="flex justify-between items-end">
-          <span className="text-sm font-bold text-slate-200">{descripcion}</span>
+          <span className="text-sm font-bold text-slate-200">
+            {descripcion}
+          </span>
           <span className="text-xs font-black text-white bg-white/10 px-3 py-1.5 rounded-full inline-block group-hover:bg-primary-green group-hover:text-white transition-colors">
             Abrir Datos
           </span>

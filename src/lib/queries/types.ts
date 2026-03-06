@@ -9,6 +9,7 @@ export interface Entity extends Models.Document {
 export interface Authority extends Entity {
   role?: string;
   party?: Entity & { color?: string };
+  imageUrl?: string;
 }
 
 export interface Claim extends Models.Document {

@@ -34,6 +34,13 @@ interface EntityRendererProps {
 }
 
 export function EntityRenderer({ entity, claims, type }: EntityRendererProps) {
+  console.log(
+    '[EntityRenderer] Rendering with type:',
+    type,
+    'for entity:',
+    entity.label
+  );
+
   return (
     <Suspense
       fallback={
@@ -47,6 +54,7 @@ export function EntityRenderer({ entity, claims, type }: EntityRendererProps) {
       {(() => {
         switch (type) {
           case 'TERRITORIO':
+            console.log('[EntityRenderer] Rendering TerritoryView');
             return <TerritoryView entity={entity} claims={claims} />;
           case 'INSTITUCION':
             return <InstitutionView entity={entity} claims={claims} />;
@@ -64,6 +72,10 @@ export function EntityRenderer({ entity, claims, type }: EntityRendererProps) {
           case 'PERSONA':
             return <EntityDetail entity={entity} claims={claims} />;
           default:
+            console.log(
+              '[EntityRenderer] No match, rendering EntityDetail for type:',
+              type
+            );
             return <EntityDetail entity={entity} claims={claims} />;
         }
       })()}

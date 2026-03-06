@@ -9,13 +9,13 @@ export const PROPERTY_IDS = {
 } as const;
 
 export const DEPARTMENT_IDS = {
-  'La Paz': '6983986b655f81d387ea',
+  'La Paz': '6983986f27930b142391',
   'Santa Cruz': '69839869e17caed5adf0',
   Cochabamba: '698398675bb38121fa86',
   Oruro: '6983986c6c9ac55f6440',
   Potosí: '6983986da5e5ba7df366',
   Chuquisaca: '698398662dbd3f8849d5',
-  Tarija: '6983986e00000000000', // TODO: Verificar ID correcto en la base de datos
+  Tarija: '6983986b655f81d387ea',
   Beni: '6983986484ff3fbbd1ce',
   Pando: '69839868858161e0b8a0',
 } as const;

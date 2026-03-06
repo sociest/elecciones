@@ -248,14 +248,14 @@ const MapPage: React.FC = () => {
                 {(searchQuery ||
                   selectedDepartment !== 'Todos' ||
                   selectedType !== 'Todas') && (
-                    <ClearFiltersButton
-                      onClear={() => {
-                        setSearchQuery('');
-                        setSelectedDepartment('Todos');
-                        setSelectedType('Todas');
-                      }}
-                    />
-                  )}
+                  <ClearFiltersButton
+                    onClear={() => {
+                      setSearchQuery('');
+                      setSelectedDepartment('Todos');
+                      setSelectedType('Todas');
+                    }}
+                  />
+                )}
               </div>
 
               <div className="flex-1 overflow-y-auto pr-1 space-y-3 hidescrollbar">

@@ -160,20 +160,44 @@ function deriveEntityTypeFromClaims(
       PROPERTY_IDS.ES_INSTANCIA_DE
   );
 
+  console.log('[deriveEntityTypeFromClaims]', {
+    entityLabel,
+    totalClaims: claims.length,
+    instanceClaimsCount: instanceClaims.length,
+    PROPERTY_IDS_ES_INSTANCIA_DE: PROPERTY_IDS.ES_INSTANCIA_DE,
+  });
+
   for (const instanceClaim of instanceClaims) {
     const typeId =
       typeof instanceClaim.value_relation === 'object'
         ? instanceClaim.value_relation?.$id
         : instanceClaim.value_relation;
 
+    console.log('[deriveEntityTypeFromClaims] Checking instance claim:', {
+      typeId,
+      value_relation: instanceClaim.value_relation,
+      TERRITORIO_IDS: {
+        MUNICIPIO: ENTITY_TYPE_IDS.MUNICIPIO,
+        DEPARTAMENTO: ENTITY_TYPE_IDS.DEPARTAMENTO,
+        TERRITORIO: ENTITY_TYPE_IDS.TERRITORIO,
+        ENTIDAD_TERRITORIAL: ENTITY_TYPE_IDS.ENTIDAD_TERRITORIAL,
+      },
+    });
+
     if (typeId === ENTITY_TYPE_IDS.POLITICO) return 'POLITICO';
     if (typeId === ENTITY_TYPE_IDS.PERSONA) return 'PERSONA';
     if (
+      typeId === ENTITY_TYPE_IDS.MUNICIPIO ||
+      typeId === ENTITY_TYPE_IDS.DEPARTAMENTO ||
       typeId === ENTITY_TYPE_IDS.TERRITORIO ||
       typeId === ENTITY_TYPE_IDS.ENTIDAD_TERRITORIAL
     )
       return 'TERRITORIO';
-    if (typeId === ENTITY_TYPE_IDS.PARTIDO_POLITICO) return 'PARTIDO_POLITICO';
+    if (
+      typeId === ENTITY_TYPE_IDS.PARTIDO_POLITICO ||
+      typeId === ENTITY_TYPE_IDS.PARTIDO_MOVIMIENTO
+    )
+      return 'PARTIDO_POLITICO';
     if (typeId === ENTITY_TYPE_IDS.CASA_ENCUESTADORA)
       return 'CASA_ENCUESTADORA';
     if (
@@ -193,7 +217,12 @@ function deriveEntityTypeFromClaims(
     }
   }
 
-  return inferEntityTypeFromLabel(entityLabel);
+  const fallbackType = inferEntityTypeFromLabel(entityLabel);
+  console.log('[deriveEntityTypeFromClaims] Using fallback from label:', {
+    entityLabel,
+    fallbackType,
+  });
+  return fallbackType;
 }
 
 /**
@@ -215,11 +244,20 @@ export async function fetchEntityDetails(entityId: string) {
       [Query.equal('subject', entityId), Query.limit(5000)]
     );
 
-    // Fetch incoming claims (Value Relation = Entity)
+    // Fetch incoming PART_OF claims only (sub-territories that are part of this entity).
+    // We intentionally exclude other incoming claims (e.g. candidato qualifiers that
+    // reference this territory) because they are fetched on-demand in TerritoryView
+    // via getAuthoritiesByMunicipalityStreaming. Fetching all incoming claims for a
+    // department would return thousands of candidato-related claims causing timeouts.
+    const PART_OF_PROP = '6983977fdc3b15edf3f5';
     const incomingClaimsPromise = databases.listDocuments<Claim>(
       DATABASE_ID,
       COLLECTIONS.CLAIMS,
-      [Query.equal('value_relation', entityId), Query.limit(5000)]
+      [
+        Query.equal('value_relation', entityId),
+        Query.equal('property', PART_OF_PROP),
+        Query.limit(500),
+      ]
     );
 
     const [outgoingResponse, incomingResponse] = await Promise.all([

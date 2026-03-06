@@ -139,8 +139,8 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
               style={
                 !logoUrl
                   ? {
-                    background: `linear-gradient(135deg, ${colors[0]}, ${colors[colors.length - 1]})`,
-                  }
+                      background: `linear-gradient(135deg, ${colors[0]}, ${colors[colors.length - 1]})`,
+                    }
                   : {}
               }
             >
@@ -228,7 +228,10 @@ export function PartyView({ entity, claims = EMPTY_CLAIMS }: PartyProps) {
             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
               Ideología
             </p>
-            <p className="text-xl font-black text-slate-800" style={{ textWrap: 'balance' }}>
+            <p
+              className="text-xl font-black text-slate-800"
+              style={{ textWrap: 'balance' }}
+            >
               {espectro}
             </p>
           </div>

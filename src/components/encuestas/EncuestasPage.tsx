@@ -16,14 +16,18 @@ import {
 import type { Entity } from '../../lib/queries/types';
 
 type State = {
-  encuestas: Entity[];
+  encuestas: (Entity & { coberturaLabel?: string })[];
   casas: Entity[];
   loading: boolean;
 };
 
 type Action =
   | { type: 'LOAD_START' }
-  | { type: 'LOAD_SUCCESS'; encuestas: Entity[]; casas: Entity[] }
+  | {
+      type: 'LOAD_SUCCESS';
+      encuestas: (Entity & { coberturaLabel?: string })[];
+      casas: Entity[];
+    }
   | { type: 'LOAD_ERROR' };
 
 const reducer = (state: State, action: Action): State => {
@@ -102,18 +106,87 @@ export default function EncuestasPage() {
           )
           .filter(Boolean);
 
-        let loadedEncuestas: Entity[] = [];
+        let loadedEncuestas: (Entity & { coberturaLabel?: string })[] = [];
         if (encuestasIds.length > 0) {
           const uniqueEncuestaIds = [...new Set(encuestasIds)];
 
           for (let i = 0; i < uniqueEncuestaIds.length; i += 100) {
             const batch = uniqueEncuestaIds.slice(i, i + 100);
-            const cRes = await databases.listDocuments<Entity>(
-              DATABASE_ID,
-              COLLECTIONS.ENTITIES,
-              [Query.equal('$id', batch), Query.limit(100)]
-            );
-            loadedEncuestas = [...loadedEncuestas, ...cRes.documents];
+
+            const [cRes, cClaims] = await Promise.all([
+              databases.listDocuments<Entity>(
+                DATABASE_ID,
+                COLLECTIONS.ENTITIES,
+                [Query.equal('$id', batch), Query.limit(100)]
+              ),
+              databases.listDocuments(DATABASE_ID, COLLECTIONS.CLAIMS, [
+                Query.equal('subject', batch),
+                Query.equal('property', PROPERTY_IDS.COBERTURA_ENCUESTA),
+                Query.limit(100),
+              ]),
+            ]);
+
+            const coberIds = cClaims.documents
+              .map(
+                (c: {
+                  value_relation?: string | { $id: string };
+                  [key: string]: unknown;
+                }) =>
+                  typeof c.value_relation === 'string'
+                    ? c.value_relation
+                    : typeof c.value_relation === 'object' &&
+                        c.value_relation !== null &&
+                        '$id' in c.value_relation
+                      ? c.value_relation.$id
+                      : undefined
+              )
+              .filter(Boolean);
+
+            const covMap: Record<string, string> = {};
+            if (coberIds.length > 0) {
+              const uCobIds = [...new Set(coberIds)];
+              const covEntities = await databases.listDocuments<Entity>(
+                DATABASE_ID,
+                COLLECTIONS.ENTITIES,
+                [Query.equal('$id', uCobIds), Query.limit(100)]
+              );
+              covEntities.documents.forEach((e) => {
+                covMap[e.$id] = e.label || '';
+              });
+            }
+
+            const enhanced = cRes.documents.map((e) => {
+              const claim = cClaims.documents.find(
+                (c: {
+                  subject?: string | { $id: string };
+                  value_relation?: string | { $id: string };
+                  [key: string]: unknown;
+                }) =>
+                  (typeof c.subject === 'string'
+                    ? c.subject
+                    : typeof c.subject === 'object' &&
+                        c.subject !== null &&
+                        '$id' in c.subject
+                      ? (c.subject as { $id: string }).$id
+                      : undefined) === e.$id
+              );
+              let coberturaLabel = 'ESTUDIO NACIONAL';
+              if (claim) {
+                const cId =
+                  typeof claim.value_relation === 'string'
+                    ? claim.value_relation
+                    : claim.value_relation?.$id;
+                if (cId && covMap[cId]) coberturaLabel = covMap[cId];
+              } else {
+                const extractMatch = e.label?.match(
+                  /(La Paz|Santa Cruz|Cochabamba|El Alto|Oruro|Potosí|Chuquisaca|Tarija|Beni|Pando)/i
+                );
+                if (extractMatch) coberturaLabel = extractMatch[0];
+              }
+              return { ...e, coberturaLabel };
+            });
+
+            loadedEncuestas = [...loadedEncuestas, ...enhanced];
           }
         }
         const encuestasResult = loadedEncuestas;
@@ -175,7 +248,7 @@ export default function EncuestasPage() {
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <span className="inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase bg-slate-100 text-slate-600 shadow-sm">
-                      ESTUDIO NACIONAL
+                      {encuesta.coberturaLabel || 'ESTUDIO NACIONAL'}
                     </span>
                     <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">
                       Reciente
@@ -188,7 +261,8 @@ export default function EncuestasPage() {
                     {encuesta.label || 'Estudio sin título registrado'}
                   </h3>
                   <p className="text-sm text-slate-600 line-clamp-3 leading-relaxed">
-                    {encuesta.description || 'Consulta los resultados completos, contexto metodológico y gráfica de datos de este estudio.'}
+                    {encuesta.description ||
+                      'Consulta los resultados completos, contexto metodológico y gráfica de datos de este estudio.'}
                   </p>
                 </div>
 

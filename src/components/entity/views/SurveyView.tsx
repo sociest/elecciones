@@ -21,7 +21,9 @@ interface SurveyProps {
 export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
   const titulo = entity.label || 'Estudio de Opinión Pública';
   const findClaim = (keyword: string) =>
-    claims.find((c) => c.property?.['$id']?.toLowerCase() === keyword.toLowerCase());
+    claims.find(
+      (c) => c.property?.['$id']?.toLowerCase() === keyword.toLowerCase()
+    );
 
   const autorClaim = findClaim(PROPERTY_IDS.AUTOR_ENCUESTA);
   const autor =
@@ -80,10 +82,10 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
     //if ((!isNaN(parseFloat(c.value_raw || "")) && parseFloat(c.value_raw || "") > 0 && parseFloat(c.value_raw || "") <= 100)) {
     pct = parseFloat(
       c.value_raw ||
-      c.qualifiers?.find((q) =>
-        q.property?.label?.toLowerCase().includes('porcentaje')
-      )?.value_raw ||
-      ''
+        c.qualifiers?.find((q) =>
+          q.property?.label?.toLowerCase().includes('porcentaje')
+        )?.value_raw ||
+        ''
     );
 
     if (!isNaN(pct)) {
@@ -232,7 +234,9 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
           <p className="text-xs font-black text-slate-200 leading-none mb-1">
             {fInicio}
           </p>
-          <p className="text-[9px] font-bold text-slate-500 mb-1 uppercase">al</p>
+          <p className="text-[9px] font-bold text-slate-500 mb-1 uppercase">
+            al
+          </p>
           <p className="text-xs font-black text-slate-200 leading-none">
             {fFin}
           </p>
@@ -254,7 +258,10 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
 
           <div className="space-y-6">
             {resultados.map((r, index) => (
-              <div key={r.nombre} className="group relative bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:border-slate-300 transition-all">
+              <div
+                key={r.nombre}
+                className="group relative bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:border-slate-300 transition-all"
+              >
                 <div className="flex justify-between items-end mb-4 px-2">
                   <div className="flex items-center gap-3">
                     <span
@@ -349,7 +356,10 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
                 className="flex items-center justify-between w-full py-5 px-8 bg-slate-100 text-slate-700 border border-slate-200 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-slate-800 hover:text-white hover:border-slate-800 active:scale-95 transition-all shadow-sm"
               >
                 Ver Archivo Original
-                <ExternalLink size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <ExternalLink
+                  size={14}
+                  className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                />
               </a>
             ) : (
               <div className="flex items-center justify-between w-full py-5 px-8 bg-slate-50 text-slate-400 border border-slate-200 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em]">

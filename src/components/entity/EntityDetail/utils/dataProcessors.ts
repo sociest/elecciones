@@ -25,7 +25,7 @@ export const processClaimsData = (claims: Claim[], entity: Entity) => {
   let lugarNacimiento = 'Ubicación desconocida';
   let lugarNacimientoId: string | null = null;
   const socialLinks: SocialLink[] = [];
-  let perfil = 'Entidad Verificada'; // Default category
+  let perfil = 'Perfil Verificado'; // Default category
 
   // Check aliases or entity type for category
   if (entity.aliases && entity.aliases.length > 0) {

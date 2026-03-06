@@ -141,6 +141,7 @@ export async function fetchAndEmit(
     }
   }
 
+  const candidateImageMap = await fetchImagesForEntities(entities);
   const batchAuthorities: Authority[] = [];
   for (const entity of entities) {
     const findings = officialsToFetch.get(entity.$id);
@@ -152,6 +153,7 @@ export async function fetchAndEmit(
         ...entity,
         role: roleType || undefined,
         party,
+        imageUrl: candidateImageMap.get(entity.$id) || undefined,
       };
 
       if (
@@ -188,4 +190,48 @@ export async function fetchAndEmit(
   if (batchAuthorities.length > 0 || isFirst) {
     onBatch(batchAuthorities, isFirst);
   }
+}
+
+export async function fetchImagesForEntities(
+  entities: Entity[]
+): Promise<Map<string, string>> {
+  const candidateImageMap = new Map<string, string>();
+  if (entities.length === 0) return candidateImageMap;
+
+  const entityIds = entities.map((e) => e.$id);
+  const imagePromises: Promise<Claim[]>[] = [];
+  const imageBatchSize = 50;
+  for (let i = 0; i < entityIds.length; i += imageBatchSize) {
+    const batch = entityIds.slice(i, i + imageBatchSize);
+    imagePromises.push(
+      databases
+        .listDocuments<Claim>(DATABASE_ID, COLLECTIONS.CLAIMS, [
+          Query.equal('subject', batch),
+          Query.equal('datatype', 'image'),
+          Query.limit(100),
+        ])
+        .then((r) => r.documents)
+    );
+  }
+  const imageResults = await Promise.all(imagePromises);
+  imageResults.flat().forEach((c) => {
+    const sid = typeof c.subject === 'object' ? c.subject.$id : c.subject;
+    if (sid && c.value_raw) {
+      if (!candidateImageMap.has(sid)) {
+        candidateImageMap.set(sid, c.value_raw);
+      }
+    }
+  });
+
+  return candidateImageMap;
+}
+
+export async function attachImagesToEntities(
+  entities: Entity[]
+): Promise<Authority[]> {
+  const imageMap = await fetchImagesForEntities(entities);
+  return entities.map((e) => ({
+    ...e,
+    imageUrl: imageMap.get(e.$id) || undefined,
+  }));
 }

@@ -1,9 +1,13 @@
 export const ENTITY_TYPE_IDS = {
   POLITICO: '69814f4e0012db67604a',
   PERSONA: '69814ecc002cb8ef13c6',
-  TERRITORIO: '6982cd215f22d1c5d613',
+  // Territory type IDs (these are the actual entity types in Appwrite)
+  MUNICIPIO: '698905af9310b97aa5e0', // "Municipio" type
+  DEPARTAMENTO: '698905770c6573d17bd4', // "Departamento" type
+  TERRITORIO: '6982cce02c8743208e11', // "Entidad Territorial" broader type
   ENTIDAD_TERRITORIAL: '6982cce02c8743208e11',
-  PARTIDO_POLITICO: '6985697dce1378ac55e9',
+  PARTIDO_POLITICO: '69839e00c95ab98bb723', // The actual instance-of type for parties
+  PARTIDO_MOVIMIENTO: '6985697dce1378ac55e9', // "Partido/Movimiento Politico" property-ish
   CASA_ENCUESTADORA: '69857dc12230ff9c37fd',
   MINISTERIO: '6991e285a95c1b99f78b',
   ORGANO_ELECTORAL: '698214f9f0542a6b390b',

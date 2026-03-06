@@ -45,7 +45,7 @@ export const EntityDetail: React.FC<EntityDetailProps> = ({
     : null;
   const partyQualifierRole = candidateClaim
     ? getQualifierValueByLabels(candidateClaim, ['rol', 'titular', 'cargo']) ||
-    null
+      null
     : null;
 
   const partyLogo =
@@ -61,24 +61,24 @@ export const EntityDetail: React.FC<EntityDetailProps> = ({
 
   const mainParty = partyQualifierEntity
     ? {
-      id: getEntityId(partyQualifierEntity),
-      nombre: extractLabel(partyQualifierEntity),
-      sigla: getSigla(extractLabel(partyQualifierEntity)),
-      rol: partyQualifierRole || 'Miembro',
-      logo: partyLogo || null,
-    }
-    : partido.length > 0
-      ? {
-        id: getEntityId(partido[0].value_relation),
-        nombre: extractLabel(
-          partido[0].value_relation || partido[0].value_raw
-        ),
-        sigla: getSigla(
-          extractLabel(partido[0].value_relation || partido[0].value_raw)
-        ),
-        rol: extractLabel(partido[0].property) || 'Miembro',
+        id: getEntityId(partyQualifierEntity),
+        nombre: extractLabel(partyQualifierEntity),
+        sigla: getSigla(extractLabel(partyQualifierEntity)),
+        rol: partyQualifierRole || 'Miembro',
         logo: partyLogo || null,
       }
+    : partido.length > 0
+      ? {
+          id: getEntityId(partido[0].value_relation),
+          nombre: extractLabel(
+            partido[0].value_relation || partido[0].value_raw
+          ),
+          sigla: getSigla(
+            extractLabel(partido[0].value_relation || partido[0].value_raw)
+          ),
+          rol: extractLabel(partido[0].property) || 'Miembro',
+          logo: partyLogo || null,
+        }
       : null;
 
   const fetchedLogo = usePartyLogo(mainParty?.id || undefined, partyLogo);

@@ -6,7 +6,6 @@ import React, {
   memo,
   lazy,
   Suspense,
-  useState,
 } from 'react';
 
 import type { LatLngExpression, Icon, DivIcon } from 'leaflet';
@@ -18,7 +17,7 @@ import { useMapStyling } from './hooks/useMapStyling';
 import { useMapEventHandlers } from './hooks/useMapEventHandlers';
 import { pointInPolygon, saveMunicipalityToStorage } from './utils/geomHelpers';
 import { LEVEL_NAMES } from './constants';
-import type { MapViewProps, MunicipalityFeature } from './types';
+import type { MapViewProps } from './types';
 
 // --- Lazy-load the entire Leaflet map UI so it never evaluates during SSR ---
 const LeafletMapUI = lazy(() => import('./LeafletMapUI'));
@@ -34,9 +33,9 @@ type MapViewAction =
   | { type: 'SET_SELECTED_FEATURE'; payload: string | null }
   | { type: 'SET_HOVERED_FEATURE'; payload: string | null }
   | {
-    type: 'SET_USER_DETECTED_FEATURE';
-    payload: { id: string | null; name: string | null };
-  }
+      type: 'SET_USER_DETECTED_FEATURE';
+      payload: { id: string | null; name: string | null };
+    }
   | { type: 'RESET_MAP' };
 
 const mapReducer = (
@@ -85,23 +84,30 @@ const MapViewLeaflet: React.FC<MapViewProps> = ({
   useEffect(() => {
     // Dynamic import ensures leaflet (and its `window` access) only loads in browser
     import('leaflet').then((L) => {
-      import('leaflet/dist/images/marker-icon.png?url').then(({ default: iconUrl }) => {
-        import('leaflet/dist/images/marker-shadow.png?url').then(({ default: iconShadowUrl }) => {
-          const defaultIcon = L.default.icon({
-            iconUrl,
-            shadowUrl: iconShadowUrl,
-            iconAnchor: [12, 41],
-          });
-          L.default.Marker.prototype.options.icon = defaultIcon;
-          const userLocationIcon = L.default.divIcon({
-            className: 'custom-user-marker',
-            html: '<div style="background-color: #10b981; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
-            iconSize: [20, 20],
-            iconAnchor: [10, 10],
-          });
-          setLeafletIcons({ default: defaultIcon, userLocation: userLocationIcon });
-        });
-      });
+      import('leaflet/dist/images/marker-icon.png?url').then(
+        ({ default: iconUrl }) => {
+          import('leaflet/dist/images/marker-shadow.png?url').then(
+            ({ default: iconShadowUrl }) => {
+              const defaultIcon = L.default.icon({
+                iconUrl,
+                shadowUrl: iconShadowUrl,
+                iconAnchor: [12, 41],
+              });
+              L.default.Marker.prototype.options.icon = defaultIcon;
+              const userLocationIcon = L.default.divIcon({
+                className: 'custom-user-marker',
+                html: '<div style="background-color: #10b981; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+              });
+              setLeafletIcons({
+                default: defaultIcon,
+                userLocation: userLocationIcon,
+              });
+            }
+          );
+        }
+      );
     });
   }, []);
 

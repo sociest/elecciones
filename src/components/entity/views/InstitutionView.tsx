@@ -84,18 +84,18 @@ export function InstitutionView({
 
   const creado = entity.$createdAt
     ? new Date(entity.$createdAt).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
     : 'N/D';
 
   const modificado = entity.$updatedAt
     ? new Date(entity.$updatedAt).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
     : 'N/D';
 
   const personalRelacionado = [];
@@ -228,7 +228,9 @@ export function InstitutionView({
                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">
                       Entidad Superior
                     </p>
-                    <h4 className="text-xl font-black text-slate-700">{dependencia}</h4>
+                    <h4 className="text-xl font-black text-slate-700">
+                      {dependencia}
+                    </h4>
                   </div>
                 </div>
                 <ArrowUpRight className="text-slate-300 group-hover:text-primary-green transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -269,7 +271,10 @@ export function InstitutionView({
                         </p>
                       </div>
                     </div>
-                    <ChevronRight size={16} className="text-slate-300 group-hover:text-primary-green transition-transform group-hover:translate-x-1" />
+                    <ChevronRight
+                      size={16}
+                      className="text-slate-300 group-hover:text-primary-green transition-transform group-hover:translate-x-1"
+                    />
                   </a>
                 ))
               ) : (
@@ -301,7 +306,10 @@ export function InstitutionView({
                   </p>
                 </div>
                 <div className="flex items-start gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
-                  <Calendar size={16} className="shrink-0 mt-0.5 text-slate-400" />
+                  <Calendar
+                    size={16}
+                    className="shrink-0 mt-0.5 text-slate-400"
+                  />
                   <div>
                     <p className="text-[9px] font-black text-slate-400 uppercase">
                       Fecha de Registro

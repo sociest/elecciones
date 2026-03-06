@@ -7,19 +7,28 @@ const ResultEntityCard = memo(
   ({
     entity,
     isSelected,
-    onSelect,
   }: {
     entity: Entity;
     isSelected: boolean;
     onSelect: () => void;
   }) => (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`bg-white border p-4 rounded-2xl cursor-pointer transition-all hover:shadow-lg w-full text-left ${isSelected
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() =>
+        (window.location.href = buildPath(`/entity?id=${entity.$id}`))
+      }
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.location.href = buildPath(`/entity?id=${entity.$id}`);
+        }
+      }}
+      className={`bg-white border p-4 rounded-2xl cursor-pointer transition-all hover:shadow-lg w-full text-left ${
+        isSelected
           ? 'border-primary-green shadow-md ring-1 ring-primary-green/20'
-          : 'border-slate-200 hover:border-primary-green/50'
-        }`}
+          : 'border-slate-200 hover:border-primary-green/50 hover:bg-slate-50'
+      }`}
     >
       <h4 className="font-bold text-slate-900 text-sm mb-1 leading-tight line-clamp-2">
         {entity.label || 'Sin nombre'}
@@ -37,7 +46,7 @@ const ResultEntityCard = memo(
         Ver más
         <ChevronRight size={12} />
       </a>
-    </button>
+    </div>
   )
 );
 ResultEntityCard.displayName = 'ResultEntityCard';

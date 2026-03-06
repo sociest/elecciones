@@ -58,7 +58,10 @@ export const TrayectoriaSection: React.FC<TrayectoriaSectionProps> = ({
                             className="text-xl font-black text-slate-800 leading-tight mb-1 inline-flex items-center gap-2 hover:underline"
                           >
                             {claimTarget}
-                            <ExternalLink size={14} className="text-slate-400" />
+                            <ExternalLink
+                              size={14}
+                              className="text-slate-400"
+                            />
                           </a>
                         );
                       }

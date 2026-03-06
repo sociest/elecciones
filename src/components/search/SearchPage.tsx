@@ -158,19 +158,19 @@ const EntityCard = memo<{ entity: Entity }>(({ entity }) => {
   return (
     <a
       href={buildPath(`/entity?id=${entity.$id}`)}
-      className="group bg-white border border-primary-green/5 p-8 rounded-[3.5rem] hover:border-primary-green hover:shadow-2xl hover:shadow-primary-green/5 transition-all relative overflow-hidden flex flex-col justify-between min-h-80 animate-[fadeInUp_0.6s_cubic-bezier(0.16,1,0.3,1)_forwards]"
+      className="group bg-white border border-slate-100 p-8 rounded-[2.5rem] hover:border-primary-green/30 hover:shadow-xl hover:shadow-primary-green/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between min-h-80 animate-[fadeInUp_0.6s_cubic-bezier(0.16,1,0.3,1)_forwards]"
     >
-      <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 translate-x-4 transition-all">
+      <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 group-hover:-translate-x-1 group-hover:translate-y-1 translate-x-4 -translate-y-4 transition-all duration-300">
         <ArrowUpRight size={24} className="text-primary-green" />
       </div>
 
       <div className="space-y-6">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="bg-hunter text-primary-green px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border border-primary-green/10">
+          <span className="bg-slate-50 text-slate-600 group-hover:text-primary-green group-hover:bg-primary-green/5 transition-colors px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border border-slate-100">
             {typeLabel}
           </span>
           {showVerified && (
-            <div className="flex items-center gap-1 text-emerald-600 text-[9px] font-black uppercase tracking-widest">
+            <div className="flex items-center gap-1 text-blue-600 text-[9px] font-black uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-lg border border-blue-100">
               <ShieldCheck size={12} strokeWidth={3} />
               <span>Oficial</span>
             </div>
@@ -178,39 +178,43 @@ const EntityCard = memo<{ entity: Entity }>(({ entity }) => {
         </div>
 
         <div>
-          <h3 className="text-2xl font-black leading-[0.95] tracking-tighter text-primary-green group-hover:translate-x-1 transition-transform mb-4">
+          <h3 className="text-2xl font-black leading-[1.1] tracking-tight text-slate-800 group-hover:text-primary-green transition-colors mb-4">
             {entity.label || NO_NAME}
           </h3>
 
           {entity.description ? (
-            <p className="text-sm font-medium text-primary-green/60 line-clamp-3">
+            <p className="text-sm font-medium text-slate-500 line-clamp-3 leading-relaxed">
               {entity.description}
             </p>
           ) : (
-            <div className="flex items-start gap-3 bg-primary-green/5 p-4 rounded-2xl mt-4">
+            <div className="flex items-start gap-3 bg-slate-50 group-hover:bg-primary-green/5 transition-colors p-4 rounded-2xl mt-4 border border-slate-100 group-hover:border-primary-green/10">
               <Activity
                 size={16}
-                className="mt-0.5 text-primary-green/40 shrink-0"
+                className="mt-0.5 text-slate-400 group-hover:text-primary-green/50 shrink-0 transition-colors"
               />
-              <p className="text-xs font-medium text-primary-green/60 leading-relaxed">
-                Haz clic para explorar los datos, declaraciones y otros vínculos
-                asociados en nuestra base de datos.
+              <p className="text-xs font-medium text-slate-500 leading-relaxed group-hover:text-primary-green/70 transition-colors">
+                Haz clic para explorar los datos, declaraciones y vínculos
+                asociados en la base de datos.
               </p>
             </div>
           )}
         </div>
       </div>
 
-      <div className="mt-8 pt-6 border-t border-primary-green/5 flex justify-between items-center">
+      <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center group-hover:border-primary-green/10 transition-colors">
         {entity.aliases && entity.aliases.length > 0 && (
-          <div className="flex items-center gap-3 py-1.5 px-3 bg-primary-green/5 rounded-xl group-hover:bg-primary-green group-hover:text-hunter transition-colors">
-            <span className="text-[10px] font-black uppercase tracking-tighter opacity-70 italic line-clamp-1 max-w-30">
+          <div className="flex items-center gap-3 py-1.5 px-3 bg-slate-50 group-hover:bg-primary-green/5 rounded-xl transition-colors">
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-primary-green line-clamp-1 max-w-30">
               {entity.aliases[0]}
             </span>
           </div>
         )}
-        <div className="flex items-center gap-1 text-primary-green/30 text-[9px] font-black uppercase tracking-widest group-hover:text-primary-green transition-colors ml-auto">
-          Detalles <ChevronRight size={14} />
+        <div className="flex items-center gap-1 text-slate-400 text-[9px] font-black uppercase tracking-widest group-hover:text-primary-green transition-all group-hover:translate-x-1 ml-auto">
+          Detalles{' '}
+          <ChevronRight
+            size={14}
+            className="group-hover:translate-x-0.5 transition-transform"
+          />
         </div>
       </div>
     </a>
@@ -337,19 +341,19 @@ const SearchPage: React.FC<SearchPageProps> = ({
   const { totalPages, currentEntities } = paginationData;
 
   return (
-    <div className="min-h-screen bg-neutral-white text-primary-green  antialiased pb-24">
+    <div className="min-h-screen bg-slate-50 text-slate-900 antialiased pb-24">
       <div className="max-w-7xl mx-auto px-6 mt-36">
-        <div className="flex flex-col md:flex-row justify-between items-end  gap-8 border-b border-primary-green/5 pb-12">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-slate-200 pb-12">
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none text-slate-800">
               Hay{' '}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-green to-primary-green/40 italic">
+              <span className="text-primary-green">
                 {state.loading ? '...' : state.entities.length}
               </span>{' '}
               coincidencias
             </h2>
             {state.debouncedSearch && (
-              <p className="text-lg font-medium text-primary-green/40">
+              <p className="text-lg font-medium text-slate-500">
                 Mostrando resultados para la búsqueda de{' '}
                 <span className="text-primary-green font-bold">
                   &quot;{state.debouncedSearch}&quot;
@@ -357,26 +361,26 @@ const SearchPage: React.FC<SearchPageProps> = ({
               </p>
             )}
           </div>
-          <div className="flex p-1.5 bg-primary-green/5 rounded-[1.5rem] border border-primary-green/5 overflow-x-auto w-full md:w-auto hidescrollbar shrink-0">
+          <div className="flex p-1.5 bg-white shadow-sm rounded-full border border-slate-200 overflow-x-auto w-full md:w-auto hidescrollbar shrink-0">
             {QUICK_FILTERS.map((f) => (
               <button
                 key={f.label}
                 onClick={() =>
                   dispatch({ type: 'SET_SELECTED_TYPE', payload: f.type })
                 }
-                className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm transition-all whitespace-nowrap ${state.selectedType === f.type ? 'bg-white opacity-100' : 'opacity-30 hover:opacity-100'}`}
+                className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${state.selectedType === f.type ? 'bg-primary-green text-white shadow-md' : 'text-slate-500 hover:text-primary-green hover:bg-slate-50'}`}
               >
                 {f.label}
               </button>
             ))}
           </div>
         </div>
-        <div className="bg-white/80 backdrop-blur-xl border-b border-primary-green/5 relative z-40 px-6 py-6">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6 mb-12">
+        <div className="relative z-40 py-8">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-4 mb-2">
             <div className="relative w-full group flex-1">
               <Search
-                className="absolute left-6 top-1/2 -translate-y-1/2 text-primary-green/20 group-focus-within:text-primary-green transition-colors"
-                size={20}
+                className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-green transition-colors duration-300"
+                size={22}
               />
               <input
                 type="text"
@@ -388,17 +392,17 @@ const SearchPage: React.FC<SearchPageProps> = ({
                   })
                 }
                 placeholder="Busca por nombre de candidato, partido o ciudad..."
-                className="w-full bg-primary-green/5 border-2 border-transparent rounded-[2rem] py-4 pl-16 pr-12 text-lg font-bold focus:outline-none focus:bg-white focus:border-primary-green transition-all shadow-inner"
+                className="w-full bg-white border border-slate-200 rounded-full py-4 pl-16 pr-12 text-lg font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-green/20 focus:border-primary-green transition-all shadow-sm hover:shadow-md"
               />
               {state.searchQuery && (
                 <button
                   onClick={() =>
                     dispatch({ type: 'SET_SEARCH_QUERY', payload: '' })
                   }
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-primary-green/40 hover:text-primary-green"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors"
                   aria-label="Limpiar búsqueda"
                 >
-                  <X size={20} />
+                  <X size={16} />
                 </button>
               )}
             </div>
@@ -410,19 +414,24 @@ const SearchPage: React.FC<SearchPageProps> = ({
                   payload: !state.showFilters,
                 })
               }
-              className="flex items-center gap-2 px-8 py-4 bg-primary-green text-hunter rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl hover:scale-105 transition-transform active:scale-95 shrink-0"
+              className={`flex items-center gap-2 px-8 py-4 rounded-full font-black text-[11px] uppercase tracking-widest transition-all shrink-0 ${state.showFilters ? 'bg-primary-green text-white shadow-lg shadow-primary-green/20' : 'bg-white text-slate-600 border border-slate-200 hover:border-primary-green hover:text-primary-green shadow-sm'}`}
             >
-              <Filter size={14} />
-              Refinar Búsqueda
+              <Filter
+                size={16}
+                className={state.showFilters ? '' : 'text-slate-400'}
+              />
+              Filtros Avanzados
             </button>
           </div>
 
-          {state.showFilters && (
-            <div className="max-w-7xl mx-auto mt-6 p-6 bg-white border border-primary-green/5 rounded-3xl shadow-sm flex flex-col md:flex-row gap-6 animate-[fadeInUp_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+          <div
+            className={`overflow-hidden transition-all duration-300 ease-in-out ${state.showFilters ? 'max-h-96 opacity-100 mb-8' : 'max-h-0 opacity-0 mb-0'}`}
+          >
+            <div className="mt-2 p-6 bg-white border border-slate-100 rounded-3xl shadow-sm flex flex-col md:flex-row gap-6">
               <div className="flex-1">
                 <label
                   htmlFor="filter-department"
-                  className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-3 block"
+                  className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3 block"
                 >
                   Departamento
                 </label>
@@ -435,7 +444,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
                       payload: e.target.value,
                     })
                   }
-                  className="w-full bg-primary-green/5 border border-transparent rounded-xl py-3 px-4 text-sm font-bold focus:outline-none focus:bg-white focus:border-primary-green"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-primary-green/20 focus:border-primary-green transition-all"
                 >
                   {DEPARTMENTS.map((d) => (
                     <option key={d} value={d}>
@@ -447,7 +456,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
               <div className="flex-1">
                 <label
                   htmlFor="filter-type"
-                  className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-3 block"
+                  className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3 block"
                 >
                   Tipo de Entidad
                 </label>
@@ -460,7 +469,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
                       payload: e.target.value,
                     })
                   }
-                  className="w-full bg-primary-green/5 border border-transparent rounded-xl py-3 px-4 text-sm font-bold focus:outline-none focus:bg-white focus:border-primary-green"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-primary-green/20 focus:border-primary-green transition-all"
                 >
                   {ENTITY_TYPES.map((t) => (
                     <option key={t.value} value={t.value}>
@@ -470,7 +479,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
                 </select>
               </div>
             </div>
-          )}
+          </div>
         </div>
 
         {state.loading ? (
@@ -478,25 +487,32 @@ const SearchPage: React.FC<SearchPageProps> = ({
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={`loading-skeleton-${i}`}
-                className="bg-white border border-primary-green/5 p-8 rounded-[3.5rem] min-h-80 animate-pulse"
-              ></div>
+                className="bg-white border border-slate-100 p-8 rounded-[2.5rem] min-h-80 animate-pulse flex flex-col space-y-4 shadow-sm"
+              >
+                <div className="w-24 h-6 bg-slate-100 rounded-md"></div>
+                <div className="w-3/4 h-8 bg-slate-100 rounded-md mt-4"></div>
+                <div className="w-1/2 h-4 bg-slate-50 rounded-md"></div>
+                <div className="w-full h-16 bg-slate-50 rounded-xl mt-auto"></div>
+              </div>
             ))}
           </div>
         ) : state.entities.length === 0 ? (
-          <div className="py-20 text-center">
-            <Search size={64} className="mx-auto mb-6 text-primary-green/10" />
-            <h3 className="text-3xl font-black text-primary-green mb-4">
-              No se encontraron resultados
+          <div className="py-24 text-center bg-white rounded-[3rem] border border-slate-100 shadow-sm animate-[fadeInUp_0.4s_ease-out_forwards]">
+            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 transition-transform hover:scale-110 duration-500">
+              <Search size={32} className="text-slate-300" />
+            </div>
+            <h3 className="text-3xl font-black text-slate-800 mb-4 tracking-tight">
+              Sin resultados
             </h3>
-            <p className="text-primary-green/40 font-medium max-w-md mx-auto mb-8">
-              No hemos podido encontrar ninguna entidad que coincida con tu
-              búsqueda. Prueba usando otros términos o limpiando los filtros.
+            <p className="text-slate-500 font-medium max-w-md mx-auto mb-8 leading-relaxed">
+              No encontramos coincidencias para esta búsqueda. Intenta usar
+              palabras diferentes o limpiar los filtros.
             </p>
             <button
               onClick={() => dispatch({ type: 'RESET_FILTERS' })}
-              className="px-8 py-4 bg-primary-green text-hunter rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl hover:scale-105 transition-all"
+              className="px-8 py-3.5 bg-primary-green text-white rounded-full font-black text-[11px] uppercase tracking-widest shadow-lg shadow-primary-green/20 hover:scale-[1.03] transition-all active:scale-95"
             >
-              Limpiar Filtros
+              Restablecer Búsqueda
             </button>
           </div>
         ) : (

@@ -4,10 +4,6 @@ import {
   Navigation,
   ArrowUpRight,
   Globe,
-  MapPin,
-  Map as MapIcon,
-  ExternalLink,
-  Target,
   Database,
   Calendar,
   Activity,
@@ -95,17 +91,44 @@ export function TerritoryView({
   const alias = entity.aliases?.[0] || '';
   const idRegistro = entity.$id;
 
-  const instanciaClaim = claims.find((c) =>
-    c.property?.label?.toLowerCase().includes('instancia de')
+  // Helper to get property ID from a claim (can be string or object)
+  const getPropId = (c: Claim) =>
+    typeof c.property === 'object'
+      ? c.property?.$id
+      : (c.property as unknown as string);
+
+  // Known Property IDs
+  const PROP_INSTANCE_OF = '69814ee90009513e4f69';
+  const PROP_TERRITORIO_GEOJSON = '6982cd215f22d1c5d613'; // "Territorio" property → GeoJSON URL
+  const PROP_POBLACION = '698eb84e001e0d024dda'; // "Población" — try by label fallback
+  const PROP_CODIGO_TERRITORIAL = '6982c462b97710531954'; // "Código Territorial"
+
+  // Only outgoing claims (subject = entity)
+  const outgoingClaims = claims.filter((c) => {
+    const subjectId =
+      typeof c.subject === 'object'
+        ? c.subject?.$id
+        : (c.subject as unknown as string);
+    return subjectId === entity.$id;
+  });
+
+  const instanciaClaim = outgoingClaims.find(
+    (c) => getPropId(c) === PROP_INSTANCE_OF
   );
   const categoria =
-    instanciaClaim?.value_relation?.label || 'Entidad Territorial';
+    (typeof instanciaClaim?.value_relation === 'object'
+      ? instanciaClaim?.value_relation?.label
+      : null) || 'Entidad Territorial';
 
-  const poblacionClaim = claims.find(
-    (c) =>
-      c.property?.label?.toLowerCase().includes('poblacion') ||
-      c.property?.label?.toLowerCase().includes('población')
-  );
+  // Population: Try by known property ID first, then by label
+  const poblacionClaim =
+    outgoingClaims.find((c) => getPropId(c) === PROP_POBLACION) ||
+    outgoingClaims.find(
+      (c) =>
+        typeof c.property === 'object' &&
+        (c.property?.label?.toLowerCase().includes('poblacion') ||
+          c.property?.label?.toLowerCase().includes('población'))
+    );
   const poblacionStr = poblacionClaim?.value_raw || 'N/D';
   const poblacionNum = parseInt(poblacionStr);
   const poblacionFormat = isNaN(poblacionNum)
@@ -122,32 +145,46 @@ export function TerritoryView({
     if (edadQual) poblacionNota = edadQual.value_raw || poblacionNota;
   }
 
-  const territorialCodeClaim = claims.find((c) => {
-    const lbl = (c.property?.label || '').toLowerCase().trim();
-    return (
-      lbl.includes('codigo territorial') || lbl.includes('código territorial')
-    );
-  });
+  // Código territorial: by known ID first, then by label
+  const territorialCodeClaim =
+    outgoingClaims.find((c) => getPropId(c) === PROP_CODIGO_TERRITORIAL) ||
+    outgoingClaims.find((c) => {
+      const lbl = (
+        typeof c.property === 'object' ? (c.property?.label ?? '') : ''
+      )
+        .toLowerCase()
+        .trim();
+      return (
+        lbl.includes('codigo territorial') || lbl.includes('código territorial')
+      );
+    });
   const codigoTerritorial = territorialCodeClaim?.value_raw || 'N/D';
 
-  const geoJsonClaim = claims.find((c) => {
-    if (!c.value_raw || typeof c.value_raw !== 'string') return false;
-    const val = c.value_raw.toLowerCase();
-    // Only accept URLs
-    if (!val.startsWith('http') && !val.includes('/storage/')) return false;
-
-    const lbl = (c.property?.label || '').toLowerCase().trim();
-    if (lbl === 'territorio' || lbl === 'mapa' || lbl.includes('geojson'))
-      return true;
-    // Fallback: If it's a URL to the storage bucket
-    if (
-      val.includes('appwrite.sociest.org/v1/storage/') ||
-      val.includes('.geojson')
-    ) {
-      return true;
-    }
-    return false;
-  });
+  // GeoJSON URL: by known "Territorio" property ID first, then by URL pattern
+  const geoJsonClaim =
+    outgoingClaims.find(
+      (c) =>
+        getPropId(c) === PROP_TERRITORIO_GEOJSON &&
+        c.value_raw?.startsWith('http')
+    ) ||
+    outgoingClaims.find((c) => {
+      if (!c.value_raw || typeof c.value_raw !== 'string') return false;
+      const val = c.value_raw.toLowerCase();
+      if (!val.startsWith('http') && !val.includes('/storage/')) return false;
+      const lbl = (
+        typeof c.property === 'object' ? (c.property?.label ?? '') : ''
+      )
+        .toLowerCase()
+        .trim();
+      if (lbl === 'territorio' || lbl === 'mapa' || lbl.includes('geojson'))
+        return true;
+      if (
+        val.includes('appwrite.sociest.org/v1/storage/') ||
+        val.includes('.geojson')
+      )
+        return true;
+      return false;
+    });
   const geoJsonUrl = geoJsonClaim?.value_raw;
 
   console.log('[TerritoryView] Data extraction:', {
@@ -155,6 +192,7 @@ export function TerritoryView({
     codigoTerritorial,
     geoJsonUrl,
     entityId: entity.$id,
+    outgoingClaimsCount: outgoingClaims.length,
     allClaimsCount: claims.length,
   });
 
@@ -168,7 +206,11 @@ export function TerritoryView({
         const incomingClaims = await databases.listDocuments(
           DATABASE_ID,
           COLLECTIONS.CLAIMS,
-          [Query.equal('value_relation', entity.$id), Query.limit(100)]
+          [
+            Query.equal('value_relation', entity.$id),
+            Query.equal('property', '6983977fdc3b15edf3f5'), // PART_OF
+            Query.limit(500),
+          ]
         );
 
         const foundProvinces: Province[] = [];
@@ -342,7 +384,9 @@ export function TerritoryView({
             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
               Código Territorial
             </p>
-            <p className="text-3xl font-black text-slate-800">{codigoTerritorial}</p>
+            <p className="text-3xl font-black text-slate-800">
+              {codigoTerritorial}
+            </p>
             <p className="text-[9px] font-bold text-slate-500 uppercase mt-1">
               Identificador OEP
             </p>
@@ -450,7 +494,10 @@ export function TerritoryView({
                         className="group bg-white border border-slate-200/80 p-8 rounded-[3rem] hover:border-slate-300 hover:shadow-lg transition-all relative overflow-hidden block"
                       >
                         <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ArrowUpRight size={20} className="text-slate-400 group-hover:text-primary-green" />
+                          <ArrowUpRight
+                            size={20}
+                            className="text-slate-400 group-hover:text-primary-green"
+                          />
                         </div>
                         <span className="bg-slate-100 text-slate-500 group-hover:bg-primary-green/10 group-hover:text-primary-green px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest mb-4 inline-block border border-transparent transition-colors">
                           {c.cargo}
@@ -511,13 +558,13 @@ export function TerritoryView({
                     <p className="text-xs font-bold text-slate-200">
                       {entity.$updatedAt
                         ? new Date(entity.$updatedAt).toLocaleDateString(
-                          'es-BO',
-                          {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          }
-                        )
+                            'es-BO',
+                            {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            }
+                          )
                         : 'N/D'}
                     </p>
                   </div>

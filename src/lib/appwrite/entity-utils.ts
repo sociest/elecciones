@@ -136,11 +136,16 @@ export async function determineEntityType(
         if (typeId === ENTITY_TYPE_IDS.POLITICO) return 'POLITICO';
         if (typeId === ENTITY_TYPE_IDS.PERSONA) return 'PERSONA';
         if (
+          typeId === ENTITY_TYPE_IDS.MUNICIPIO ||
+          typeId === ENTITY_TYPE_IDS.DEPARTAMENTO ||
           typeId === ENTITY_TYPE_IDS.TERRITORIO ||
           typeId === ENTITY_TYPE_IDS.ENTIDAD_TERRITORIAL
         )
           return 'TERRITORIO';
-        if (typeId === ENTITY_TYPE_IDS.PARTIDO_POLITICO)
+        if (
+          typeId === ENTITY_TYPE_IDS.PARTIDO_POLITICO ||
+          typeId === ENTITY_TYPE_IDS.PARTIDO_MOVIMIENTO
+        )
           return 'PARTIDO_POLITICO';
         if (typeId === ENTITY_TYPE_IDS.CASA_ENCUESTADORA)
           return 'CASA_ENCUESTADORA';

@@ -3,12 +3,16 @@ import type { Entity, Claim, Qualifier, Authority } from '../types';
 import { PROPERTY_IDS } from '../constants';
 import { getRoleIds, getAllRoleIds, getRoleTypeSync } from './cache';
 import { normalizeText, getCandidateClaimsForTerritory } from './helpers';
-import { buildOfficialsMap, fetchAndEmit } from './utils';
+import {
+  buildOfficialsMap,
+  fetchAndEmit,
+  attachImagesToEntities,
+} from './utils';
 import type { AuthoritiesByMunicipality } from './types';
 
 export async function fetchAuthorities(
   options: { search?: string; limit?: number; offset?: number } = {}
-): Promise<{ documents: Entity[]; total: number }> {
+): Promise<{ documents: Authority[]; total: number }> {
   const { search, limit = 25, offset = 0 } = options;
 
   try {
@@ -50,8 +54,10 @@ export async function fetchAuthorities(
         [Query.equal('$id', pageIds)]
       );
 
+      const finalDocs = await attachImagesToEntities(response.documents);
+
       return {
-        documents: response.documents,
+        documents: finalDocs,
         total: roleClaims.total,
       };
     }
@@ -111,8 +117,12 @@ export async function fetchAuthorities(
         );
       });
 
+      const finalDocs = await attachImagesToEntities(
+        filtered.slice(offset, offset + limit)
+      );
+
       return {
-        documents: filtered.slice(offset, offset + limit),
+        documents: finalDocs,
         total: filtered.length,
       };
     }
@@ -140,8 +150,12 @@ export async function fetchAuthorities(
       authorityIds.has(doc.$id)
     );
 
+    const finalDocs = await attachImagesToEntities(
+      filteredDocuments.slice(offset, offset + limit)
+    );
+
     return {
-      documents: filteredDocuments.slice(offset, offset + limit),
+      documents: finalDocs,
       total: filteredDocuments.length,
     };
   } catch (error) {

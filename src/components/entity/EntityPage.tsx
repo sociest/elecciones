@@ -1,7 +1,10 @@
 import React, { useEffect, useReducer } from 'react';
 import { Loader2 } from 'lucide-react';
 import { fetchEntityDetails, type Entity, type Claim } from '../../lib/queries';
-import type { EntityType } from '../../lib/appwrite/entity-utils';
+import {
+  type EntityType,
+  inferEntityTypeFromLabel,
+} from '../../lib/appwrite/entity-utils';
 import { EntityDetail } from './EntityDetail';
 import { EntityRenderer } from '@/components/entity/views/EntityRenderer';
 import { buildPath } from '../../lib/utils/paths';
@@ -17,9 +20,9 @@ interface EntityPageState {
 type EntityPageAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | {
-    type: 'SET_DATA';
-    payload: { entity: Entity; claims: Claim[]; entityType: EntityType };
-  }
+      type: 'SET_DATA';
+      payload: { entity: Entity; claims: Claim[]; entityType: EntityType };
+    }
   | { type: 'SET_ERROR'; payload: string };
 
 const entityPageReducer = (
@@ -80,12 +83,28 @@ export default function EntityPage() {
           entityType: resolvedType,
         } = await fetchEntityDetails(id);
 
+        // Fallback: if resolvedType is UNKNOWN, try to infer from the entity's label
+        // This handles cases where claim resolution is slow or partially fails.
+        let finalType: EntityType = resolvedType;
+        if (finalType === 'UNKNOWN') {
+          finalType = inferEntityTypeFromLabel(loadedEntity.label);
+        }
+
+        console.log(
+          '[EntityPage] Loaded entity:',
+          loadedEntity.label,
+          '→ type:',
+          resolvedType,
+          '→ finalType:',
+          finalType
+        );
+
         dispatch({
           type: 'SET_DATA',
           payload: {
             entity: loadedEntity as Entity,
             claims: loadedClaims,
-            entityType: resolvedType,
+            entityType: finalType,
           },
         });
       } catch (err: unknown) {
@@ -158,9 +177,7 @@ export default function EntityPage() {
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-12 h-12 animate-spin text-slate-400" />
-          <p className="text-slate-500 font-medium">
-            Cargando detalles...
-          </p>
+          <p className="text-slate-500 font-medium">Cargando detalles...</p>
         </div>
       </div>
     );
@@ -190,8 +207,13 @@ export default function EntityPage() {
     entityType !== 'POLITICO' &&
     entityType !== 'PERSONA'
   ) {
+    console.log('[EntityPage] Rendering EntityRenderer for type:', entityType);
     return <EntityRenderer entity={entity} claims={claims} type={entityType} />;
   }
 
+  console.log(
+    '[EntityPage] Rendering EntityDetail (generic view) for type:',
+    entityType
+  );
   return <EntityDetail entity={entity} claims={claims} />;
 }

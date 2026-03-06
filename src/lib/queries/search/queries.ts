@@ -1,6 +1,14 @@
 import { databases, DATABASE_ID, COLLECTIONS, Query } from '../../appwrite';
 import type { Entity, Claim } from '../types';
 import { PROPERTY_IDS, DEPARTMENT_IDS } from '../constants';
+
+// Known type IDs directly from Appwrite (avoids fragile label lookups)
+const KNOWN_TYPE_IDS = {
+  MUNICIPIO: '698905af9310b97aa5e0', // Municipio
+  PERSONA: '69814ecc002cb8ef13c6', // Persona
+  POLITICO: '69814f4e0012db67604a', // Político/Candidato
+  PARTIDO_POLITICO: '69839e00c95ab98bb723', // Partido/Movimiento Politico (instance-of)
+} as const;
 import {
   searchCache,
   quickSearchCache,
@@ -210,119 +218,133 @@ export async function fetchEntitiesFiltered(
   });
 
   try {
-    let filteredIds: string[] | null = null;
-    let departmentFilterApplied = false;
+    let validIds: Set<string>;
+    const [municipiosArr, personasArr, partidosArr] = await Promise.all([
+      getEntitiesByType('Municipio'),
+      getEntitiesByType('Persona'),
+      getEntitiesByType('Partido Político'),
+    ]);
+
+    const municipiosSet = new Set(municipiosArr);
+    const personasSet = new Set(personasArr);
+    const partidosSet = new Set(partidosArr);
 
     if (entityType && entityType !== 'Todas') {
-      console.log(
-        `[fetchEntitiesFiltered] Aplicando filtro de tipo: "${entityType}"`
-      );
-      const typeIds = await getEntitiesByType(entityType);
-      console.log(
-        `[fetchEntitiesFiltered] IDs encontrados por tipo:`,
-        typeIds.length
-      );
-      filteredIds = typeIds;
+      let typeIds: string[] = [];
+      if (entityType === 'Municipio') typeIds = municipiosArr;
+      else if (entityType === 'Persona') typeIds = personasArr;
+      else if (entityType === 'Partido Político') typeIds = partidosArr;
+      else typeIds = await getEntitiesByType(entityType);
+
+      validIds = new Set(typeIds);
+    } else {
+      validIds = new Set([...municipiosSet, ...personasSet, ...partidosSet]);
     }
 
+    let deptIdsSet: Set<string> | null = null;
     if (department && department !== 'Todos') {
-      console.log(
-        `[fetchEntitiesFiltered] Aplicando filtro de departamento: "${department}"`
-      );
       const deptIds = await getEntitiesByDepartment(department);
-      console.log(
-        `[fetchEntitiesFiltered] IDs encontrados por departamento:`,
-        deptIds.length
-      );
-      departmentFilterApplied = true;
-
-      if (filteredIds) {
-        const beforeIntersection = filteredIds.length;
-        filteredIds = filteredIds.filter((id) => deptIds.includes(id));
-        console.log(
-          `[fetchEntitiesFiltered] IDs después de intersección tipo+departamento: ${filteredIds.length} (antes: ${beforeIntersection})`
-        );
-      } else {
-        filteredIds = deptIds;
-      }
+      deptIdsSet = new Set(deptIds);
     }
 
-    if (departmentFilterApplied && (!filteredIds || filteredIds.length === 0)) {
-      console.log(
-        '[fetchEntitiesFiltered] Departamento sin entidades coincidentes → retornando vacío'
-      );
+    let filteredIds = Array.from(validIds);
+    if (deptIdsSet) {
+      filteredIds = filteredIds.filter((id) => deptIdsSet!.has(id));
+    }
+
+    if (filteredIds.length === 0) {
       return { documents: [], total: 0 };
     }
 
-    if (filteredIds && filteredIds.length > 0) {
+    const getPriority = (id: string) => {
+      if (personasSet.has(id)) return 1;
+      if (partidosSet.has(id)) return 2;
+      if (municipiosSet.has(id)) return 3;
+      return 4;
+    };
+
+    let results: Entity[] = [];
+
+    if (search) {
       console.log(
-        `[fetchEntitiesFiltered] Obteniendo entidades para ${filteredIds.length} IDs filtrados`
+        `[fetchEntitiesFiltered] Aplicando búsqueda de texto prioritaria: "${search}"`
       );
-      const entities: Entity[] = [];
-
-      const batchSize = 25;
-      const maxIds = Math.min(filteredIds.length, 100);
-      for (let i = 0; i < maxIds; i += batchSize) {
-        const batch = filteredIds.slice(i, i + batchSize);
-        const response = await databases.listDocuments<Entity>(
-          DATABASE_ID,
-          COLLECTIONS.ENTITIES,
-          [Query.equal('$id', batch), Query.limit(batchSize)]
-        );
-        entities.push(...response.documents);
-      }
-
+      const sRes = await fetchEntities({ search, limit: 1000, offset: 0 });
+      results = sRes.documents.filter(
+        (doc) =>
+          validIds.has(doc.$id) && (!deptIdsSet || deptIdsSet.has(doc.$id))
+      );
+      results.sort((a, b) => getPriority(a.$id) - getPriority(b.$id));
+    } else {
       console.log(
-        `[fetchEntitiesFiltered] Entidades obtenidas:`,
-        entities.length
+        `[fetchEntitiesFiltered] Obteniendo la pagina requerida desde ${filteredIds.length} IDs validos`
       );
+      filteredIds.sort((a, b) => getPriority(a) - getPriority(b));
 
-      let results = entities;
-
-      if (filteredIds) {
-        results.sort(
-          (a, b) => filteredIds!.indexOf(a.$id) - filteredIds!.indexOf(b.$id)
-        );
+      const pageIds = filteredIds.slice(offset, offset + limit);
+      if (pageIds.length > 0) {
+        const batchSize = 25;
+        for (let i = 0; i < pageIds.length; i += batchSize) {
+          const batch = pageIds.slice(i, i + batchSize);
+          const response = await databases.listDocuments<Entity>(
+            DATABASE_ID,
+            COLLECTIONS.ENTITIES,
+            [Query.equal('$id', batch), Query.limit(batchSize)]
+          );
+          const batchEntities = response.documents.sort(
+            (a, b) => batch.indexOf(a.$id) - batch.indexOf(b.$id)
+          );
+          results.push(...batchEntities);
+        }
       }
-
-      if (search) {
-        console.log(
-          `[fetchEntitiesFiltered] Aplicando búsqueda de texto: "${search}"`
-        );
-        const searchLower = search.toLowerCase();
-        results = entities.filter(
-          (entity) =>
-            entity.label?.toLowerCase().includes(searchLower) ||
-            entity.description?.toLowerCase().includes(searchLower) ||
-            entity.aliases?.some((a) => a.toLowerCase().includes(searchLower))
-        );
-        console.log(
-          `[fetchEntitiesFiltered] Resultados después de búsqueda:`,
-          results.length
-        );
-      }
-
-      console.log(
-        `[fetchEntitiesFiltered] Retornando ${results.slice(offset, offset + limit).length} de ${results.length} resultados totales`
-      );
-      return {
-        documents: results.slice(offset, offset + limit),
-        total: results.length,
-      };
     }
 
-    console.log(
-      '[fetchEntitiesFiltered] No hay filtros aplicados, usando fetchEntities estándar'
-    );
-    const result = await fetchEntities({ search, limit, offset });
-    console.log(
-      `[fetchEntitiesFiltered] Resultados de fetchEntities:`,
-      result.documents.length,
-      'de',
-      result.total
+    const paginatedResults = search
+      ? results.slice(offset, offset + limit)
+      : results;
+
+    // Add Department name to duplicated Municipalities (where label = 'Municipio')
+    const municipioTypeIds = new Set(await getEntitiesByType('Municipio'));
+    const finalResults = await Promise.all(
+      paginatedResults.map(async (doc) => {
+        if (!municipioTypeIds.has(doc.$id)) return doc;
+        try {
+          const claims = await databases.listDocuments(
+            DATABASE_ID,
+            COLLECTIONS.CLAIMS,
+            [
+              Query.equal('subject', doc.$id),
+              Query.equal('property', PROPERTY_IDS.PART_OF),
+            ]
+          );
+          const deptRel = claims.documents[0]?.value_relation;
+          const deptId = typeof deptRel === 'object' ? deptRel.$id : deptRel;
+          if (deptId) {
+            const deptDoc = await databases.getDocument(
+              DATABASE_ID,
+              COLLECTIONS.ENTITIES,
+              deptId
+            );
+            if (deptDoc?.label) {
+              return {
+                ...doc,
+                description: doc.description
+                  ? `${doc.description} - ${deptDoc.label}`
+                  : deptDoc.label,
+              };
+            }
+          }
+        } catch (e) {
+          console.error('Error fetching department for municipality', e);
+        }
+        return doc;
+      })
     );
 
-    return result;
+    return {
+      documents: finalResults,
+      total: search ? results.length : filteredIds.length,
+    };
   } catch (error) {
     console.error('[fetchEntitiesFiltered] Error:', error);
     return { documents: [], total: 0 };
@@ -333,59 +355,65 @@ export async function getEntitiesByType(typeName: string): Promise<string[]> {
   try {
     console.log(`[getEntitiesByType] Buscando tipo: "${typeName}"`);
 
-    const typeEntities = await databases.listDocuments<Entity>(
-      DATABASE_ID,
-      COLLECTIONS.ENTITIES,
-      [Query.equal('label', typeName), Query.limit(10)]
-    );
-
-    console.log(
-      `[getEntitiesByType] Entidades encontradas con label "${typeName}":`,
-      typeEntities.documents.length
-    );
-
-    if (typeEntities.documents.length === 0) {
-      console.warn(
-        `[getEntitiesByType] No se encontró ninguna entidad con label exacto "${typeName}"`
+    // Use known type IDs to avoid fragile label lookups
+    let typeIds: string[] = [];
+    if (typeName === 'Municipio') {
+      typeIds = [KNOWN_TYPE_IDS.MUNICIPIO];
+    } else if (typeName === 'Persona') {
+      // Include both Persona and Político (candidatos) type IDs
+      typeIds = [KNOWN_TYPE_IDS.PERSONA, KNOWN_TYPE_IDS.POLITICO];
+    } else if (typeName === 'Partido Político') {
+      typeIds = [KNOWN_TYPE_IDS.PARTIDO_POLITICO];
+    } else {
+      // Fallback: find by label
+      const typeEntities = await databases.listDocuments<Entity>(
+        DATABASE_ID,
+        COLLECTIONS.ENTITIES,
+        [Query.equal('label', typeName), Query.limit(10)]
       );
-      return [];
+      if (typeEntities.documents.length === 0) {
+        console.warn(
+          `[getEntitiesByType] No type entity found for "${typeName}"`
+        );
+        return [];
+      }
+      typeIds = [typeEntities.documents[0].$id];
     }
 
-    const typeId = typeEntities.documents[0].$id;
-    console.log(`[getEntitiesByType] ID del tipo encontrado: ${typeId}`);
-
-    const claims = await databases.listDocuments<Claim>(
-      DATABASE_ID,
-      COLLECTIONS.CLAIMS,
-      [
-        Query.equal('property', PROPERTY_IDS.INSTANCE_OF),
-        Query.equal('value_relation', typeId),
-        Query.limit(1000),
-      ]
-    );
+    // Fetch all entity IDs that are instances of the given type(s)
+    const allEntityIds: string[] = [];
+    for (const typeId of typeIds) {
+      let offset = 0;
+      const pageSize = 1000;
+      while (true) {
+        const claims = await databases.listDocuments<Claim>(
+          DATABASE_ID,
+          COLLECTIONS.CLAIMS,
+          [
+            Query.equal('property', PROPERTY_IDS.INSTANCE_OF),
+            Query.equal('value_relation', typeId),
+            Query.limit(pageSize),
+            Query.offset(offset),
+          ]
+        );
+        const ids = claims.documents
+          .map(
+            (claim) =>
+              claim.subject?.$id || (claim.subject as unknown as string)
+          )
+          .filter(Boolean) as string[];
+        allEntityIds.push(...ids);
+        if (claims.documents.length < pageSize) break;
+        offset += pageSize;
+      }
+    }
 
     console.log(
-      `[getEntitiesByType] Claims encontrados para tipo "${typeName}":`,
-      claims.documents.length
+      `[getEntitiesByType] "${typeName}" → ${allEntityIds.length} entidades`
     );
-
-    const entityIds = claims.documents
-      .map(
-        (claim) => claim.subject?.$id || (claim.subject as unknown as string)
-      )
-      .filter(Boolean);
-
-    console.log(
-      `[getEntitiesByType] IDs de entidades extraídos:`,
-      entityIds.length
-    );
-
-    return entityIds;
+    return Array.from(new Set(allEntityIds));
   } catch (error) {
-    console.error(
-      `[getEntitiesByType] Error getting entities by type "${typeName}":`,
-      error
-    );
+    console.error(`[getEntitiesByType] Error for "${typeName}":`, error);
     return [];
   }
 }

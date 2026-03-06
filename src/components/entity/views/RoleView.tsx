@@ -80,10 +80,10 @@ export function RoleView({ entity, claims = EMPTY_CLAIMS }: RoleProps) {
 
   const modificado = entity.$updatedAt
     ? new Date(entity.$updatedAt).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    })
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      })
     : 'N/D';
 
   return (
@@ -152,7 +152,9 @@ export function RoleView({ entity, claims = EMPTY_CLAIMS }: RoleProps) {
             <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
               Próximo Evento
             </p>
-            <p className="text-2xl font-black text-slate-800">{proximoEvento}</p>
+            <p className="text-2xl font-black text-slate-800">
+              {proximoEvento}
+            </p>
           </div>
         </div>
       </div>
@@ -173,9 +175,8 @@ export function RoleView({ entity, claims = EMPTY_CLAIMS }: RoleProps) {
               </div>
               <p className="text-sm font-bold text-slate-300 leading-relaxed text-pretty">
                 En el sistema electoral boliviano, el{' '}
-                <span className="text-white">{titulo}</span> ejerce
-                funciones ejecutivas de acuerdo con la Constitución Política del
-                Estado.
+                <span className="text-white">{titulo}</span> ejerce funciones
+                ejecutivas de acuerdo con la Constitución Política del Estado.
               </p>
             </div>
           </div>

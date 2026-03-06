@@ -41,18 +41,18 @@ export function EducationView({
 
   const fechaCreacion = entity.$createdAt
     ? new Date(entity.$createdAt).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
     : 'N/D';
 
   const fechaModificacion = entity.$updatedAt
     ? new Date(entity.$updatedAt).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
     : 'N/D';
 
   // Logo / Image
@@ -199,7 +199,7 @@ export function EducationView({
                     <div className="flex items-center gap-6">
                       <div className="w-14 h-14 bg-white border border-slate-200 rounded-2xl flex items-center justify-center text-slate-500 shadow-sm group-hover:rotate-3 transition-transform">
                         {v.esPersona ||
-                          v.relacion.toLowerCase().includes('estudi') ? (
+                        v.relacion.toLowerCase().includes('estudi') ? (
                           <GraduationCap size={24} />
                         ) : (
                           <Library size={24} />
@@ -223,7 +223,9 @@ export function EducationView({
                           <p className="text-[9px] font-black uppercase text-slate-400 text-pretty">
                             Finalización
                           </p>
-                          <p className="text-xs font-black text-slate-700">{v.fechaFin}</p>
+                          <p className="text-xs font-black text-slate-700">
+                            {v.fechaFin}
+                          </p>
                         </div>
                         <ChevronRight className="text-slate-400 opacity-0 group-hover:opacity-100 transition-all translate-x-2 group-hover:translate-x-0 group-hover:text-primary-green" />
                       </div>
@@ -268,7 +270,9 @@ export function EducationView({
                       <p className="text-[9px] font-black text-slate-400 uppercase">
                         Fecha de Registro
                       </p>
-                      <p className="text-xs font-bold text-slate-200">{fechaCreacion}</p>
+                      <p className="text-xs font-bold text-slate-200">
+                        {fechaCreacion}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
@@ -277,7 +281,9 @@ export function EducationView({
                       <p className="text-[9px] font-black text-slate-400 uppercase">
                         Última Actualización
                       </p>
-                      <p className="text-xs font-bold text-slate-200">{fechaModificacion}</p>
+                      <p className="text-xs font-bold text-slate-200">
+                        {fechaModificacion}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -299,7 +305,10 @@ export function EducationView({
               className="flex items-center justify-between w-full py-5 px-8 bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] active:scale-95 transition-all shadow-sm"
             >
               Ir al Buscador
-              <ArrowUpRight size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              <ArrowUpRight
+                size={14}
+                className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+              />
             </a>
           </div>
         </aside>
