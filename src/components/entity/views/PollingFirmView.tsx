@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BarChart3,
   Facebook,
@@ -11,9 +11,13 @@ import {
   History,
   Fingerprint,
   Share2,
+  Loader2,
 } from 'lucide-react';
 import type { Entity, Claim } from '@/lib/queries/types';
 import { buildPath } from '@/lib/utils/paths';
+import { databases, DATABASE_ID, COLLECTIONS } from '@/lib/appwrite';
+import { Query } from 'appwrite';
+import { PROPERTY_IDS } from '@/lib/constants/entity-types';
 
 const EMPTY_CLAIMS: Claim[] = [];
 
@@ -113,30 +117,64 @@ export function PollingFirmView({
     ? extractLabel(ubicacionClaim.value_relation || ubicacionClaim.value_raw)
     : 'Sede Principal';
 
-  const encuestas = claims
-    .filter((c) => {
-      const prop = normalizeText(extractLabel(c.property));
-      return (
-        prop.includes('encuesta') ||
-        prop.includes('estudio') ||
-        prop.includes('resultado') ||
-        normalizeText(extractLabel(c.value_relation)).includes('encuesta')
-      );
-    })
-    .map((c) => ({
-      id: c.$id,
-      nombre: extractLabel(c.value_relation || c.value_raw || c.property),
-      link: c.value_relation?.$id
-        ? buildPath(`/entity?id=${c.value_relation.$id}`)
-        : null,
-      fecha:
-        extractLabel(
-          c.qualifiers?.find((q) =>
-            normalizeText(extractLabel(q.property)).includes('fecha')
-          )?.value_raw
-        ) || 'Reciente',
-    }));
+  const [realEncuestas, setRealEncuestas] = useState<
+    { id: string; nombre: string; fecha: string }[] | null
+  >(null);
 
+  useEffect(() => {
+    let active = true;
+    const fetchEncuestas = async () => {
+      try {
+        const authClaims = await databases.listDocuments(
+          DATABASE_ID,
+          COLLECTIONS.CLAIMS,
+          [
+            Query.equal('property', PROPERTY_IDS.AUTOR_ENCUESTA),
+            Query.equal('value_relation', entity.$id),
+            Query.limit(100),
+          ]
+        );
+
+        if (!active) return;
+
+        const studyIds = authClaims.documents
+          .map((c: any) =>
+            typeof c.subject === 'object' ? c.subject?.$id : c.subject
+          )
+          .filter(Boolean);
+
+        if (studyIds.length === 0) {
+          setRealEncuestas([]);
+          return;
+        }
+
+        const studiesResp = await databases.listDocuments(
+          DATABASE_ID,
+          COLLECTIONS.ENTITIES,
+          [Query.equal('$id', studyIds), Query.limit(100)]
+        );
+
+        if (!active) return;
+
+        setRealEncuestas(
+          studiesResp.documents.map((d: any) => ({
+            id: d.$id,
+            nombre: d.label || 'Estudio sin título',
+            fecha: d.$updatedAt
+              ? new Date(d.$updatedAt).toLocaleDateString('es-BO', dateOptions)
+              : 'Reciente',
+          }))
+        );
+      } catch (err) {
+        console.error('Error fetching surveys for polling firm:', err);
+        if (active) setRealEncuestas([]);
+      }
+    };
+    fetchEncuestas();
+    return () => {
+      active = false;
+    };
+  }, [entity.$id]);
   const getAbbreviation = (name: string) => {
     const words = name.split(' ').filter((w) => w.length > 2);
     if (words.length >= 2)
@@ -270,11 +308,18 @@ export function PollingFirmView({
           </div>
 
           <div className="space-y-4">
-            {encuestas.length > 0 ? (
-              encuestas.map((e) => (
+            {realEncuestas === null ? (
+              <div className="text-center py-12 px-6 bg-slate-50 rounded-[3rem] border border-dashed border-slate-200 text-slate-400">
+                <Loader2 size={32} className="mx-auto mb-4 animate-spin opacity-50 text-primary-green" />
+                <p className="font-bold text-sm tracking-widest uppercase">
+                  Cargando estudios...
+                </p>
+              </div>
+            ) : realEncuestas.length > 0 ? (
+              realEncuestas.map((e) => (
                 <a
                   key={e.id}
-                  href={e.link || '#'}
+                  href={buildPath(`/entity?id=${e.id}`)}
                   className="group flex flex-col md:flex-row md:items-center justify-between p-8 bg-slate-50 border border-slate-200/50 hover:bg-white rounded-[3rem] hover:border-slate-300 transition-all hover:shadow-sm"
                 >
                   <div className="flex items-center gap-6">
@@ -296,8 +341,11 @@ export function PollingFirmView({
             ) : (
               <div className="text-center py-12 px-6 bg-slate-50 rounded-[3rem] border border-dashed border-slate-200 text-slate-400">
                 <Globe size={48} className="mx-auto mb-4 opacity-50" />
-                <p className="font-bold text-sm tracking-widest uppercase">
+                <p className="font-bold text-sm tracking-widest uppercase mb-1">
                   No se registraron estudios asociados aún.
+                </p>
+                <p className="text-[10px] uppercase tracking-wider opacity-70">
+                  Pendiente de carga
                 </p>
               </div>
             )}
