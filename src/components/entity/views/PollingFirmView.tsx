@@ -15,8 +15,7 @@ import {
 } from 'lucide-react';
 import type { Entity, Claim } from '@/lib/queries/types';
 import { buildPath } from '@/lib/utils/paths';
-import { databases, DATABASE_ID, COLLECTIONS } from '@/lib/appwrite';
-import { Query } from 'appwrite';
+import { loadCSV } from '@/lib/utils/csvLoader';
 import { PROPERTY_IDS } from '@/lib/constants/entity-types';
 
 const EMPTY_CLAIMS: Claim[] = [];
@@ -55,9 +54,7 @@ export function PollingFirmView({
     month: 'long',
     year: 'numeric',
   };
-  const actualizacion = entity.$updatedAt
-    ? new Date(entity.$updatedAt).toLocaleDateString('es-BO', dateOptions)
-    : 'N/D';
+  const actualizacion = 'N/D';
 
   const emailClaim = claims.find(
     (c) =>
@@ -125,46 +122,28 @@ export function PollingFirmView({
     let active = true;
     const fetchEncuestas = async () => {
       try {
-        const authClaims = await databases.listDocuments(
-          DATABASE_ID,
-          COLLECTIONS.CLAIMS,
-          [
-            Query.equal('property', PROPERTY_IDS.AUTOR_ENCUESTA),
-            Query.equal('value_relation', entity.$id),
-            Query.limit(100),
-          ]
-        );
-
+        const rows = await loadCSV('/data/encuestas.csv');
         if (!active) return;
 
-        const studyIds = authClaims.documents
-          .map((c: any) =>
-            typeof c.subject === 'object' ? c.subject?.$id : c.subject
-          )
-          .filter(Boolean);
-
-        if (studyIds.length === 0) {
-          setRealEncuestas([]);
-          return;
-        }
-
-        const studiesResp = await databases.listDocuments(
-          DATABASE_ID,
-          COLLECTIONS.ENTITIES,
-          [Query.equal('$id', studyIds), Query.limit(100)]
+        // Filter by author ID or label
+        const mySurveys = rows.filter(row => 
+          row.autor === entity.$id || 
+          row.autorLabel?.toLowerCase() === entity.label?.toLowerCase()
         );
 
-        if (!active) return;
+        // Group by item (survey ID) to avoid duplicates
+        const uniqueSurveys = new Map<string, any>();
+        mySurveys.forEach(row => {
+          if (!uniqueSurveys.has(row.item)) {
+            uniqueSurveys.set(row.item, {
+              id: row.item,
+              nombre: row.label || 'Estudio sin título',
+              fecha: row.fecha_fin || 'Reciente'
+            });
+          }
+        });
 
-        setRealEncuestas(
-          studiesResp.documents.map((d: any) => ({
-            id: d.$id,
-            nombre: d.label || 'Estudio sin título',
-            fecha: d.$updatedAt
-              ? new Date(d.$updatedAt).toLocaleDateString('es-BO', dateOptions)
-              : 'Reciente',
-          }))
-        );
+        setRealEncuestas(Array.from(uniqueSurveys.values()));
       } catch (err) {
         console.error('Error fetching surveys for polling firm:', err);
         if (active) setRealEncuestas([]);
@@ -174,7 +153,7 @@ export function PollingFirmView({
     return () => {
       active = false;
     };
-  }, [entity.$id]);
+  }, [entity.$id, entity.label]);
   const getAbbreviation = (name: string) => {
     const words = name.split(' ').filter((w) => w.length > 2);
     if (words.length >= 2)

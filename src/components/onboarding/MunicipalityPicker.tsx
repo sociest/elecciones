@@ -299,18 +299,57 @@ export default function MunicipalityPicker() {
     }
 
     try {
-      const position: GeolocationPosition =
-        await new Promise<GeolocationPosition>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            timeout: 10000,
-            enableHighAccuracy: true,
-            maximumAge: 0,
+      let latitude: number;
+      let longitude: number;
+      let accuracy: number | null = null;
+      let method: 'gps' | 'ip' = 'gps';
+
+      try {
+        if (typeof navigator === 'undefined' || !navigator.geolocation) throw new Error('no-geolocation');
+
+        // Check if we are in a secure context or localhost before attempting GPS
+        if (!globalThis.isSecureContext && !globalThis.location.hostname.includes('localhost')) {
+          throw new Error('insecure-context');
+        }
+
+        const position: GeolocationPosition =
+          await new Promise<GeolocationPosition>((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              timeout: 6000,
+              enableHighAccuracy: true,
+              maximumAge: 0,
+            });
           });
+
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        accuracy = position.coords.accuracy;
+      } catch (geoErr: any) {
+        // Fallback to IP detection if GPS fails or is denied/unavailable/timeout
+        dispatch({
+          type: 'GPS_SET_STATE',
+          payload: {
+            gpsState: 'detecting',
+            status: { type: 'loading', message: 'Detectando por red (IP)...' },
+          },
         });
 
-      const { latitude, longitude, accuracy } = position.coords;
+        try {
+          const ipRes = await fetch('https://get.geojs.io/v1/ip/geo.json');
+          if (!ipRes.ok) throw geoErr;
 
-      if (Number.isFinite(accuracy) && accuracy > 1500) {
+          const ipData = await ipRes.json();
+          latitude = parseFloat(ipData.latitude);
+          longitude = parseFloat(ipData.longitude);
+          method = 'ip';
+          
+          if (isNaN(latitude) || isNaN(longitude)) throw geoErr;
+        } catch (ipErr) {
+          throw geoErr; // If IP also fails, throw original GPS error
+        }
+      }
+
+      if (method === 'gps' && Number.isFinite(accuracy) && accuracy! > 2000) {
         dispatch({
           type: 'GPS_SET_STATE',
           payload: {
@@ -319,7 +358,7 @@ export default function MunicipalityPicker() {
               type: 'error',
               title: 'Ubicación imprecisa',
               message:
-                'Tu ubicación salió muy aproximada. Activa el GPS/ubicación precisa e intenta nuevamente, o busca tu municipio manualmente.',
+                'Tu ubicación GPS es muy aproximada. Intenta activar el GPS de alta precisión o busca manualmente.',
             },
           },
         });
@@ -343,7 +382,7 @@ export default function MunicipalityPicker() {
           municipalityId: found.id,
           municipalityName: found.name,
           departmentName: found.department,
-          detectionMethod: 'gps',
+          detectionMethod: method,
         };
         localStorage.setItem(
           'user_location',
@@ -360,8 +399,8 @@ export default function MunicipalityPicker() {
             gpsState: 'found',
             status: {
               type: 'success',
-              title: 'Ubicación detectada',
-              message: `Municipio: ${found.name}${Number.isFinite(accuracy) ? ` (±${Math.round(accuracy)}m)` : ''}`,
+              title: method === 'gps' ? 'Ubicación detectada' : 'Ubicación por red (IP)',
+              message: `Municipio: ${found.name}${method === 'gps' && Number.isFinite(accuracy) ? ` (±${Math.round(accuracy!)}m)` : ''}`,
             },
           },
         });

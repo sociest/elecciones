@@ -1,216 +1,125 @@
-import { databases, DATABASE_ID, COLLECTIONS, Query } from '../../appwrite';
-import type { Entity, Claim, Qualifier, Reference } from '../types';
-import { deriveEntityTypeFromClaims } from './entityTypeDerivation';
+import { fetchEntityById } from '../search/queries';
+import { PROPERTY_IDS } from '../../constants/entity-types';
 
 /**
- * Fetch full entity details including outgoing and incoming claims.
- * Also returns the resolved EntityType so callers need only one await.
+ * Fetch full entity details (Mocked for CSV)
  */
 export async function fetchEntityDetails(entityId: string) {
   try {
-    const entity = await databases.getDocument<Entity>(
-      DATABASE_ID,
-      COLLECTIONS.ENTITIES,
-      entityId
-    );
+    const entity = await fetchEntityById(entityId);
+    
+    if (!entity) {
+      throw new Error(`Entity not found: ${entityId}`);
+    }
 
-    // Fetch outgoing claims (Subject = Entity)
-    const outgoingClaimsPromise = databases.listDocuments<Claim>(
-      DATABASE_ID,
-      COLLECTIONS.CLAIMS,
-      [Query.equal('subject', entityId), Query.limit(5000)]
-    );
-
-    // Fetch incoming PART_OF claims only (sub-territories that are part of this entity).
-    // We intentionally exclude other incoming claims (e.g. candidato qualifiers that
-    // reference this territory) because they are fetched on-demand in TerritoryView
-    // via getAuthoritiesByMunicipalityStreaming. Fetching all incoming claims for a
-    // department would return thousands of candidato-related claims causing timeouts.
-    const PART_OF_PROP = '6983977fdc3b15edf3f5';
-    const incomingClaimsPromise = databases.listDocuments<Claim>(
-      DATABASE_ID,
-      COLLECTIONS.CLAIMS,
-      [
-        Query.equal('value_relation', entityId),
-        Query.equal('property', PART_OF_PROP),
-        Query.limit(500),
-      ]
-    );
-
-    const [outgoingResponse, incomingResponse] = await Promise.all([
-      outgoingClaimsPromise,
-      incomingClaimsPromise,
-    ]);
-
-    const allClaims = [
-      ...outgoingResponse.documents,
-      ...incomingResponse.documents,
-    ];
-
-    const claimIds = allClaims.map((claim) => claim.$id);
-    const qualifiersByClaim = new Map<string, Qualifier[]>();
-    const referencesByClaim = new Map<string, Reference[]>();
-
-    if (claimIds.length > 0) {
-      const batchSize = 100;
-
-      for (let i = 0; i < claimIds.length; i += batchSize) {
-        const batch = claimIds.slice(i, i + batchSize);
-
-        const [qualifiersResponse, referencesResponse] = await Promise.all([
-          databases.listDocuments<Qualifier>(
-            DATABASE_ID,
-            COLLECTIONS.QUALIFIERS,
-            [Query.equal('claim', batch), Query.limit(batchSize)]
-          ),
-          databases.listDocuments<Reference>(
-            DATABASE_ID,
-            COLLECTIONS.REFERENCES,
-            [Query.equal('claim', batch), Query.limit(batchSize)]
-          ),
-        ]);
-
-        qualifiersResponse.documents.forEach((qualifier) => {
-          const claimId =
-            typeof qualifier.claim === 'object'
-              ? qualifier.claim.$id
-              : qualifier.claim;
-          if (!claimId) return;
-          if (!qualifiersByClaim.has(claimId))
-            qualifiersByClaim.set(claimId, []);
-          qualifiersByClaim.get(claimId)?.push(qualifier);
+    const type = ((entity as any).type || 'PERSONA').toUpperCase();
+    const claims: any[] = [];
+    
+    if (type === 'ENCUESTA') {
+      const e = entity as any;
+      
+      // Map results to claims
+      if (e.resultados && Array.isArray(e.resultados)) {
+        e.resultados.forEach((r: any, idx: number) => {
+          claims.push({
+            $id: `res_${idx}_${r.item}`,
+            property: { label: 'Resultado', $id: PROPERTY_IDS.RESULTADO_ENCUESTA },
+            value_raw: r.porcentaje.toString(),
+            value_relation: { label: r.label || r.item },
+            qualifiers: [
+              {
+                property: { label: 'Opción / Candidato' },
+                value_relation: { label: r.label || r.item }
+              },
+              {
+                property: { label: 'Porcentaje' },
+                value_raw: r.porcentaje.toString()
+              },
+              {
+                property: { label: 'Pregunta' },
+                value_raw: r.pregunta || ''
+              }
+            ]
+          });
         });
+      }
 
-        referencesResponse.documents.forEach((reference) => {
-          const claimId =
-            typeof reference.claim === 'object'
-              ? reference.claim.$id
-              : reference.claim;
-          if (!claimId) return;
-          if (!referencesByClaim.has(claimId))
-            referencesByClaim.set(claimId, []);
-          referencesByClaim.get(claimId)?.push(reference);
+      // Metadata claims
+      if (e.autorLabel) {
+        claims.push({
+          $id: 'claim_autor',
+          property: { label: 'Autor', $id: PROPERTY_IDS.AUTOR_ENCUESTA },
+          value_relation: { label: e.autorLabel },
+          value_raw: e.autorLabel
+        });
+      }
+      if (e.coberturaLabel) {
+        claims.push({
+          $id: 'claim_cobertura',
+          property: { label: 'Cobertura', $id: PROPERTY_IDS.COBERTURA_ENCUESTA },
+          value_relation: { label: e.coberturaLabel },
+          value_raw: e.coberturaLabel
+        });
+      }
+      if (e.muestra) {
+        claims.push({
+          $id: 'claim_muestra',
+          property: { label: 'Muestra', $id: PROPERTY_IDS.MUESTRA_ENCUESTA },
+          value_raw: e.muestra.toString()
+        });
+      }
+      if (e.margen) {
+        claims.push({
+          $id: 'claim_margen',
+          property: { label: 'Margen de Error', $id: PROPERTY_IDS.MARGEN_ERROR_ENCUESTA },
+          value_raw: e.margen.toString()
+        });
+      }
+      if (e.nivelConfianza) {
+        claims.push({
+          $id: 'claim_confianza',
+          property: { label: 'Nivel de Confianza', $id: PROPERTY_IDS.NIVEL_DE_CONFIANZA_ENCUESTA },
+          value_raw: e.nivelConfianza.toString()
+        });
+      }
+      if (e.fechaInicio) {
+        claims.push({
+          $id: 'claim_inicio',
+          property: { label: 'Fecha Inicio', $id: PROPERTY_IDS.FECHA_INICIO_ENCUESTA },
+          value_raw: e.fechaInicio
+        });
+      }
+      if (e.fechaFin) {
+        claims.push({
+          $id: 'claim_fin',
+          property: { label: 'Fecha Fin', $id: PROPERTY_IDS.FECHA_FIN_ENCUESTA },
+          value_raw: e.fechaFin
+        });
+      }
+      if (e.publicacion) {
+        claims.push({
+          $id: 'claim_publi',
+          property: { label: 'Fecha Publicación', $id: PROPERTY_IDS.FECHA_PUBLICACION },
+          value_raw: e.publicacion
+        });
+      }
+      if (e.archivo) {
+        claims.push({
+          $id: 'claim_archivo',
+          property: { label: 'Archivo', $id: PROPERTY_IDS.ARCHIVO },
+          value_raw: e.archivo
         });
       }
     }
-
-    const entityIdsToFetch = new Set<string>();
-
-    allClaims.forEach((claim) => {
-      if (claim.subject && typeof claim.subject === 'string') {
-        entityIdsToFetch.add(claim.subject);
-      }
-      if (claim.property && typeof claim.property === 'string') {
-        entityIdsToFetch.add(claim.property);
-      }
-      if (claim.value_relation && typeof claim.value_relation === 'string') {
-        entityIdsToFetch.add(claim.value_relation);
-      }
-      const qualifiers = qualifiersByClaim.get(claim.$id) || [];
-      const references = referencesByClaim.get(claim.$id) || [];
-
-      claim.qualifiers = qualifiers;
-      claim.references = references;
-
-      qualifiers.forEach((qualifier) => {
-        if (qualifier.property && typeof qualifier.property === 'string') {
-          entityIdsToFetch.add(qualifier.property);
-        }
-        if (
-          qualifier.value_relation &&
-          typeof qualifier.value_relation === 'string'
-        ) {
-          entityIdsToFetch.add(qualifier.value_relation);
-        }
-      });
-
-      references.forEach((reference) => {
-        if (reference.reference && typeof reference.reference === 'string') {
-          entityIdsToFetch.add(reference.reference);
-        }
-      });
-    });
-
-    if (entityIdsToFetch.size > 0) {
-      const fetchedEntities = new Map<string, Entity>();
-
-      await Promise.all(
-        Array.from(entityIdsToFetch).map(async (id) => {
-          try {
-            const ent = await databases.getDocument<Entity>(
-              DATABASE_ID,
-              COLLECTIONS.ENTITIES,
-              id
-            );
-            fetchedEntities.set(id, ent);
-          } catch (e) {
-            console.warn(`Failed to fetch related entity ${id}`, e);
-          }
-        })
-      );
-
-      for (const claim of allClaims) {
-        if (
-          typeof claim.property === 'string' &&
-          fetchedEntities.has(claim.property)
-        ) {
-          claim.property = fetchedEntities.get(claim.property);
-        }
-        if (
-          typeof claim.value_relation === 'string' &&
-          fetchedEntities.has(claim.value_relation)
-        ) {
-          claim.value_relation = fetchedEntities.get(claim.value_relation);
-        }
-        if (
-          typeof claim.subject === 'string' &&
-          fetchedEntities.has(claim.subject)
-        ) {
-          claim.subject = fetchedEntities.get(claim.subject);
-        }
-
-        (claim.qualifiers || []).forEach((qualifier) => {
-          if (
-            typeof qualifier.property === 'string' &&
-            fetchedEntities.has(qualifier.property)
-          ) {
-            qualifier.property = fetchedEntities.get(qualifier.property);
-          }
-          if (
-            typeof qualifier.value_relation === 'string' &&
-            fetchedEntities.has(qualifier.value_relation)
-          ) {
-            qualifier.value_relation = fetchedEntities.get(
-              qualifier.value_relation
-            );
-          }
-        });
-
-        (claim.references || []).forEach((reference) => {
-          if (
-            typeof reference.reference === 'string' &&
-            fetchedEntities.has(reference.reference)
-          ) {
-            reference.reference = fetchedEntities.get(reference.reference);
-          }
-        });
-      }
-    }
-
-    const outgoingClaims = allClaims.filter(
-      (c) =>
-        (typeof c.subject === 'object' ? c.subject?.$id : c.subject) ===
-        entityId
-    );
-    const entityType = deriveEntityTypeFromClaims(outgoingClaims, entity.label);
 
     return {
       entity,
-      claims: allClaims,
-      entityType,
+      claims,
+      entityType: type as any,
     };
   } catch (error) {
-    console.error('Error fetching entity details:', error);
+    console.error('Error fetching entity details (CSV):', error);
     throw error;
   }
 }
+

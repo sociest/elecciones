@@ -30,35 +30,18 @@ export async function getTerritorialCodeMap(): Promise<Map<string, string>> {
   }
 
   const map = new Map<string, string>();
-  const LIMIT = 500;
-  let offset = 0;
-  let keepFetching = true;
-
-  while (keepFetching) {
-    const response = await databases.listDocuments<Claim>(
-      DATABASE_ID,
-      COLLECTIONS.CLAIMS,
-      [
-        Query.equal('property', PROPERTY_IDS.TERRITORIAL_CODE),
-        Query.limit(LIMIT),
-        Query.offset(offset),
-      ]
-    );
-
-    response.documents.forEach((claim) => {
-      if (!claim.value_raw || !claim.subject) return;
-      const code = claim.value_raw.trim();
-      if (code.length !== 6) return;
-      const entityId =
-        typeof claim.subject === 'string' ? claim.subject : claim.subject.$id;
-      if (entityId) map.set(code, entityId);
+  try {
+    const response = await fetch('/municipalities-meta.json');
+    if (!response.ok) throw new Error('Failed to fetch municipalities meta');
+    const data = await response.json();
+    
+    data.forEach((item: any) => {
+      if (item.id && item.ineCode) {
+        map.set(item.ineCode, item.id);
+      }
     });
-
-    if (response.documents.length < LIMIT) {
-      keepFetching = false;
-    } else {
-      offset += LIMIT;
-    }
+  } catch (error) {
+    console.error('Error loading territorial code map (JSON):', error);
   }
 
   territorialCodeMapCache = map;

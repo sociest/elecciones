@@ -5,6 +5,7 @@ import {
   getClaimCount,
   getPropertyCount,
   getAuthoritiesByMunicipalityStreaming,
+  fetchEntitiesFiltered,
 } from '../../../../lib/queries';
 import type { Entity, Authority } from '../../../../lib/queries';
 
@@ -59,6 +60,7 @@ function rearrangeEntities(entities: Entity[]): Entity[] {
  */
 export const useDashboardData = (municipalityId: string | null = null) => {
   const [entities, setEntities] = useState<Entity[]>([]);
+  const [surveys, setSurveys] = useState<Entity[]>([]);
   const [stats, setStats] = useState({ entities: 0, claims: 0, properties: 0 });
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -162,6 +164,16 @@ export const useDashboardData = (municipalityId: string | null = null) => {
           }
         }
 
+        // Fetch Surveys
+        const { documents: loadedSurveys } = await fetchEntitiesFiltered({
+          department: municipalityId || undefined,
+          entityType: 'Encuesta',
+          limit: 10,
+        });
+        if (active) {
+          setSurveys(loadedSurveys);
+        }
+
         const fetchStats = async () => {
           try {
             const [entityCount, claimCount, propertyCount] = await Promise.all([
@@ -199,6 +211,7 @@ export const useDashboardData = (municipalityId: string | null = null) => {
         );
         if (active && !hasCache) {
           setEntities([]);
+          setSurveys([]);
           setStats({ entities: 0, claims: 0, properties: 0 });
         }
       } finally {
@@ -213,5 +226,5 @@ export const useDashboardData = (municipalityId: string | null = null) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [municipalityId]);
 
-  return { entities, stats, loading, refreshing };
+  return { entities, surveys, stats, loading, refreshing };
 };

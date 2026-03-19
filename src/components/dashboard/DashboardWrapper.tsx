@@ -1,4 +1,5 @@
 import React from 'react';
+// Force refresh triggered to clear potential stale cache
 import EntityDashboard from './Dashboard';
 
 const DashboardWrapper: React.FC = () => {

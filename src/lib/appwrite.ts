@@ -1,17 +1,23 @@
-import { Client, Databases, Storage, Query } from 'appwrite';
+// MOCKED Appwrite Client for CSV Migration
+export const client: any = {
+  setEndpoint: () => client,
+  setProject: () => client,
+};
 
-const client = new Client();
+export const databases: any = {
+  listDocuments: async () => ({ documents: [], total: 0 }),
+  getDocument: async () => ({}),
+  createDocument: async () => ({}),
+  updateDocument: async () => ({}),
+  deleteDocument: async () => ({}),
+};
 
-client
-  .setEndpoint(import.meta.env.PUBLIC_APPWRITE_ENDPOINT)
-  .setProject(import.meta.env.PUBLIC_APPWRITE_PROJECT_ID);
+export const storage: any = {
+  getFileView: () => '',
+  getFileDownload: () => '',
+};
 
-// Only export services that are actually used
-export const databases = new Databases(client);
-export const storage = new Storage(client);
-export { client };
-
-export const DATABASE_ID = import.meta.env.PUBLIC_APPWRITE_DATABASE_ID;
+export const DATABASE_ID = 'csv_mock';
 
 export const COLLECTIONS = {
   ENTITIES: 'entities',
@@ -21,6 +27,12 @@ export const COLLECTIONS = {
   AUDIT_LOG: 'audit_log',
 } as const;
 
-export const GEOJSON_BUCKET_ID = '6982ca130039bc0ee4e2'; // Update if different
+export const Query: any = {
+  equal: () => '',
+  limit: () => '',
+  offset: () => '',
+  orderAsc: () => '',
+  orderDesc: () => '',
+  search: () => '',
+};
 
-export { Query };

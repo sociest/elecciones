@@ -1,6 +1,4 @@
-import { databases, DATABASE_ID, COLLECTIONS, Query } from '../../appwrite';
-import type { Entity, Claim, Qualifier, Authority } from '../types';
-import { PROPERTY_IDS } from '../constants';
+import type { Entity, Claim, Authority } from '../types';
 import { getRoleTypeSync } from './cache';
 import type { AuthoritiesByMunicipality } from './types';
 
@@ -33,196 +31,18 @@ export async function fetchAndEmit(
   onBatch: (batch: Authority[], replace: boolean) => void,
   isFirst: boolean
 ): Promise<void> {
-  const allIdsToFetch = Array.from(officialsToFetch.keys());
-  if (allIdsToFetch.length === 0) {
-    if (isFirst) onBatch([], true);
-    return;
-  }
-
-  const entityBatchSize = 50;
-  const entityBatchPromises: Promise<Entity[]>[] = [];
-  for (let i = 0; i < allIdsToFetch.length; i += entityBatchSize) {
-    const batch = allIdsToFetch.slice(i, i + entityBatchSize);
-    entityBatchPromises.push(
-      databases
-        .listDocuments<Entity>(DATABASE_ID, COLLECTIONS.ENTITIES, [
-          Query.equal('$id', batch),
-          Query.limit(entityBatchSize),
-        ])
-        .then((r) => r.documents)
-    );
-  }
-
-  const allClaimIds = Array.from(officialsToFetch.values()).flatMap((list) =>
-    list.map((item) => item.claimId)
-  );
-  const partyQualPromises: Promise<Qualifier[]>[] = [];
-  const qualBatchSize = 100;
-  for (let i = 0; i < allClaimIds.length; i += qualBatchSize) {
-    const batch = allClaimIds.slice(i, i + qualBatchSize);
-    partyQualPromises.push(
-      databases
-        .listDocuments<Qualifier>(DATABASE_ID, COLLECTIONS.QUALIFIERS, [
-          Query.equal('claim', batch),
-          Query.equal('property', PROPERTY_IDS.POLITICAL_PARTY),
-          Query.limit(qualBatchSize),
-        ])
-        .then((r) => r.documents)
-    );
-  }
-
-  const [entityBatchResults, partyQualResults] = await Promise.all([
-    Promise.all(entityBatchPromises),
-    Promise.all(partyQualPromises),
-  ]);
-
-  const entities = entityBatchResults.flat();
-  const allPartyQualifiers = partyQualResults.flat();
-
-  const claimToPartyMap = new Map<string, Entity & { color?: string }>();
-
-  if (allPartyQualifiers.length > 0) {
-    const partyIdsToFetch = new Set<string>();
-    const claimToPartyId = new Map<string, string>();
-    allPartyQualifiers.forEach((q) => {
-      const claimId = typeof q.claim === 'object' ? q.claim.$id : q.claim;
-      const partyId =
-        typeof q.value_relation === 'object'
-          ? q.value_relation.$id
-          : q.value_relation;
-      if (claimId && partyId) {
-        claimToPartyId.set(claimId, partyId);
-        partyIdsToFetch.add(partyId);
-      }
-    });
-
-    if (partyIdsToFetch.size > 0) {
-      const partyIds = Array.from(partyIdsToFetch);
-      const partyBatchSize = 50;
-      const partyEntityPromises: Promise<Entity[]>[] = [];
-      for (let i = 0; i < partyIds.length; i += partyBatchSize) {
-        const batch = partyIds.slice(i, i + partyBatchSize);
-        partyEntityPromises.push(
-          databases
-            .listDocuments<Entity>(DATABASE_ID, COLLECTIONS.ENTITIES, [
-              Query.equal('$id', batch),
-              Query.limit(partyBatchSize),
-            ])
-            .then((r) => r.documents)
-        );
-      }
-
-      const [partyBatchResults, colorClaims] = await Promise.all([
-        Promise.all(partyEntityPromises),
-        databases.listDocuments<Claim>(DATABASE_ID, COLLECTIONS.CLAIMS, [
-          Query.equal('subject', partyIds),
-          Query.equal('property', PROPERTY_IDS.COLOR),
-          Query.limit(100),
-        ]),
-      ]);
-
-      const partyEntities = partyBatchResults.flat();
-      const partyColors = new Map<string, string>();
-      colorClaims.documents.forEach((c) => {
-        const subjectId =
-          typeof c.subject === 'object' ? c.subject.$id : c.subject;
-        if (subjectId && c.value_raw) {
-          partyColors.set(subjectId, c.value_raw.split('|')[0].trim());
-        }
-      });
-
-      const partyMap = new Map(partyEntities.map((e) => [e.$id, e]));
-      claimToPartyId.forEach((pId, cId) => {
-        const entity = partyMap.get(pId);
-        if (entity) {
-          claimToPartyMap.set(cId, { ...entity, color: partyColors.get(pId) });
-        }
-      });
-    }
-  }
-
-  const candidateImageMap = await fetchImagesForEntities(entities);
-  const batchAuthorities: Authority[] = [];
-  for (const entity of entities) {
-    const findings = officialsToFetch.get(entity.$id);
-    if (!findings) continue;
-    for (const f of findings) {
-      const roleType = getRoleTypeSync(f.roleId);
-      const party = claimToPartyMap.get(f.claimId);
-      const authority: Authority = {
-        ...entity,
-        role: roleType || undefined,
-        party,
-        imageUrl: candidateImageMap.get(entity.$id) || undefined,
-      };
-
-      if (
-        roleType === 'Alcalde' &&
-        !merged.alcalde.some((e) => e.$id === entity.$id)
-      ) {
-        merged.alcalde.push(authority);
-        batchAuthorities.push(authority);
-      }
-      if (
-        roleType === 'Gobernador' &&
-        !merged.gobernador.some((e) => e.$id === entity.$id)
-      ) {
-        merged.gobernador.push(authority);
-        batchAuthorities.push(authority);
-      }
-      if (
-        roleType === 'Concejal' &&
-        !merged.concejales.some((e) => e.$id === entity.$id)
-      ) {
-        merged.concejales.push(authority);
-        batchAuthorities.push(authority);
-      }
-      if (
-        roleType === 'Asambleísta' &&
-        !merged.asambleistas.some((e) => e.$id === entity.$id)
-      ) {
-        merged.asambleistas.push(authority);
-        batchAuthorities.push(authority);
-      }
-    }
-  }
-
-  if (batchAuthorities.length > 0 || isFirst) {
-    onBatch(batchAuthorities, isFirst);
-  }
+  // In the CSV version, images and parties are already attached to the Entity
+  // No need for complex Appwrite batches
+  onBatch([], isFirst);
 }
 
 export async function fetchImagesForEntities(
   entities: Entity[]
 ): Promise<Map<string, string>> {
   const candidateImageMap = new Map<string, string>();
-  if (entities.length === 0) return candidateImageMap;
-
-  const entityIds = entities.map((e) => e.$id);
-  const imagePromises: Promise<Claim[]>[] = [];
-  const imageBatchSize = 50;
-  for (let i = 0; i < entityIds.length; i += imageBatchSize) {
-    const batch = entityIds.slice(i, i + imageBatchSize);
-    imagePromises.push(
-      databases
-        .listDocuments<Claim>(DATABASE_ID, COLLECTIONS.CLAIMS, [
-          Query.equal('subject', batch),
-          Query.equal('datatype', 'image'),
-          Query.limit(100),
-        ])
-        .then((r) => r.documents)
-    );
-  }
-  const imageResults = await Promise.all(imagePromises);
-  imageResults.flat().forEach((c) => {
-    const sid = typeof c.subject === 'object' ? c.subject.$id : c.subject;
-    if (sid && c.value_raw) {
-      if (!candidateImageMap.has(sid)) {
-        candidateImageMap.set(sid, c.value_raw);
-      }
-    }
+  entities.forEach(e => {
+    if (e.imageUrl) candidateImageMap.set(e.$id, e.imageUrl);
   });
-
   return candidateImageMap;
 }
 
@@ -232,6 +52,9 @@ export async function attachImagesToEntities(
   const imageMap = await fetchImagesForEntities(entities);
   return entities.map((e) => ({
     ...e,
-    imageUrl: imageMap.get(e.$id) || undefined,
-  }));
+    role: (e as any).role,
+    party: (e as any).party,
+    imageUrl: imageMap.get(e.$id) || e.imageUrl,
+  })) as Authority[];
 }
+

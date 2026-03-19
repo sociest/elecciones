@@ -8,6 +8,7 @@ export const VALID_ROLES = [
   'Asambleísta',
   'Asambleista',
   'Asambleístas Departamentales por Territorio',
+  'Asambleístas Departamentales por Población',
 ];
 
 export const QUALIFIER_TERRITORY = PROPERTY_IDS.TERRITORY;

@@ -15,18 +15,14 @@ Aplicación web para visualizar y explorar datos de elecciones en **Bolivia**, d
 - **Modo oscuro**: Soporte para tema claro y oscuro
 - **Rendimiento optimizado**: Generación estática para carga rápida
 
-## 📦 Tecnologías
-
 - **[Astro](https://astro.build/)**: Framework web estático
 - **[React](https://react.dev/)**: Biblioteca UI
 - **[TypeScript](https://www.typescriptlang.org/)**: Tipado estático
 - **[Tailwind CSS](https://tailwindcss.com/)**: Framework CSS
 - **[Leaflet](https://leafletjs.com/)**: Mapas interactivos
 - **[Radix UI](https://www.radix-ui.com/)**: Componentes accesibles
-- **[Appwrite](https://appwrite.io/)**: Backend as a Service
+- **[CSV Data](https://en.wikipedia.org/wiki/Comma-separated_values)**: Almacenamiento local de datos
 - **[SWR](https://swr.vercel.app/)**: React Hooks para data fetching
-
-## 🛠️ Instalación
 
 ```bash
 # Clonar el repositorio
@@ -36,13 +32,7 @@ cd front-graph
 # Instalar dependencias
 pnpm install
 
-# Copiar variables de entorno
-cp .env.example .env
-
-# Editar .env con tus valores de Appwrite
-# PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
-# PUBLIC_APPWRITE_PROJECT_ID=tu-project-id
-# PUBLIC_APPWRITE_DATABASE_ID=tu-database-id
+# Los datos se cargan automáticamente desde public/data/*.csv
 ```
 
 ## 🏃‍♂️ Desarrollo
@@ -98,24 +88,12 @@ El proyecto está configurado para desplegarse automáticamente en GitHub Pages 
 
 **Para instrucciones detalladas de configuración y despliegue, consulta [DEPLOY.md](./DEPLOY.md)**
 
-## ⚙️ Configuración
+### Datos Locales
 
-### Variables de entorno
+El proyecto utiliza archivos CSV locales como fuente de verdad:
 
-El proyecto utiliza Appwrite como backend. Necesitas configurar las siguientes variables de entorno:
-
-```env
-# Appwrite Configuration
-PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
-PUBLIC_APPWRITE_PROJECT_ID=tu-project-id-aqui
-PUBLIC_APPWRITE_DATABASE_ID=tu-database-id-aqui
-```
-
-**Importante**:
-
-- Crea un archivo `.env` basado en `.env.example`
-- Nunca subas el archivo `.env` al repositorio
-- Para GitHub Pages, configura estos valores como **Secrets** en tu repositorio (ver [DEPLOY.md](./DEPLOY.md))
+- `public/data/candidatos.csv`: Información de candidatos, trayectorias y militancia.
+- `public/data/encuestas.csv`: Resultados de estudios de opinión pública.
 
 ### GitHub Pages
 
@@ -207,4 +185,4 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](./LICENSE) pa
 
 ---
 
-**Nota**: Este proyecto visualiza datos de elecciones en Bolivia. Los datos se obtienen mediante Appwrite y se actualizan en tiempo real.
+**Nota**: Este proyecto visualiza datos de elecciones en Bolivia. Los datos se obtienen mediante archivos CSV locales y se procesan en el cliente para una experiencia dinámica.

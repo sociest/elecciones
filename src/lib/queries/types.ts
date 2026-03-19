@@ -1,22 +1,50 @@
-import type { Models } from 'appwrite';
-
-export interface Entity extends Models.Document {
+export interface Entity {
+  $id: string;
   label?: string;
   description?: string;
   aliases?: string[];
+  imageUrl?: string;
+  redesSociales?: {
+    facebook?: string;
+    instagram?: string;
+    tiktok?: string;
+    twitter?: string;
+    youtube?: string;
+  };
 }
 
 export interface Authority extends Entity {
   role?: string;
   party?: Entity & { color?: string };
-  imageUrl?: string;
+  territorioLabel?: string;
+  territorioId?: string;
+  ci?: string;
+  cis?: string[];
+  imageUrls?: string[];
+  territorioLabels?: string[];
+  territorioIds?: string[];
+  territorioCodigo?: string;
+  territorioCodigos?: string[];
+  trayectorias?: string[];
+  estudios?: string[];
+  militancias?: string[];
+  cargos?: string[];
+  partidos?: string[];
+  results?: {
+    encuestaId: string;
+    autorLabel: string;
+    fechaFin: string;
+    porcentaje: number;
+    pregunta: string;
+  }[];
 }
 
-export interface Claim extends Models.Document {
-  subject?: Entity;
-  property?: Entity;
+export interface Claim {
+  $id: string;
+  subject?: Entity | string;
+  property?: Entity | string;
   value_raw?: string;
-  value_relation?: Entity;
+  value_relation?: Entity | string;
   datatype:
     | 'string'
     | 'date'
@@ -34,11 +62,12 @@ export interface Claim extends Models.Document {
   references?: Reference[];
 }
 
-export interface Qualifier extends Models.Document {
+export interface Qualifier {
+  $id: string;
   claim?: Claim | string;
-  property?: Entity;
+  property?: Entity | string;
   value_raw?: string;
-  value_relation?: Entity;
+  value_relation?: Entity | string;
   datatype:
     | 'string'
     | 'date'
@@ -54,7 +83,8 @@ export interface Qualifier extends Models.Document {
     | 'entity';
 }
 
-export interface Reference extends Models.Document {
+export interface Reference {
+  $id: string;
   claim?: Claim | string;
   reference?: Entity | string;
   details?: string;
@@ -69,3 +99,4 @@ export interface PolygonData {
   ineCode?: string;
   hasEntity?: boolean;
 }
+

@@ -1,10 +1,5 @@
-import { Databases, Query } from 'appwrite';
-import {
-  DB_ID,
-  COLLECTION_IDS,
-  PROPERTY_IDS,
-  ENTITY_TYPE_IDS,
-} from '@/lib/constants/entity-types';
+// Removed Appwrite and constants imports as they are no longer needed in CSV mode
+
 
 export type EntityType =
   | 'PERSONA'
@@ -116,79 +111,25 @@ export function inferEntityTypeFromLabel(label?: string): EntityType {
 }
 
 /**
- * Determines the type of an entity based on its claims.
- * Specifically looks for 'es instancia de' property.
+ * Determines the type of an entity (CSV version).
+ * In the new CSV architecture, we mainly rely on label inference 
+ * or the entityType field if provided.
  */
 export async function determineEntityType(
   entityId: string,
-  databases: Databases
+  _databases: any, // ignore for compatibility
+  entity?: any
 ): Promise<EntityType> {
   try {
-    const claims = await databases.listDocuments(DB_ID, COLLECTION_IDS.CLAIMS, [
-      Query.equal('subject', entityId),
-      Query.equal('property', PROPERTY_IDS.ES_INSTANCIA_DE),
-    ]);
-
-    if (claims.total > 0) {
-      for (const claim of claims.documents) {
-        const typeId = claim.value_relation?.$id || claim.value_relation;
-
-        if (typeId === ENTITY_TYPE_IDS.POLITICO) return 'POLITICO';
-        if (typeId === ENTITY_TYPE_IDS.PERSONA) return 'PERSONA';
-        if (
-          typeId === ENTITY_TYPE_IDS.MUNICIPIO ||
-          typeId === ENTITY_TYPE_IDS.DEPARTAMENTO ||
-          typeId === ENTITY_TYPE_IDS.TERRITORIO ||
-          typeId === ENTITY_TYPE_IDS.ENTIDAD_TERRITORIAL
-        )
-          return 'TERRITORIO';
-        if (
-          typeId === ENTITY_TYPE_IDS.PARTIDO_POLITICO ||
-          typeId === ENTITY_TYPE_IDS.PARTIDO_MOVIMIENTO
-        )
-          return 'PARTIDO_POLITICO';
-        if (typeId === ENTITY_TYPE_IDS.CASA_ENCUESTADORA)
-          return 'CASA_ENCUESTADORA';
-        if (
-          typeId === ENTITY_TYPE_IDS.MINISTERIO ||
-          typeId === ENTITY_TYPE_IDS.ORGANO_ELECTORAL ||
-          typeId === ENTITY_TYPE_IDS.ASAMBLEA_LEGISLATIVA
-        )
-          return 'INSTITUCION';
-
-        let typeLabel =
-          typeof claim.value_relation === 'object'
-            ? claim.value_relation.label
-            : '';
-
-        if (!typeLabel && typeof typeId === 'string') {
-          try {
-            const relDoc = await databases.getDocument(
-              DB_ID,
-              COLLECTION_IDS.ENTITIES,
-              typeId
-            );
-            typeLabel = relDoc.label;
-          } catch {
-            // ignore
-          }
-        }
-
-        if (typeLabel) {
-          const inferred = inferEntityTypeFromLabel(typeLabel);
-          if (inferred !== 'UNKNOWN') return inferred;
-        }
-      }
+    if (entity?.label) {
+        return inferEntityTypeFromLabel(entity.label);
     }
-
-    const entity = await databases.getDocument(
-      DB_ID,
-      COLLECTION_IDS.ENTITIES,
-      entityId
-    );
-    return inferEntityTypeFromLabel(entity.label);
+    
+    // Default or fallback
+    return 'UNKNOWN';
   } catch (error) {
-    console.error('Error determining entity type:', error);
+    console.error('Error determining entity type (CSV):', error);
     return 'UNKNOWN';
   }
 }
+

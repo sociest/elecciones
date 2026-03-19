@@ -1,6 +1,4 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { Query } from 'appwrite';
-import { databases, DATABASE_ID, COLLECTIONS } from '../../lib/appwrite';
 import { buildPath } from '../../lib/utils/paths';
 import {
   Loader2,
@@ -16,11 +14,8 @@ import {
   Clock,
   TrendingUp,
 } from 'lucide-react';
-import {
-  ENTITY_TYPE_IDS,
-  PROPERTY_IDS,
-} from '../../lib/constants/entity-types';
 import type { Entity } from '../../lib/queries/types';
+import { loadCSV } from '../../lib/utils/csvLoader';
 
 type EstudioMini = {
   $id: string;
@@ -63,14 +58,6 @@ const reducer = (state: State, action: Action): State => {
       return state;
   }
 };
-
-// Helper para extraer ID de un campo subject/value_relation
-function extractId(val: unknown): string | undefined {
-  if (typeof val === 'string') return val;
-  if (typeof val === 'object' && val !== null && '$id' in val)
-    return (val as { $id: string }).$id;
-  return undefined;
-}
 
 // ─── Card expandible de Casa Encuestadora ───────────────────────────────────
 function CasaCard({ casa }: { casa: CasaConEstudios }) {
@@ -194,151 +181,63 @@ export default function EncuestasPage() {
     const fetchData = async () => {
       dispatch({ type: 'LOAD_START' });
       try {
-        const casasClaims = await databases.listDocuments(
-          DATABASE_ID,
-          COLLECTIONS.CLAIMS,
-          [
-            Query.equal('property', PROPERTY_IDS.ES_INSTANCIA_DE),
-            Query.equal('value_relation', ENTITY_TYPE_IDS.CASA_ENCUESTADORA),
-            Query.limit(100),
-          ]
-        );
+        const rows = await loadCSV('/data/encuestas.csv');
+        
+        // Group by item (Survey)
+        const surveyMap = new Map<string, any>();
+        const houseMap = new Map<string, CasaConEstudios>();
 
-        const casaIds = casasClaims.documents
-          .map((c) => extractId(c.subject))
-          .filter(Boolean) as string[];
+        rows.forEach(row => {
+          const encId = row.item;
+          if (!encId) return;
 
-        let loadedCasas: Entity[] = [];
-        if (casaIds.length > 0) {
-          const uniqueCasaIds = [...new Set(casaIds)];
-          for (let i = 0; i < uniqueCasaIds.length; i += 100) {
-            const batch = uniqueCasaIds.slice(i, i + 100);
-            const cRes = await databases.listDocuments<Entity>(
-              DATABASE_ID,
-              COLLECTIONS.ENTITIES,
-              [Query.equal('$id', batch), Query.limit(100)]
-            );
-            loadedCasas = [...loadedCasas, ...cRes.documents];
+          if (!surveyMap.has(encId)) {
+            surveyMap.set(encId, {
+              $id: encId,
+              label: row.label,
+              description: `Fecha: ${row.fecha_inicio} al ${row.fecha_fin} · Margen: ${row.margen} · Muestra: ${row.muestra}`,
+              coberturaLabel: row.coberturaLabel || 'ESTUDIO NACIONAL',
+              autorId: row.autor,
+              autorLabel: row.autorLabel
+            });
           }
-        }
 
-        const autorAllClaims = await databases.listDocuments(
-          DATABASE_ID,
-          COLLECTIONS.CLAIMS,
-          [
-            Query.equal('property', PROPERTY_IDS.AUTOR_ENCUESTA),
-            Query.limit(100),
-          ]
-        );
-
-        // Map: encuestaId → casaId
-        const encuestaToCasa: Record<string, string> = {};
-        const encuestasIdsFromAutor: string[] = [];
-
-        autorAllClaims.documents.forEach((c) => {
-          const encId = extractId(c.subject);
-          const casaId = extractId(c.value_relation);
-          if (encId && casaId) {
-            encuestaToCasa[encId] = casaId;
-            encuestasIdsFromAutor.push(encId);
+          // Also track houses
+          const casaId = row.autor;
+          if (casaId && !houseMap.has(casaId)) {
+            houseMap.set(casaId, {
+              $id: casaId,
+              label: row.autorLabel,
+              type: 'Casa Encuestadora',
+              estudios: []
+            } as CasaConEstudios);
           }
         });
 
-        const encuestasInstanciaClaims = await databases.listDocuments(
-          DATABASE_ID,
-          COLLECTIONS.CLAIMS,
-          [
-            Query.equal('property', PROPERTY_IDS.ES_INSTANCIA_DE),
-            Query.equal('value_relation', ENTITY_TYPE_IDS.ENCUESTA_ELECTORAL),
-            Query.limit(100),
-          ]
-        );
-
-        const encuestasIdsFromInstancia = encuestasInstanciaClaims.documents
-          .map((c) => extractId(c.subject))
-          .filter(Boolean) as string[];
-
-        const allEncuestaIds = [
-          ...new Set([...encuestasIdsFromAutor, ...encuestasIdsFromInstancia]),
-        ];
-
-        let loadedEncuestas: (Entity & { coberturaLabel?: string })[] = [];
-
-        if (allEncuestaIds.length > 0) {
-          for (let i = 0; i < allEncuestaIds.length; i += 100) {
-            const batch = allEncuestaIds.slice(i, i + 100);
-
-            const [cRes, cClaims] = await Promise.all([
-              databases.listDocuments<Entity>(
-                DATABASE_ID,
-                COLLECTIONS.ENTITIES,
-                [Query.equal('$id', batch), Query.limit(100)]
-              ),
-              databases.listDocuments(DATABASE_ID, COLLECTIONS.CLAIMS, [
-                Query.equal('subject', batch),
-                Query.equal('property', PROPERTY_IDS.COBERTURA_ENCUESTA),
-                Query.limit(100),
-              ]),
-            ]);
-
-            const coberIds = cClaims.documents
-              .map((c) => extractId(c.value_relation))
-              .filter(Boolean) as string[];
-
-            const covMap: Record<string, string> = {};
-            if (coberIds.length > 0) {
-              const uCobIds = [...new Set(coberIds)];
-              const covEntities = await databases.listDocuments<Entity>(
-                DATABASE_ID,
-                COLLECTIONS.ENTITIES,
-                [Query.equal('$id', uCobIds), Query.limit(100)]
-              );
-              covEntities.documents.forEach((e) => {
-                covMap[e.$id] = e.label || '';
-              });
-            }
-
-            const enhanced = cRes.documents.map((e) => {
-              const claim = cClaims.documents.find(
-                (c) => extractId(c.subject) === e.$id
-              );
-              let coberturaLabel = 'ESTUDIO NACIONAL';
-              if (claim) {
-                const cId = extractId(claim.value_relation);
-                if (cId && covMap[cId]) coberturaLabel = covMap[cId];
-              } else {
-                const m = e.label?.match(
-                  /(La Paz|Santa Cruz|Cochabamba|El Alto|Oruro|Potosí|Chuquisaca|Tarija|Beni|Pando)/i
-                );
-                if (m) coberturaLabel = m[0];
-              }
-              return { ...e, coberturaLabel };
+        const loadedEncuestas = Array.from(surveyMap.values());
+        
+        // Link surveys to houses
+        loadedEncuestas.forEach(enc => {
+          const house = houseMap.get(enc.autorId);
+          if (house) {
+            house.estudios.push({
+              $id: enc.$id,
+              label: enc.label,
+              coberturaLabel: enc.coberturaLabel
             });
-
-            loadedEncuestas = [...loadedEncuestas, ...enhanced];
           }
-        }
+        });
 
-        const casasConEstudios: CasaConEstudios[] = loadedCasas
-          .map((casa) => {
-            const estudios = loadedEncuestas
-              .filter((enc) => encuestaToCasa[enc.$id] === casa.$id)
-              .map((enc) => ({
-                $id: enc.$id,
-                label: enc.label || '',
-                coberturaLabel: enc.coberturaLabel,
-              }));
-            return { ...casa, estudios };
-          })
+        const loadedCasas = Array.from(houseMap.values())
           .sort((a, b) => b.estudios.length - a.estudios.length);
 
         dispatch({
           type: 'LOAD_SUCCESS',
           encuestas: loadedEncuestas,
-          casas: casasConEstudios,
+          casas: loadedCasas,
         });
       } catch (err) {
-        console.error('Error fetching encuestas data', err);
+        console.error('Error fetching encuestas CSV data', err);
         dispatch({ type: 'LOAD_ERROR' });
       }
     };
@@ -470,3 +369,5 @@ export default function EncuestasPage() {
     </div>
   );
 }
+
+

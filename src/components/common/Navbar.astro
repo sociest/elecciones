@@ -17,16 +17,10 @@ const isActive = (path: string) => {
 
 const navLinks = [
   {
-    name: 'Explorador',
+    name: 'Candidatos',
     href: buildPath('/'),
     description: 'Filtra candidatos por municipio y cargo.',
     icon: Search,
-  },
-  {
-    name: 'Mapa Global',
-    href: buildPath('/mapa'),
-    description: 'Panorama político en todo el país.',
-    icon: Map,
   },
   {
     name: 'Encuestas',
@@ -128,7 +122,7 @@ const currentSection = navLinks.find((link) => isActive(link.href));
     </div>
   </div>
 
-  {
+  <!--{
     currentSection && currentSection.icon && (
       <div
         class="absolute left-1/2 -translate-x-1/2 -bottom-[4.5rem] pointer-events-none hidden lg:flex items-center justify-center min-w-[320px] max-w-sm z-40"
@@ -157,7 +151,7 @@ const currentSection = navLinks.find((link) => isActive(link.href));
         </div>
       </div>
     )
-  }
+}-->
 </nav>
 
 <!-- Modo movil -->

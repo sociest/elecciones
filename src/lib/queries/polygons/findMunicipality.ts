@@ -59,12 +59,16 @@ export async function findMunicipalityByCoordinates(
           `✅ Territorio encontrado: ${polygon.entityLabel} (Nivel ${polygon.administrativeLevel}) en ${elapsed.toFixed(0)}ms`
         );
 
-        const entity = await databases.getDocument<Entity>(
-          DATABASE_ID,
-          COLLECTIONS.ENTITIES,
-          polygon.entityId
-        );
-        return entity;
+        // Return a simplified entity object from the polygon data
+        return {
+          $id: polygon.entityId,
+          label: polygon.entityLabel,
+          $collectionId: 'entities',
+          $databaseId: '',
+          $createdAt: new Date().toISOString(),
+          $updatedAt: new Date().toISOString(),
+          $permissions: []
+        } as Entity;
       }
     }
 

@@ -15,10 +15,7 @@ export {
 export {
   normalizeText,
   calculateQuickSearchScore,
-  fetchEntitiesByTypeId,
-  fetchEntitiesByLabels,
   calculateSearchScore,
-  performClientSideSearch,
 } from './search/helpers';
 
 export {

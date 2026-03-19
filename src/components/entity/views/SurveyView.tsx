@@ -22,18 +22,18 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
   const titulo = entity.label || 'Estudio de Opinión Pública';
   const findClaim = (keyword: string) =>
     claims.find(
-      (c) => c.property?.['$id']?.toLowerCase() === keyword.toLowerCase()
+      (c) => (c.property as any)?.['$id']?.toLowerCase() === keyword.toLowerCase()
     );
 
   const autorClaim = findClaim(PROPERTY_IDS.AUTOR_ENCUESTA);
   const autor =
-    autorClaim?.value_relation?.label ||
-    autorClaim?.value_raw ||
+    (autorClaim?.value_relation as any)?.label ||
+    (autorClaim as any)?.value_raw ||
     'Autor Desconocido';
 
   const coberturaClaim = findClaim(PROPERTY_IDS.COBERTURA_ENCUESTA);
   const cobertura =
-    coberturaClaim?.value_relation?.label ||
+    (coberturaClaim?.value_relation as any)?.label ||
     coberturaClaim?.value_raw ||
     'Nivel Nacional';
 
@@ -44,14 +44,17 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
 
   const muestraClaim = findClaim(PROPERTY_IDS.MUESTRA_ENCUESTA);
   const muestraTotal = muestraClaim?.value_raw || 'No especificado';
+  
+  const confianzaClaim = findClaim(PROPERTY_IDS.NIVEL_DE_CONFIANZA_ENCUESTA);
+  const nivelConfianza = confianzaClaim?.value_raw || 'N/D';
 
-  const masculinoQualifier = muestraClaim?.qualifiers?.find((q) =>
-    q.property?.label?.toLowerCase().match(/masculino|hombres/)
+  const masculinoQualifier = muestraClaim?.qualifiers?.find((q: any) =>
+    (q.property as any)?.label?.toLowerCase()?.match(/masculino|hombres/)
   );
   const muestraMasculino = masculinoQualifier?.value_raw || 'N/D';
 
-  const femeninoQualifier = muestraClaim?.qualifiers?.find((q) =>
-    q.property?.label?.toLowerCase().match(/femenino|mujeres|femenina/)
+  const femeninoQualifier = muestraClaim?.qualifiers?.find((q: any) =>
+    (q.property as any)?.label?.toLowerCase()?.match(/femenino|mujeres|femenina/)
   );
   const muestraFemenino = femeninoQualifier?.value_raw || 'N/D';
 
@@ -74,32 +77,36 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
   let resultados: { nombre: string; porcentaje: number; color: string }[] = [];
 
   claims.forEach((c) => {
-    const prop = c.property?.['$id']?.toLowerCase() || '';
+    const prop = (c.property as any)?.['$id']?.toLowerCase() || '';
     if (prop !== PROPERTY_IDS.RESULTADO_ENCUESTA) return;
     let pct = NaN;
     let nombre = '';
 
-    //if ((!isNaN(parseFloat(c.value_raw || "")) && parseFloat(c.value_raw || "") > 0 && parseFloat(c.value_raw || "") <= 100)) {
-    pct = parseFloat(
-      c.value_raw ||
+    let pregunta = '';
+    const pctVal = c.value_raw ||
         c.qualifiers?.find((q) =>
-          q.property?.label?.toLowerCase().includes('porcentaje')
+          (q.property as any)?.label?.toLowerCase().includes('porcentaje')
         )?.value_raw ||
-        ''
-    );
+        '';
+    pct = parseFloat(pctVal);
 
     if (!isNaN(pct)) {
       nombre =
-        c.value_relation?.label ||
-        c.qualifiers?.find(
+        (c.value_relation as any)?.label ||
+        (c.qualifiers?.find(
           (q) =>
-            q.property?.label?.toLowerCase().includes('candidato') ||
-            q.property?.label?.toLowerCase().includes('opcion') ||
-            q.property?.label?.toLowerCase().includes('opción')
-        )?.value_relation?.label ||
-        c.qualifiers?.[0]?.value_relation?.label ||
+            (q.property as any)?.label?.toLowerCase().includes('candidato') ||
+            (q.property as any)?.label?.toLowerCase().includes('opcion') ||
+            (q.property as any)?.label?.toLowerCase().includes('opción')
+        ) as any)?.value_relation?.['label'] ||
+        (c.qualifiers?.[0]?.value_relation as any)?.label ||
         c.qualifiers?.[0]?.value_raw ||
         prop;
+
+      pregunta = (c.qualifiers?.find(
+        (q) => (q.property as any)?.label?.toLowerCase().includes('pregunta')
+      ) as any)?.value_raw || '';
+
       if (
         nombre.toLowerCase() === 'resultado' ||
         nombre.toLowerCase() === 'voto' ||
@@ -109,11 +116,25 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
       }
       // Avoid duplicating
       if (!resultados.find((r) => r.nombre === nombre)) {
-        resultados.push({ nombre, porcentaje: pct, color: '#1e3a2b' });
+        resultados.push({ nombre, porcentaje: pct, color: '#1e3a2b', pregunta } as any);
       }
     }
     //}
   });
+
+  // Fallback to pre-aggregated results if claims loop found nothing
+  if (resultados.length === 0 && (entity as any).resultados) {
+    (entity as any).resultados.forEach((r: any) => {
+      resultados.push({
+        nombre: r.label || r.item,
+        porcentaje: r.porcentaje,
+        color: '#1e3a2b',
+        pregunta: r.pregunta || ''
+      } as any);
+    });
+  }
+
+  const mainQuestion = (resultados.find(r => (r as any).pregunta) as any)?.pregunta || 'Si hoy fueran las elecciones, ¿por quién votaría?';
 
   if (resultados.length === 0) {
     resultados = [
@@ -136,6 +157,18 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
     }
     return { ...r, color };
   });
+
+  const groupedResults = resultados.reduce(
+    (acc, r) => {
+      const q = (r as any).pregunta || 'General';
+      if (!acc[q]) acc[q] = [];
+      acc[q].push(r);
+      return acc;
+    },
+    {} as Record<string, typeof resultados>
+  );
+
+  const questions = Object.keys(groupedResults);
 
   const isFemeninoDefined =
     muestraFemenino !== 'N/D' &&
@@ -195,7 +228,7 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto px-6 -mt-12 grid grid-cols-1 md:grid-cols-4 gap-4 relative z-20">
+      <div className="max-w-6xl mx-auto px-6 -mt-12 grid grid-cols-1 md:grid-cols-5 gap-4 relative z-20">
         <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200 text-center">
           <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">
             Muestra Total
@@ -214,6 +247,17 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
           </p>
           <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase">
             Nivel Crítico
+          </p>
+        </div>
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200 text-center">
+          <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">
+            Nivel de Confianza
+          </p>
+          <p className="text-3xl font-black text-slate-800">
+            {nivelConfianza !== 'N/D' ? `${nivelConfianza}%` : nivelConfianza}
+          </p>
+          <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase">
+            Estadístico
           </p>
         </div>
         <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200 text-center">
@@ -245,50 +289,55 @@ export function SurveyView({ entity, claims = EMPTY_CLAIMS }: SurveyProps) {
 
       <div className="max-w-6xl mx-auto px-6 mt-20 grid grid-cols-1 lg:grid-cols-12 gap-12">
         <div className="lg:col-span-8 space-y-10">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-slate-100 text-slate-600 rounded-2xl shadow-sm">
-                <Activity size={24} />
-              </div>
-              <h3 className="text-3xl font-black tracking-tight text-slate-800 text-pretty">
-                Preferencia de Voto Registrada
-              </h3>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            {resultados.map((r, index) => (
-              <div
-                key={r.nombre}
-                className="group relative bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:border-slate-300 transition-all"
-              >
-                <div className="flex justify-between items-end mb-4 px-2">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`text-xs font-black ${index < 3 ? 'text-primary-green' : 'text-slate-400'}`}
-                    >
-                      {index < 9 ? `0${index + 1}` : index + 1}
-                    </span>
-                    <h4 className="text-lg font-black uppercase tracking-tight text-slate-800 group-hover:translate-x-1 transition-transform">
-                      {r.nombre}
-                    </h4>
+          {questions.map((q, qIndex) => (
+            <div key={q} className="space-y-10">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-slate-100 text-slate-600 rounded-2xl shadow-sm">
+                    <Activity size={24} />
                   </div>
-                  <span className="text-xl font-black text-primary-green">
-                    {r.porcentaje}%
-                  </span>
-                </div>
-                <div className="h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200 inset-shadow-sm">
-                  <div
-                    className="h-full rounded-full transition-all duration-1000 ease-out"
-                    style={{
-                      width: `${r.porcentaje}%`,
-                      backgroundColor: r.color,
-                    }}
-                  />
+                  <h3 className="text-2xl font-black tracking-tight text-slate-800 text-pretty">
+                    {q}
+                  </h3>
                 </div>
               </div>
-            ))}
-          </div>
+
+              <div className="space-y-6">
+                {groupedResults[q].map((r, index) => (
+                  <div
+                    key={`${q}-${r.nombre}`}
+                    className="group relative bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:border-slate-300 transition-all"
+                  >
+                    <div className="flex justify-between items-end mb-4 px-2">
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`text-xs font-black ${index < 3 ? 'text-primary-green' : 'text-slate-400'}`}
+                        >
+                          {index < 9 ? `0${index + 1}` : index + 1}
+                        </span>
+                        <h4 className="text-lg font-black uppercase tracking-tight text-slate-800 group-hover:translate-x-1 transition-transform">
+                          {r.nombre}
+                        </h4>
+                      </div>
+                      <span className="text-xl font-black text-primary-green">
+                        {r.porcentaje}%
+                      </span>
+                    </div>
+                    <div className="h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200 inset-shadow-sm">
+                      <div
+                        className="h-full rounded-full transition-all duration-1000 ease-out"
+                        style={{
+                          width: `${r.porcentaje}%`,
+                          backgroundColor: r.color,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+
         </div>
 
         <aside className="lg:col-span-4 space-y-8">

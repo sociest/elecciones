@@ -38,14 +38,16 @@ const ENTITY_TYPES = [
   { value: 'Todas', label: 'Todas las entidades' },
   { value: 'Municipio', label: 'Municipios' },
   { value: 'Persona', label: 'Personas' },
-  { value: 'Partido', label: 'Partidos Políticos' },
+  { value: 'Partido Político', label: 'Partidos Políticos' },
+  { value: 'Encuesta', label: 'Encuestas' },
   { value: 'Territorio', label: 'Territorios' },
 ];
 
 const QUICK_FILTERS = [
   { label: 'Todos', type: 'Todas' },
   { label: 'Postulantes', type: 'Persona' },
-  { label: 'Partidos', type: 'Partido' },
+  { label: 'Partidos', type: 'Partido Político' },
+  { label: 'Encuestas', type: 'Encuesta' },
   { label: 'Otras Entidades', type: 'Territorio' },
 ];
 

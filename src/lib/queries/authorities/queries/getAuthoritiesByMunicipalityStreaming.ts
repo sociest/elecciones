@@ -1,10 +1,6 @@
-import { databases, DATABASE_ID, COLLECTIONS, Query } from '../../../appwrite';
-import type { Claim, Authority } from '../../types';
-import { PROPERTY_IDS } from '../../constants';
-import { getAllRoleIds, getRoleIds } from '../cache';
-import { getCandidateClaimsForTerritory } from '../helpers';
-import { buildOfficialsMap, fetchAndEmit } from '../utils';
+import type { Authority } from '../../types';
 import type { AuthoritiesByMunicipality } from '../types';
+import { fetchEntitiesFiltered } from '../../search/queries';
 
 export async function getAuthoritiesByMunicipalityStreaming(
   territoryId: string,
@@ -18,49 +14,32 @@ export async function getAuthoritiesByMunicipalityStreaming(
   };
 
   try {
-    const [allRoleIds] = await Promise.all([getAllRoleIds(), getRoleIds()]);
+    // In our CSV world, we can just fetch all candidates for this territory
+    // We filter by territoryId (which is the municipality ID or department ID in our CSV)
+    const { documents } = await fetchEntitiesFiltered({
+      department: territoryId, // In fetchEntitiesFiltered, this checks territoryLabel or department
+      limit: 1000,
+      entityType: 'Persona'
+    });
 
-    const [l0Claims, parentClaims] = await Promise.all([
-      getCandidateClaimsForTerritory(territoryId, allRoleIds),
-      databases.listDocuments<Claim>(DATABASE_ID, COLLECTIONS.CLAIMS, [
-        Query.equal('subject', territoryId),
-        Query.equal('property', PROPERTY_IDS.PART_OF),
-      ]),
-    ]);
+    const authorities = documents as unknown as Authority[];
 
-    const l0Map = buildOfficialsMap(l0Claims);
-    await fetchAndEmit(l0Map, merged, onBatch, true);
+    // Categorize them
+    authorities.forEach(auth => {
+      const role = auth.role || '';
+      if (role.toLowerCase().includes('alcalde')) merged.alcalde.push(auth);
+      else if (role.toLowerCase().includes('gobernador')) merged.gobernador.push(auth);
+      else if (role.toLowerCase().includes('concejal')) merged.concejales.push(auth);
+      else if (role.toLowerCase().includes('asambleísta')) merged.asambleistas.push(auth);
+    });
 
-    let parentId: string | null = null;
-    const parentRel = parentClaims.documents[0]?.value_relation;
-    if (parentRel)
-      parentId = typeof parentRel === 'object' ? parentRel.$id : parentRel;
+    // Emit the batch
+    onBatch(authorities, true);
 
-    if (parentId && parentId !== territoryId) {
-      const [l1Claims, gpClaims] = await Promise.all([
-        getCandidateClaimsForTerritory(parentId, allRoleIds),
-        databases.listDocuments<Claim>(DATABASE_ID, COLLECTIONS.CLAIMS, [
-          Query.equal('subject', parentId),
-          Query.equal('property', PROPERTY_IDS.PART_OF),
-        ]),
-      ]);
-
-      const l1Map = buildOfficialsMap(l1Claims);
-      await fetchAndEmit(l1Map, merged, onBatch, false);
-
-      let gpId: string | null = null;
-      const gpRel = gpClaims.documents[0]?.value_relation;
-      if (gpRel) gpId = typeof gpRel === 'object' ? gpRel.$id : gpRel;
-
-      if (gpId && gpId !== parentId) {
-        const l2Claims = await getCandidateClaimsForTerritory(gpId, allRoleIds);
-        const l2Map = buildOfficialsMap(l2Claims);
-        await fetchAndEmit(l2Map, merged, onBatch, false);
-      }
-    }
   } catch (error) {
-    console.error('Error in getAuthoritiesByMunicipalityStreaming:', error);
+    console.error('Error in getAuthoritiesByMunicipalityStreaming (CSV):', error);
   }
 
   return merged;
 }
+

@@ -21,6 +21,7 @@ import {
 } from '../../../lib/appwrite';
 import { buildPath } from '../../../lib/utils/paths';
 import { PaginationControls } from '../../ui/PaginationControls';
+import { fetchEntitiesFiltered } from '../../../lib/queries';
 
 const TerritoryMap = lazy(() => import('./TerritoryMap'));
 
@@ -48,13 +49,15 @@ interface Province {
 type TerritoryState = {
   provinces: Province[];
   candidates: Candidate[];
+  surveys: any[];
   loadingRelated: boolean;
 };
 
 type TerritoryAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_PROVINCES'; payload: Province[] }
-  | { type: 'SET_CANDIDATES'; payload: Candidate[] };
+  | { type: 'SET_CANDIDATES'; payload: Candidate[] }
+  | { type: 'SET_SURVEYS'; payload: any[] };
 
 const territoryReducer = (
   state: TerritoryState,
@@ -67,6 +70,8 @@ const territoryReducer = (
       return { ...state, provinces: action.payload };
     case 'SET_CANDIDATES':
       return { ...state, candidates: action.payload };
+    case 'SET_SURVEYS':
+      return { ...state, surveys: action.payload };
     default:
       return state;
   }
@@ -79,13 +84,14 @@ export function TerritoryView({
   const [territoryState, dispatch] = useReducer(territoryReducer, {
     provinces: [],
     candidates: [],
+    surveys: [],
     loadingRelated: true,
   });
 
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
 
-  const { provinces, candidates, loadingRelated } = territoryState;
+  const { provinces, candidates, surveys, loadingRelated } = territoryState;
 
   const nombre = entity.label || 'Territorio Desconocido';
   const alias = entity.aliases?.[0] || '';
@@ -203,6 +209,9 @@ export function TerritoryView({
       dispatch({ type: 'SET_LOADING', payload: true });
 
       try {
+        // In CSV mode, "incoming" claims (like provinces of a department) 
+        // should ideally be handled by specific CSV queries or local JSON.
+        // For now, using the mocked databases.listDocuments which returns empty.
         const incomingClaims = await databases.listDocuments(
           DATABASE_ID,
           COLLECTIONS.CLAIMS,
@@ -214,61 +223,14 @@ export function TerritoryView({
         );
 
         const foundProvinces: Province[] = [];
-        const subjectIdsToFetch: string[] = [];
 
-        for (const claim of incomingClaims.documents as unknown as Claim[]) {
-          if (claim.subject && typeof claim.subject === 'object') {
-            if (
-              claim.subject.label?.toLowerCase().includes('provincia') ||
-              claim.subject.label?.toLowerCase().includes('municipio') ||
-              claim.property?.label?.toLowerCase() === 'parte de'
-            ) {
-              foundProvinces.push({
-                id: claim.subject.$id,
-                nombre: (claim.subject.label || '')
-                  .replace('Provincia de ', '')
-                  .replace('Provincia ', ''),
-              });
-            }
-          } else if (claim.subject && typeof claim.subject === 'string') {
-            subjectIdsToFetch.push(claim.subject);
-          }
-        }
+        // If we have aggregated data in candidates.csv, we could potentially derive this.
+        // For now, we rely on the mocked response or previous logic.
 
-        if (subjectIdsToFetch.length > 0) {
-          const uniqueIds = [...new Set(subjectIdsToFetch)];
-          const batchSize = 50;
-          for (let i = 0; i < uniqueIds.length; i += batchSize) {
-            const batch = uniqueIds.slice(i, i + batchSize);
-            const cRes = await databases.listDocuments<Entity>(
-              DATABASE_ID,
-              COLLECTIONS.ENTITIES,
-              [Query.equal('$id', batch), Query.limit(batchSize)]
-            );
-            for (const sub of cRes.documents) {
-              if (
-                sub.label?.toLowerCase().includes('provincia') ||
-                sub.label?.toLowerCase().includes('municipio')
-              ) {
-                foundProvinces.push({
-                  id: sub.$id,
-                  nombre: (sub.label || '')
-                    .replace('Provincia de ', '')
-                    .replace('Provincia ', ''),
-                });
-              }
-            }
-          }
-        }
-
-        const uniqueProvinces = foundProvinces.reduce((acc, current) => {
-          const x = acc.find((item) => item.id === current.id);
-          return x ? acc : acc.concat([current]);
-        }, [] as Province[]);
-
-        dispatch({ type: 'SET_PROVINCES', payload: uniqueProvinces });
+        dispatch({ type: 'SET_PROVINCES', payload: foundProvinces });
 
         const newCandidates: Candidate[] = [];
+        // getAuthoritiesByMunicipalityStreaming was already refactored to use CSV
         await getAuthoritiesByMunicipalityStreaming(
           entity.$id,
           (batch, replace) => {
@@ -288,12 +250,22 @@ export function TerritoryView({
             dispatch({ type: 'SET_CANDIDATES', payload: [...newCandidates] });
           }
         );
+
+        // Fetch Surveys
+        const { documents: loadedSurveys } = await fetchEntitiesFiltered({
+          department: entity.$id,
+          entityType: 'Encuesta',
+          limit: 10,
+        });
+        dispatch({ type: 'SET_SURVEYS', payload: loadedSurveys });
+
       } catch (err) {
-        console.error('Error fetching incoming data', err);
+        console.error('Error fetching incoming data (CSV):', err);
       } finally {
         dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
+
     fetchIncomingData();
   }, [entity.$id]);
 
@@ -523,6 +495,58 @@ export function TerritoryView({
               </>
             )}
           </section>
+
+          {/* SURVEYS SECTION */}
+          {!loadingRelated && surveys.length > 0 && (
+            <section className="mb-24 slide-up" style={{ animationDelay: '0.4s' }}>
+              <div className="flex items-center gap-3 mb-10">
+                <div className="p-3 bg-primary-green/10 rounded-2xl text-primary-green">
+                  <Activity size={24} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-black tracking-tighter text-slate-900 leading-none mb-1">
+                    Encuestas de Intención de Voto
+                  </h2>
+                  <p className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-400">
+                    Estudios recientes en la región
+                  </p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {surveys.map((survey: any) => (
+                  <a
+                    key={survey.$id}
+                    href={buildPath(`/entity?id=${survey.$id}`)}
+                    className="group bg-white border border-slate-200/80 p-8 rounded-[3rem] hover:border-slate-300 hover:shadow-lg transition-all relative overflow-hidden block"
+                  >
+                    <div className="flex justify-between items-start mb-6">
+                      <span className="bg-slate-100 text-slate-500 group-hover:bg-primary-green/10 group-hover:text-primary-green px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent transition-colors">
+                        {survey.autorLabel || 'Encuesta'}
+                      </span>
+                      <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <Activity size={18} className="text-slate-400" />
+                      </div>
+                    </div>
+                    <h4 className="text-2xl font-black text-slate-800 leading-tight mb-6 group-hover:text-primary-green transition-colors">
+                      {survey.label}
+                    </h4>
+                    <div className="flex items-center gap-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest pt-6 border-t border-slate-50">
+                      <div className="flex items-center gap-2">
+                        <Calendar size={14} className="text-slate-300" />
+                        <span>{survey.fechaFin || survey.publicacion}</span>
+                      </div>
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
+                      <div className="flex items-center gap-2">
+                        <Users size={14} className="text-slate-300" />
+                        <span>n={survey.muestra || '?'}</span>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
         <aside
@@ -553,19 +577,10 @@ export function TerritoryView({
                   </div>
                   <div>
                     <p className="text-[9px] font-black text-slate-400 uppercase">
-                      Última Modificación
+                      Información Regional
                     </p>
                     <p className="text-xs font-bold text-slate-200">
-                      {entity.$updatedAt
-                        ? new Date(entity.$updatedAt).toLocaleDateString(
-                            'es-BO',
-                            {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                            }
-                          )
-                        : 'N/D'}
+                      Datos actualizados (CSV)
                     </p>
                   </div>
                 </div>
